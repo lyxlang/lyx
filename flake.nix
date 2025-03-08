@@ -25,7 +25,7 @@
       rec {
         packages = rec {
           default = lys;
-          lys = pkgs.ocamlPackages.buildDunePackage {
+          lys = pkgs.ocamlPackages.buildDunePackage rec {
             pname = "lys";
             version = "0.0.0";
             src = ./.;
@@ -39,6 +39,21 @@
               uuseg
               yojson
             ];
+            buildPhase = ''
+              runHook preBuild
+              dune build --profile release -p ${pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES}
+              runHook postBuild
+            '';
+            checkPhase = ''
+              runHook preCheck
+              dune runtest --profile release -p ${pname} ''${enableParallelBuilding:+-j $NIX_BUILD_CORES}
+              runHook postCheck
+            '';
+            installPhase = ''
+              runHook preInstall
+              dune install --profile release --prefix $out --libdir $OCAMLFIND_DESTDIR ${pname} --docdir $out/share/doc --mandir $out/share/man
+              runHook postInstall
+            '';
           };
         };
 
