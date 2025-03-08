@@ -1,0 +1,61 @@
+`
+  SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.com>
+  SPDX-FileCopyrightText: 2025 Łukasz Bartkiewicz <lukasku@proton.me>
+
+  SPDX-License-Identifier: CC0-1.0
+`
+
+syn Point = (Float, Float)
+
+uni Shape
+\ Circle Float
+\ Rectangle (Float, Float)
+\ Square (Float, Float)
+
+uni Option a \ Some a \ None
+
+def pi : Float = +3.1415
+
+def offset : Int = -16
+
+def greeting : String = "Hello"
+
+def loremIpsum : String = "Lorem \"ipsum\" dolor sit amet.
+Lorem ipsum dolor sit amet."
+
+def distance (x1, y1) (x2, y2) : Point -> Point -> Float =
+  let dx = x2 - x1; dy = y2 - y1
+  in sqrt (dx ** 2.0 + dy ** 2.0)
+
+def area shape : Shape -> Float =
+  match shape with
+  \ Circle r -> π * r * r
+  \ Rectangle (w, h) \ Square (w, h) -> w * h
+
+def safeDivide x y : Int -> Float -> Option Float =
+  if y ~~ 0.0 then None else Some (x / y)
+
+def _ =
+  let
+    point1 = (0.0, 0.0);
+    point2 = (3.0, 4.0);
+    circle = Circle 5.0;
+    rectangle = Rectangle (2.0, 3.0)
+  in
+    [distance point1 point2, area circle, area rectangle]
+    |> print
+
+def mapped = map (λ a. 2 * 2) [1, 2, 3, 4]
+
+def filtered = filter (λ x. x > 2) [1, 2, 3, 4]
+
+def foldedLeft = foldLeft (λ acc x. acc + x) 0 [1, 2, 3, 4]
+
+def foldedRight =
+  foldRight (λ x acc. x + acc) [1, 2, 3, 4] 0
+
+def sum lst =
+  match lst with \ [] -> 0 \ [hd, tl…] -> hd + sum tl
+
+def fib n : Int -> Int =
+  if n <= 1 then n else fib (n - 1) + fib (n - 2)
