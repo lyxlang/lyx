@@ -63,7 +63,7 @@ For a detailed presentation of the Lys syntax and features, please have a look a
 
 ## Usage
 
-You can skip installation when [running from source](https://github.com/lyslang/lys/blob/main/docs/wiki/from-source.md).
+You can skip installation when [running from source](https://github.com/lyslang/lys/wiki/Running-from-source).
 
 The expected file extension of the Lys programming language is `.lys`.
 
@@ -80,9 +80,9 @@ Following [docopt](http://docopt.org/) conventions:
 
 ## Installation
 
-If you are using [NixOS](https://nixos.org/), please follow [these steps](https://github.com/lyslang/lys/blob/main/docs/wiki/nixos.md).
+If you are using [NixOS](https://nixos.org/), please follow [these steps](https://github.com/lyslang/lys/wiki/Installation-on-NixOS).
 
-Or, download [the latest executable](https://github.com/lyslang/lys/releases/latest) for your system and [add it to your PATH](https://github.com/lyslang/lys/blob/main/docs/wiki/path.md).
+Or, download [the latest executable](https://github.com/lyslang/lys/releases/latest) for your system and [add it to your PATH](https://github.com/lyslang/lys/wiki/Adding-Lys-to-the-PATH).
 
 On Unix-like operating systems, you will then need to run the following command:
 
