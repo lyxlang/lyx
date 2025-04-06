@@ -13,6 +13,7 @@
 
   outputs =
     {
+      self,
       nixpkgs,
       flake-utils,
       ...
@@ -28,7 +29,7 @@
           lys = pkgs.ocamlPackages.buildDunePackage rec {
             pname = "lys";
             version = "0.0.0";
-            src = ./.;
+            src = self;
             strictDeps = false;
             stdenv = pkgs.fastStdenv;
             buildInputs = with pkgs.ocamlPackages; [
