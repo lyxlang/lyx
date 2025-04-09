@@ -78,6 +78,12 @@ Following [docopt](http://docopt.org/) conventions:
 | `lys transpile`        | Transpile standard input and output it.           |
 | `lys transpile <file>` | Transpile a file and write its OCaml counterpart. |
 
+You can run transpiled files using:
+
+```sh
+ocaml <file.ml>
+```
+
 ## Installation
 
 If you are using [NixOS](https://nixos.org/), please follow [these steps](https://github.com/lyslang/lys/wiki/Installation-on-NixOS).
