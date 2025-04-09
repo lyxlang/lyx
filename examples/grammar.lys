@@ -42,8 +42,8 @@ def _ =
     circle = Circle 5.0;
     rectangle = Rectangle (2.0, 3.0)
   in
+    map printNumber
     [distance point1 point2, area circle, area rectangle]
-    |> print
 
 def mapped = map (λ a. 2 * 2) [1, 2, 3, 4]
 

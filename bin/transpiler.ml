@@ -43,8 +43,10 @@ let encode_lid str =
       "List.fold_left"
   | "foldRight" ->
       "List.fold_right"
-  | "print" ->
-      {|List.iter (Printf.printf "%f\n%!")|}
+  | "printString" ->
+      "print_endline"
+  | "printNumber" ->
+      {|(Format.printf "%f@.")|}
   | _ ->
       "l" ^ string_of_int (String.hash str)
 
@@ -174,9 +176,12 @@ and build_expr expr =
   | EPipeOp {l; r} ->
       build_expr l ; add_space () ; add "|>" ; add_space () ; build_expr r
   | EConcatOp {l; r} ->
-      build_expr l ;
+      print_endline
+        "\027[31mERROR: The transpiler do not support the concatenation \
+         operator.\027[0m" ;
+      add "(* TODO: Waiting on type checker. *)" ;
       add_space () ;
-      add "(* :: or ^ *)" ;
+      build_expr l ;
       add_space () ;
       build_expr r
   | EAddOp {l; op; r} ->
@@ -307,24 +312,19 @@ and build_bit_op op =
   match op.value with
   | OpBitLShift ->
       add
-        "(fun l r -> int_of_float l |> Int.shift_left (int_of_float r) |> \
-         float_of_int)"
+        {|(fun l r -> int_of_float l |> Int.shift_left (int_of_float r) |> float_of_int)|}
   | OpBitRShift ->
       add
-        "(fun l r -> int_of_float l |> Int.shift_right_logical (int_of_float \
-         r) |> float_of_int)"
+        {|(fun l r -> int_of_float l |> Int.shift_right_logical (int_of_float r) |> float_of_int)|}
   | OpBitAnd ->
       add
-        "(fun l r -> int_of_float l |> Int.logand (int_of_float r) |> \
-         float_of_int)"
+        {|(fun l r -> int_of_float l |> Int.logand (int_of_float r) |> float_of_int)|}
   | OpBitOr ->
       add
-        "(fun l r -> int_of_float l |> Int.logor (int_of_float r) |> \
-         float_of_int)"
+        {|(fun l r -> int_of_float l |> Int.logor (int_of_float r) |> float_of_int)|}
   | OpBitXor ->
       add
-        "(fun l r -> int_of_float l |> Int.logxor (int_of_float r) |> \
-         float_of_int)"
+        {|(fun l r -> int_of_float l |> Int.logxor (int_of_float r) |> float_of_int)|}
 
 and build_bind bind =
   add "let" ;
