@@ -5,35 +5,81 @@
   SPDX-License-Identifier: CC0-1.0
 `
 
+`
+  Point (PascalCase required) is a type alias for the type of a tuple of two floats.
+`
+
 syn Point = (Float, Float)
+
+`
+  Shape (PascalCase required) is an union, i.e. can be a Circle with a float (its radius),
+  or a Rectangle with a tuple of floats (width and height),
+  or a Square with a tuple of floats (width and height, separated for use later).
+`
 
 uni Shape
 \ Circle Float
 \ Rectangle (Float, Float)
 \ Square (Float, Float)
 
-uni Option a \ Some a \ None
+`
+  a (single lowercase character required) is a polymorphic type, i.e. can be replaced by any type.
+`
 
-def pi : Float = +3.1415
+uni Option a
+\ Some a
+\ None
+
+`
+  pi (first lowercase letter required) is a declaration of type Float of value 3,14159.
+`
+
+def pi : Float = +3.14159
 
 def offset : Int = -16
 
 def greeting : String = "Hello"
 
+` Strings can be multiline by default. `
+
 def loremIpsum : String = "Lorem \"ipsum\" dolor sit amet.
 Lorem ipsum dolor sit amet."
+
+` distance is a function that takes as arguments:
+  - a tuple of type Point, i.e. two floats x1 and y1
+  - another tuple of type Point, i.e. two floats x2 and y2
+  and returns a float.
+  The let … in syntax is used to declare scoped variables. `
 
 def distance (x1, y1) (x2, y2) : Point -> Point -> Float =
   let dx = x2 - x1; dy = y2 - y1
   in sqrt (dx ** 2.0 + dy ** 2.0)
+
+` The match … with syntax is a more powerful switch case:
+  - if shape (of type Shape) is a Circle, r would be its radius, and is returned its area
+  - if shape is a Rectangle or a Square, w and h would be its width and height respectively, and is returned its area
+  Note: the same type must be returned for each case. `
 
 def area shape : Shape -> Float =
   match shape with
   \ Circle r -> π * r * r
   \ Rectangle (w, h) \ Square (w, h) -> w * h
 
+`
+  The ~~ operator is an approximative equal to take into account floating point number imprecision.
+`
+
 def safeDivide x y : Int -> Float -> Option Float =
   if y ~~ 0.0 then None else Some (x / y)
+
+`
+  Functions named _ are specials in that they are the entrypoints of the program.
+  Builtin functions are:
+  - map
+  - filter
+  - foldLeft
+  - foldRight
+`
 
 def _ =
   let
@@ -41,21 +87,42 @@ def _ =
     point2 = (3.0, 4.0);
     circle = Circle 5.0;
     rectangle = Rectangle (2.0, 3.0)
-  in
-    map printNumber
-    [distance point1 point2, area circle, area rectangle]
+  in map printNumber [distance point1 point2, area circle, area rectangle]
+
+`
+  (λ a. 2 * 2) is a lambda, an anonymous function of parameter a that returns 2 × 2 no matter a.
+  It is here passed as an argument to the function map.
+`
 
 def mapped = map (λ a. 2 * 2) [1, 2, 3, 4]
 
-def filtered = filter (λ x. x > 2) [1, 2, 3, 4]
+`
+  It can also be written with lambda (that would be rewritten by the formatter)
+  in order to make it easy to type on any keyboard.
+`
+
+def filtered = filter (lambda x. x > 2) [1, 2, 3, 4]
 
 def foldedLeft = foldLeft (λ acc x. acc + x) 0 [1, 2, 3, 4]
 
-def foldedRight =
-  foldRight (λ x acc. x + acc) [1, 2, 3, 4] 0
+def foldedRight = foldRight (λ x acc. x + acc) [1, 2, 3, 4] 0
+
+` The pattern [hd, tl…] matches a list of at least one element,
+  with hd the first element and tl the rest of the list. `
+
+def product lst =
+  match lst with
+  \ [] -> 0
+  \ [hd, tl…] -> hd * sum tl
+
+`
+  It can also be written with ... (that would be rewritten by the formatter)
+  in order to make it easy to type on any keyboard.
+`
 
 def sum lst =
-  match lst with \ [] -> 0 \ [hd, tl…] -> hd + sum tl
+  match lst with
+  \ [] -> 0
+  \ [hd, tl...] -> hd + sum tl
 
-def fib n : Int -> Int =
-  if n <= 1 then n else fib (n - 1) + fib (n - 2)
+def fib n : Int -> Int = if n <= 1 then n else fib (n - 1) + fib (n - 2)

@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: GPL-3.0-only
  *)
 
-let limit = 60
+let limit = 80
 
 let indent = "  "
 
@@ -231,7 +231,7 @@ module Builder = struct
           ; Group
               ( new_id t
               , spaced
-                  (separated_nodes SpaceOrLine
+                  (separated_nodes HardLine
                      (List.map (fun v -> build_variant t v) variants) ) ) ]
     | SynDecl {id; typing} ->
         Nodes
@@ -319,7 +319,7 @@ module Builder = struct
           ; Group
               ( new_id t
               , spaced
-                  (separated_nodes SpaceOrLine
+                  (separated_nodes HardLine
                      (List.map (fun c -> build_case t c) cases) ) ) ]
     | ELets {binds; body} ->
         Nodes
