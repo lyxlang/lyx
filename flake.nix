@@ -94,7 +94,6 @@
             [
               reuse
               just
-              haskellPackages.BNFC
               ocamlformat_0_27_0
             ]
             ++ (with pkgs.ocamlPackages; [
