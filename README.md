@@ -33,7 +33,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
   - Concise
   - Elegant
   - Seamless currying support
-- Type infered
+- Type infered (WIP)
   - Robust
   - Hindley-Milner type system
 - VS Code language support
