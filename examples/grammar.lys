@@ -40,7 +40,8 @@ def offset : Int = -16
 
 def greeting : String = "Hello"
 
-` Strings can be multiline by default. `
+` camelCase for variable and function declarations is prefered.
+  Strings can be multiline by default. `
 
 def loremIpsum : String = "Lorem \"ipsum\" dolor sit amet.
 Lorem ipsum dolor sit amet."
@@ -115,10 +116,8 @@ def product lst =
   \ [] -> 0
   \ [hd, tl…] -> hd * sum tl
 
-`
-  It can also be written with ... (that would be rewritten by the formatter)
-  in order to make it easy to type on any keyboard.
-`
+` It can also be written with ... (that would be rewritten by the formatter)
+  in order to make it easy to type on any keyboard. `
 
 def sum lst =
   match lst with
