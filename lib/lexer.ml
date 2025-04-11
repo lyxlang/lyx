@@ -60,10 +60,6 @@ let rec tokenizer buf =
       tokenizer buf
   | "def" ->
       KWDEF
-  | "uni" ->
-      KWUNI
-  | "syn" ->
-      KWSYN
   | "True" ->
       BOOL true
   | "False" ->
@@ -80,8 +76,6 @@ let rec tokenizer buf =
       KWIN
   | "match" ->
       KWMATCH
-  | "with" ->
-      KWWITH
   | "Int" ->
       KWINT
   | "Float" ->
@@ -92,17 +86,17 @@ let rec tokenizer buf =
       KWBOOL
   | "Unit" ->
       KWUNIT
-  | "lambda" | 0x3BB ->
-      LAMBDA
   | '=' ->
       EQUAL
   | ':' ->
       COLON
+  | ":=" ->
+      COLONEQUAL
   | '_' ->
       UNDERSCORE
   | ',' ->
       COMMA
-  | "..." | 0x2026 ->
+  | "..." ->
       ELLIPSIS
   | '[' ->
       LBRACKET
@@ -112,14 +106,16 @@ let rec tokenizer buf =
       LPAREN
   | ')' ->
       RPAREN
+  | '{' ->
+      LBRACE
+  | '}' ->
+      RBRACE
   | "|>" ->
       TRIANGLE
   | "++" ->
       PLUSPLUS
   | "**" ->
       STARSTAR
-  | '.' ->
-      DOT
   | "()" ->
       UNIT
   | "&&" ->

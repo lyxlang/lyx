@@ -47,7 +47,10 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 
 ```lys
 def sum lst =
-  match lst with \ [] -> 0 \ [hd, tl…] -> hd + sum tl
+  match lst {
+    [] -> 0;
+    [hd, tl...] -> hd + sum tl;
+  }
 ```
 
 #### Fibonacci

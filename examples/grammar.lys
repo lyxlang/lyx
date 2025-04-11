@@ -5,117 +5,41 @@
   SPDX-License-Identifier: CC0-1.0
 `
 
-` There are only multiline comments enclosed in backticks. `
+def Point := (Float, Float)
 
-`
-  Type alias for a point in 2D space, represented as a tuple of two floating-point numbers (x, y).
-  The PascalCase naming convention is required for type aliases.
-`
+def Shape := {
+  Circle Float;
+  Rectangle (Float, Float);
+  Square (Float, Float);
+}
 
-syn Point = (Float, Float)
+def Option := a {
+  Some a;
+  None;
+}
 
-`
-  Algebraic data type (ADT) representing different geometric shapes.
-  The PascalCase naming convention is required for ADT names.
-  A Shape can be one of the following:
-    - Circle: defined by its radius (a Float).
-    - Rectangle: defined by its width and height (a tuple of two Floats).
-    - Square: defined by its width and height (a tuple of two Floats),
-      explicitly separated for use with the match expression below.
-`
-
-uni Shape
-\ Circle Float
-\ Rectangle (Float, Float)
-\ Square (Float, Float)
-
-`
-  Polymorphic option type, which can either hold a value of any type ‘a’ (Some a),
-  or represent the absence of a value (None).
-  The type parameter ‘a’ is indicated by a single lowercase character.
-`
-
-uni Option a
-\ Some a
-\ None
-
-`
-  Declaration of a constant value named ‘pi’ of type Float, initialized to approximately 3.14159.
-  The first letter of constant names should be lowercase.
-`
-
-def pi : Float = +3.14159
-
-`
-  Declaration of a constant value named ‘offset’ of type Int, initialized to -16.
-`
+def pi : Float = 3.14159
 
 def offset : Int = -16
 
-`
-  Declaration of a constant value named ‘greeting’ of type String, initialized to “Hello”.
-`
-
 def greeting : String = "Hello"
-
-`
-  Variable and function declarations prefer camelCase naming convention.
-  Strings can span multiple lines by default.
-`
 
 def loremIpsum : String = "Lorem \"ipsum\" dolor sit amet.
 Lorem ipsum dolor sit amet."
-
-`
-  Function definition for calculating the Euclidean distance between two points in 2D space.
-  The function ‘distance’ takes two arguments, each being a Point (represented as a tuple of two Floats).
-  It returns a Float representing the distance between the two points.
-  The ‘let … in’ expression is used for declaring local variables within a specific scope.
-  In this case, ‘dx’ and ‘dy’ represent the difference in x and y coordinates, respectively.
-`
 
 def distance (x1, y1) (x2, y2) : Point -> Point -> Float =
   let dx = x2 - x1; dy = y2 - y1
   in sqrt (dx ** 2.0 + dy ** 2.0)
 
-`
-  Function definition for calculating the area of different geometric shapes.
-  The function ‘area’ takes a Shape as input and returns a Float representing the area.
-  The ‘match … with’ expression provides pattern matching capabilities, similar to a switch statement but more powerful.
-    - If the shape is a Circle, the pattern ‘\ Circle r’ matches,
-      and ‘r’ is bound to the circle’s radius. The area is calculated as π × r × r.
-    - If the shape is either a Rectangle or a Square, the pattern ‘\ Rectangle (w, h) \ Square (w, h)’ matches,
-      and ‘w’ and ‘h’ are bound to the width and height, respectively. The area is calculated as w × h.
-  Note that all branches of the match expression must return the same type (in this case, Float).
-`
-
 def area shape : Shape -> Float =
-  match shape with
-  \ Circle r -> pi * r * r
-  \ Rectangle (w, h) \ Square (w, h) -> w * h
-
-`
-  Function definition for safely dividing two numbers, handling potential division by zero.
-  The function ‘safeDivide’ takes an Int ‘x’ (numerator) and a Float ‘y’ (denominator) as input.
-  It returns an Option Float, which can be either:
-    - Some (x / y): if ‘y’ is not approximately equal to 0.0, containing the result of the division.
-    - None: if ‘y’ is approximately equal to 0.0, indicating an invalid division.
-  The ‘~~’ operator represents an approximative equality check,
-  useful for comparing floating-point numbers due to potential precision issues.
-`
+  match shape {
+    Circle r if r > 0.0 -> pi * r * r;
+    Rectangle (w, h); Square (w, h) -> w * h;
+    _ -> -1;
+  }
 
 def safeDivide x y : Int -> Float -> Option Float =
   if y ~~ 0.0 then None else Some (x / y)
-
-`
-  Special function named ‘_’ which serves as the entry point of the program.
-  It demonstrates the usage of the ‘distance’ and ‘area’ functions.
-  Built-in functions available in this language include:
-    - map: applies a function to each element of a list.
-    - filter: creates a new list containing elements that satisfy a given predicate.
-    - foldLeft: applies a function to each element of a list, from left to right, accumulating a result.
-    - foldRight: applies a function to each element of a list, from right to left, accumulating a result.
-`
 
 def _ =
   let
@@ -125,77 +49,16 @@ def _ =
     rectangle = Rectangle (2.0, 3.0)
   in map printNumber [distance point1 point2, area circle, area rectangle]
 
-`
-  Example of using the ‘map’ function with an anonymous function (lambda).
-  The lambda expression ‘(lambda a. 2 * 2)’ defines a function that takes an argument ‘a’,
-  but always returns 4, regardless of the input.
-  This lambda function is applied to each element of the list ‘[1, 2, 3, 4]’.
-`
+def mapped = map (\a -> 2 * 2) [1, 2, 3, 4]
 
-def mapped = map (lambda a. 2 * 2) [1, 2, 3, 4]
+def filtered = filter (\x -> x > 2) [1, 2, 3, 4]
 
-`
-  Example of using the ‘filter’ function with a lambda expression.
-  The lambda expression ‘(lambda x. x > 2)’ defines a function that takes an argument ‘x’,
-  and returns true if ‘x’ is greater than 2, and false otherwise.
-  The ‘filter’ function keeps only the elements from the list ‘[1, 2, 3, 4]’ for which the lambda function returns true.
-`
+def foldedLeft = foldLeft (\acc x -> acc + x) 0 [1, 2, 3, 4]
 
-def filtered = filter (λ x. x > 2) [1, 2, 3, 4]
+def foldedRight = foldRight (\x acc -> x + acc) [1, 2, 3, 4] 0
 
-`
-  Example of using the ‘foldLeft’ function.
-  ‘foldLeft’ takes a combining function, an initial value (accumulator), and a list.
-  The lambda expression ‘(λ acc x. acc + x)’ defines a function that takes the current accumulator ‘acc’,
-  and the current element ‘x’ and returns their sum.
-  In this case, it sums all the elements of the list ‘[1, 2, 3, 4]’, starting with an initial accumulator value of 0.
-  The result will be (((0 + 1) + 2) + 3) + 4 = 10.
-`
+def product lst = match lst { [] -> 0; [hd, tl...] -> hd * product tl; }
 
-def foldedLeft = foldLeft (λ acc x. acc + x) 0 [1, 2, 3, 4]
-
-`
-  Example of using the ‘foldRight’ function.
-  ‘foldRight’ takes a combining function, a list, and an initial value (accumulator).
-  The lambda expression ‘(λ x acc. x + acc)’ defines a function that takes the current element ‘x’,
-  and the current accumulator ‘acc’ and returns their sum.
-  In this case, it sums all the elements of the list ‘[1, 2, 3, 4]’, starting with an initial accumulator value of 0.
-  The result will be 1 + (2 + (3 + (4 + 0))) = 10.
-`
-
-def foldedRight = foldRight (λ x acc. x + acc) [1, 2, 3, 4] 0
-
-`
-  Function definition for calculating the product of elements in a list of numbers.
-  The pattern matching syntax ‘[hd, tl...]’ matches a non-empty list,
-  where ‘hd’ is bound to the first element (head) and ‘tl’ is bound to the rest of the list (tail).
-    - If the list is empty (‘[]’), the function returns 0.
-    - If the list is not empty, it multiplies the head (‘hd’) with the result of recursively calling the ‘sum’ function on the tail (‘tl’).
-`
-
-def product lst =
-  match lst with
-  \ [] -> 0
-  \ [hd, tl...] -> hd * product tl
-
-`
-  Function definition for calculating the sum of elements in a list of numbers.
-  The pattern matching syntax ‘[hd, tl…]’ matches a non-empty list,
-  where ‘hd’ is bound to the first element (head) and ‘tl’ is bound to the rest of the list (tail).
-    - If the list is empty (‘[]’), the function returns 0.
-    - If the list is not empty, it adds the head (‘hd’) to the result of recursively calling the ‘sum’ function on the tail (‘tl’).
-`
-
-def sum lst =
-  match lst with
-  \ [] -> 0
-  \ [hd, tl…] -> hd + sum tl
-
-`
-  Function definition for calculating the nth Fibonacci number using recursion.
-  The function ‘fib’ takes an integer ‘n’ as input and returns the nth Fibonacci number (an Int).
-    - If ‘n’ is less than or equal to 1, it returns ‘n’ (base cases: fib(0) = 0, fib(1) = 1).
-    - Otherwise, it recursively calls itself with ‘n - 1’ and ‘n - 2’ and returns the sum of the results.
-`
+def sum lst = match lst { [] -> 0; [hd, tl...] -> hd + sum tl; }
 
 def fib n : Int -> Int = if n <= 1 then n else fib (n - 1) + fib (n - 2)

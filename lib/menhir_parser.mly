@@ -8,8 +8,6 @@
 %}
 
 %token KWDEF
-%token KWUNI
-%token KWSYN
 %token <bool> BOOL
 %token KWIF
 %token KWTHEN
@@ -17,15 +15,14 @@
 %token KWLET
 %token KWIN
 %token KWMATCH
-%token KWWITH
 %token KWINT
 %token KWFLOAT
 %token KWSTRING
 %token KWBOOL
 %token KWUNIT
-%token LAMBDA
 %token EQUAL
 %token COLON
+%token COLONEQUAL
 %token UNDERSCORE
 %token COMMA
 %token ELLIPSIS
@@ -33,10 +30,11 @@
 %token RBRACKET
 %token LPAREN
 %token RPAREN
+%token LBRACE
+%token RBRACE
 %token TRIANGLE
 %token PLUSPLUS
 %token STARSTAR
-%token DOT
 %token UNIT
 %token ANDAND
 %token BARBAR
@@ -113,8 +111,8 @@ let ann := COLON; ~ = located(typing); < >
 
 let decl :=
   | KWDEF; id = located(olid); params = list(located(param)); signature = option(ann); EQUAL; body = located(expr); { Decl {id; params; signature; body} }
-  | KWUNI; id = located(UID); polys = list(located(LID)); variants = nonempty_list(located(variant)); { UnionDecl {id; polys; variants} }
-  | KWSYN; id = located(UID); EQUAL; typing = located(typing); { SynDecl {id; typing} }
+  | KWDEF; id = located(UID); COLONEQUAL; polys = list(located(LID)); LBRACE; variants = nonempty_list(located(variant)); RBRACE; { UnionDecl {id; polys; variants} }
+  | KWDEF; id = located(UID); COLONEQUAL; typing = located(typing); { SynDecl {id; typing} }
   | ~ = COMMENT; < Comment >
 
 let olid :=
@@ -170,8 +168,8 @@ let expr10 :=
   | ~ = expr11; < >
 
 let expr11 :=
-  | LAMBDA; params = nonempty_list(located(param)); DOT; body = located(expr); { ELambda {params; body} }
-  | KWMATCH; ref = located(expr); KWWITH; cases = nonempty_list(located(case)); { EMatch {ref; cases} }
+  | BACKSLASH; params = nonempty_list(located(param)); ARROW; body = located(expr); { ELambda {params; body} }
+  | KWMATCH; ref = located(expr); LBRACE; cases = nonempty_list(located(case)); RBRACE; { EMatch {ref; cases} }
   | KWLET; binds = separated_nonempty_list(SEMICOLON, located(bind)); KWIN; body = located(expr); { ELets {binds; body} }
   | KWIF; predicate = located(expr); KWTHEN; truthy = located(expr); KWELSE; falsy = located(expr); { EIf {predicate; truthy; falsy} }
   | ~ = located(UID); < EUID >
@@ -223,11 +221,11 @@ let bit_op :=
 let bind := id = located(LID); params = list(located(param)); signature = option(ann); EQUAL; body = located(expr); { {id; params; signature; body} }
 
 let case :=
-  | BACKSLASH; pat = located(pattern); ARROW; body = located(expr); { Case {pat; body} }
-  | BACKSLASH; pat = located(pattern); KWIF; guard = located(expr); ARROW; body = located(expr); { CaseGuard {pat; guard; body} }
+  | pat = located(pattern); ARROW; body = located(expr); SEMICOLON; { Case {pat; body} }
+  | pat = located(pattern); KWIF; guard = located(expr); ARROW; body = located(expr); SEMICOLON; { CaseGuard {pat; guard; body} }
 
 let pattern :=
-  | l = located(pattern1); BACKSLASH; r = located(pattern); { POr {l; r} }
+  | l = located(pattern1); SEMICOLON; r = located(pattern); { POr {l; r} }
   | ~ = pattern1; < >
 
 let pattern1 :=
@@ -248,7 +246,7 @@ let list_spd_pat := LBRACKET; ~ = separated_nonempty_list(COMMA, located(pattern
 
 let tuple_pat := LPAREN; ~ = separated_nonempty_list(COMMA, located(pattern)); RPAREN; < >
 
-let variant := BACKSLASH; id = located(UID); typings = list(located(typing)); { {id; typings} }
+let variant := id = located(UID); typings = list(located(typing)); SEMICOLON; { {id; typings} }
 
 let typing :=
   | l = located(typing1); ARROW; r = located(typing); { TFunc {l; r} }

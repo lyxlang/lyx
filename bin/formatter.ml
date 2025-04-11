@@ -221,25 +221,31 @@ module Builder = struct
         assert false
     | UnionDecl {id; polys; variants} ->
         Nodes
-          [ text "uni"
+          [ text "def"
           ; SpaceOrLine
           ; text id.value
+          ; SpaceOrLine
+          ; text ":="
           ; Nodes
               (spaced
                  (separated_nodes SpaceOrLine
                     (List.map (fun poly -> text poly.value) polys) ) )
+          ; SpaceOrLine
+          ; text "{"
           ; Group
               ( new_id t
               , spaced
-                  (separated_nodes HardLine
-                     (List.map (fun v -> build_variant t v) variants) ) ) ]
+                  (List.map
+                     (fun v -> Nodes [Indent [build_variant t v]; HardLine])
+                     variants ) )
+          ; text "}" ]
     | SynDecl {id; typing} ->
         Nodes
-          [ text "syn"
+          [ text "def"
           ; SpaceOrLine
           ; text id.value
           ; SpaceOrLine
-          ; text "="
+          ; text ":="
           ; Group (new_id t, [SpaceOrLine; Indent [build_typing typing]]) ]
     | Comment s ->
         Group
@@ -301,12 +307,12 @@ module Builder = struct
         Fill [build_expr t fn; SpaceOrLine; build_expr t arg]
     | ELambda {params; body} ->
         Nodes
-          [ text "\u{03BB}"
+          [ text "\\"
           ; Nodes
-              (spaced
-                 (separated_nodes SpaceOrLine
-                    (List.map (fun a -> build_param t a) params) ) )
-          ; text "."
+              (separated_nodes SpaceOrLine
+                 (List.map (fun a -> build_param t a) params) )
+          ; SpaceOrLine
+          ; text "->"
           ; Group (new_id t, [SpaceOrLine; Indent [build_expr t body]]) ]
     | EMatch {ref; cases} ->
         Nodes
@@ -315,12 +321,14 @@ module Builder = struct
               ; SpaceOrLine
               ; build_expr t ref
               ; SpaceOrLine
-              ; text "with" ]
+              ; text "{" ]
           ; Group
               ( new_id t
               , spaced
-                  (separated_nodes HardLine
-                     (List.map (fun c -> build_case t c) cases) ) ) ]
+                  (List.map
+                     (fun c -> Nodes [Indent [build_case t c]; SpaceOrLine])
+                     cases ) )
+          ; text "}" ]
     | ELets {binds; body} ->
         Nodes
           [ text "let"
@@ -443,25 +451,23 @@ module Builder = struct
     | Case {pat; body} ->
         Group
           ( new_id t
-          , [ text "\\"
-            ; SpaceOrLine
-            ; build_pat t pat
+          , [ build_pat t pat
             ; SpaceOrLine
             ; text "->"
-            ; Group (new_id t, [SpaceOrLine; Indent [build_expr t body]]) ] )
+            ; Group (new_id t, [SpaceOrLine; Indent [build_expr t body]])
+            ; text ";" ] )
     | CaseGuard {pat; guard; body} ->
         Group
           ( new_id t
-          , [ text "\\"
-            ; SpaceOrLine
-            ; build_pat t pat
+          , [ build_pat t pat
             ; SpaceOrLine
             ; text "if"
             ; SpaceOrLine
             ; build_expr t guard
             ; SpaceOrLine
             ; text "->"
-            ; Group (new_id t, [SpaceOrLine; Indent [build_expr t body]]) ] )
+            ; Group (new_id t, [SpaceOrLine; Indent [build_expr t body]])
+            ; text ";" ] )
 
   and build_pat t pat =
     match pat.value with
@@ -487,7 +493,7 @@ module Builder = struct
     | PTuple tuple_pat ->
         build_tuple_pat t tuple_pat
     | POr {l; r} ->
-        Fill [build_pat t l; SpaceOrLine; text "\\"; SpaceOrLine; build_pat t r]
+        Fill [build_pat t l; text ";"; SpaceOrLine; build_pat t r]
     | PParenthesized pat ->
         delimited_nodes t (text "(") (text ")") [build_pat t pat]
 
@@ -498,7 +504,7 @@ module Builder = struct
          (List.map (fun p -> build_pat t p) list_pat.value) )
 
   and build_list_spd_pat t list_spd_pat =
-    delimited_nodes t (text "[") (text "\u{2026}]")
+    delimited_nodes t (text "[") (text "...]")
       (separated_nodes
          (Nodes [text ","; SpaceOrLine])
          (List.map (fun p -> build_pat t p) list_spd_pat.value) )
@@ -512,13 +518,12 @@ module Builder = struct
   and build_variant t variant =
     Group
       ( new_id t
-      , [ text "\\"
-        ; SpaceOrLine
-        ; text variant.value.id.value
+      , [ text variant.value.id.value
         ; Fill
             (spaced
                (separated_nodes SpaceOrLine
-                  (List.map build_typing variant.value.typings) ) ) ] )
+                  (List.map build_typing variant.value.typings) ) )
+        ; text ";" ] )
 
   and build_typing typing =
     match typing.value with
