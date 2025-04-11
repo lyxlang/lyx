@@ -23,9 +23,9 @@ let show prog = Format.printf "%a@." Ast.pp_program prog
 
 let analyze ast =
   let output = Semantics_analysis.analyze_program ast in
-  Semantics_analysis.debug_output output ;
-  if Semantics_analysis.get_errors output = [] then
-    Occurrence_analysis.analyze ast |> Occurrence_analysis.debug_output
+  Semantics_analysis.debug_output output
+(* ; if Semantics_analysis.get_errors output = [] then
+   Occurrence_analysis.analyze ast |> Occurrence_analysis.debug_output *)
 
 let transpile_file file =
   Sedlexing.Utf8.from_channel (open_in_bin file)

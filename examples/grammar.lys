@@ -33,7 +33,7 @@ def distance (x1, y1) (x2, y2) : Point -> Point -> Float =
 
 def area shape : Shape -> Float =
   match shape {
-    Circle r if r > 0.0 -> pi * r * r;
+    Circle r if r > 0.0 -> π * r * r;
     Rectangle (w, h); Square (w, h) -> w * h;
     _ -> -1;
   }

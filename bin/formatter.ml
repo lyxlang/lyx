@@ -522,7 +522,7 @@ module Builder = struct
       , [ text variant.value.id.value
         ; ( match variant.value.typing with
           | Some t ->
-              build_typing t
+              Nodes [SpaceOrLine; build_typing t]
           | None ->
               Empty )
         ; text ";" ] )
@@ -557,7 +557,11 @@ module Builder = struct
     | TConstructor {id; typing} ->
         Nodes
           [ text id.value
-          ; (match typing with Some t -> build_typing t | None -> Empty) ]
+          ; ( match typing with
+            | Some t ->
+                Nodes [SpaceOrLine; build_typing t]
+            | None ->
+                Empty ) ]
     | TTyping typing ->
         Nodes [text "("; build_typing typing; text ")"]
 end

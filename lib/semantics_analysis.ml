@@ -41,12 +41,26 @@ let output =
 
 let builtins = ["Int"; "Float"; "String"; "Bool"; "Unit"]
 
+let stdlib = Hashtbl.create 20
+
+let _ =
+  List.iter
+    (fun (name, arity) -> Hashtbl.add stdlib name ({start= 0; fin= 0}, arity))
+    [ ("sqrt", 1)
+    ; ("\u{03C0}", 0)
+    ; ("map", 2)
+    ; ("filter", 2)
+    ; ("foldLeft", 3)
+    ; ("foldRight", 3)
+    ; ("printString", 1)
+    ; ("printNumber", 1) ]
+
 let new_map () = Hashtbl.create 100
 
 let rec find_identifier scope name =
   match scope with
   | Root ->
-      None
+      Hashtbl.find_opt stdlib name
   | Scope (map, parent) -> (
     match Hashtbl.find_opt map name with
     | Some info ->
