@@ -8,7 +8,7 @@ program: UNIT
 ##
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected a declaration starting with ‘def’ or a comment enclosed in backticks. Standalone expressions are not allowed at the top level.
 
 program: KWDEF UNIT
 ##
@@ -22,7 +22,7 @@ program: KWDEF UNIT
 ## KWDEF
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected an identifier after ‘def’. Use lowercase for functions/values or uppercase for types/ADTs.
 
 program: KWDEF UID UNIT
 ##
@@ -35,7 +35,7 @@ program: KWDEF UID UNIT
 ## KWDEF UID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘:=’ after type name for a type definition.
 
 program: KWDEF UID COLONEQUAL UNIT
 ##
@@ -48,7 +48,7 @@ program: KWDEF UID COLONEQUAL UNIT
 ## KWDEF UID COLONEQUAL
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected either a type definition or type parameters (lowercase identifiers) for an ADT definition.
 
 program: KWDEF UID COLONEQUAL UID UNDERSCORE
 ##
@@ -60,7 +60,7 @@ program: KWDEF UID COLONEQUAL UID UNDERSCORE
 ## UID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid type constructor application. Type arguments must be valid types.
 
 program: KWDEF UID COLONEQUAL LPAREN UNIT
 ##
@@ -73,7 +73,7 @@ program: KWDEF UID COLONEQUAL LPAREN UNIT
 ## LPAREN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected a type expression inside parentheses. For tuple types, specify at least one type.
 
 program: KWDEF UID COLONEQUAL LBRACKET UNIT
 ##
@@ -85,7 +85,7 @@ program: KWDEF UID COLONEQUAL LBRACKET UNIT
 ## LBRACKET
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected a type expression inside brackets for a list type, e.g., [Int] or [String].
 
 program: KWDEF UID COLONEQUAL KWBOOL UNDERSCORE
 ##
@@ -98,7 +98,7 @@ program: KWDEF UID COLONEQUAL KWBOOL UNDERSCORE
 ## typing1
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Unexpected token after type. For function types, use the arrow ‘->’ syntax.
 
 program: KWDEF UID COLONEQUAL LID ARROW UNIT
 ##
@@ -110,7 +110,7 @@ program: KWDEF UID COLONEQUAL LID ARROW UNIT
 ## typing1 ARROW
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected return type after ‘->’ in function type definition.
 
 program: KWDEF UID COLONEQUAL LBRACKET UID UNIT
 ##
@@ -121,16 +121,8 @@ program: KWDEF UID COLONEQUAL LBRACKET UID UNIT
 ## The known suffix of the stack is as follows:
 ## LBRACKET typing
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production option(located(typing1)) ->
-## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
-## In state 14, spurious reduction of production typing -> typing1
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected closing bracket ‘]’ after list type definition.
 
 program: KWDEF UID COLONEQUAL LPAREN UID UNIT
 ##
@@ -143,16 +135,8 @@ program: KWDEF UID COLONEQUAL LPAREN UID UNIT
 ## The known suffix of the stack is as follows:
 ## LPAREN typing
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production option(located(typing1)) ->
-## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
-## In state 14, spurious reduction of production typing -> typing1
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected either a comma ‘,’ for tuple types or closing parenthesis ‘)’ for grouped types.
 
 program: KWDEF UID COLONEQUAL LPAREN UID COMMA UNIT
 ##
@@ -164,7 +148,7 @@ program: KWDEF UID COLONEQUAL LPAREN UID COMMA UNIT
 ## typing COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected another type after comma in tuple type definition.
 
 program: KWDEF UID COLONEQUAL LPAREN UID COMMA UID UNIT
 ##
@@ -176,16 +160,8 @@ program: KWDEF UID COLONEQUAL LPAREN UID COMMA UID UNIT
 ## The known suffix of the stack is as follows:
 ## typing
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production option(located(typing1)) ->
-## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
-## In state 14, spurious reduction of production typing -> typing1
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected either a comma ‘,’ for more tuple elements or closing parenthesis ‘)’ to complete the tuple type.
 
 program: KWDEF UID COLONEQUAL LID UNIT
 ##
@@ -198,7 +174,7 @@ program: KWDEF UID COLONEQUAL LID UNIT
 ## LID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘{’ after type parameters for an ADT definition, or use a valid type expression for a type alias.
 
 program: KWDEF UID COLONEQUAL LID LID UNIT
 ##
@@ -210,7 +186,7 @@ program: KWDEF UID COLONEQUAL LID LID UNIT
 ## LID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘{’ after type parameters to begin ADT variant definitions.
 
 program: KWDEF UID COLONEQUAL LBRACE UNIT
 ##
@@ -222,7 +198,7 @@ program: KWDEF UID COLONEQUAL LBRACE UNIT
 ## KWDEF UID COLONEQUAL list(located(LID)) LBRACE
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected at least one variant definition for an ADT. Each variant should start with an uppercase identifier.
 
 program: KWDEF UID COLONEQUAL LBRACE UID UNIT
 ##
@@ -234,7 +210,7 @@ program: KWDEF UID COLONEQUAL LBRACE UID UNIT
 ## UID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected optional type information followed by a semicolon ‘;’ after variant name.
 
 program: KWDEF UID COLONEQUAL LBRACE UID UID UNIT
 ##
@@ -245,17 +221,8 @@ program: KWDEF UID COLONEQUAL LBRACE UID UID UNIT
 ## The known suffix of the stack is as follows:
 ## UID option(located(typing))
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production option(located(typing1)) ->
-## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
-## In state 14, spurious reduction of production typing -> typing1
-## In state 35, spurious reduction of production option(located(typing)) -> typing
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected a semicolon ‘;’ after variant definition.
 
 program: KWDEF UID COLONEQUAL LBRACE UID SEMICOLON UNIT
 ##
@@ -268,7 +235,7 @@ program: KWDEF UID COLONEQUAL LBRACE UID SEMICOLON UNIT
 ## variant
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected either another variant definition (starting with an uppercase identifier) or ‘}’ to close the ADT definition.
 
 program: KWDEF LID UNIT
 ##
@@ -280,7 +247,7 @@ program: KWDEF LID UNIT
 ## KWDEF olid
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected parameters (if any) followed by ‘=’ and an expression body for the definition.
 
 program: KWDEF LID LPAREN UNIT
 ##
@@ -292,7 +259,7 @@ program: KWDEF LID LPAREN UNIT
 ## LPAREN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected parameter(s) inside parentheses for a tuple parameter.
 
 program: KWDEF LID LPAREN LID UNIT
 ##
@@ -305,7 +272,7 @@ program: KWDEF LID LPAREN LID UNIT
 ## param
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected either a comma ‘,’ for more parameters or closing parenthesis ‘)’ to complete the tuple parameter.
 
 program: KWDEF LID LPAREN LID COMMA UNIT
 ##
@@ -317,7 +284,7 @@ program: KWDEF LID LPAREN LID COMMA UNIT
 ## param COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected another parameter after comma in tuple parameter.
 
 program: KWDEF LID LID UNIT
 ##
@@ -329,7 +296,7 @@ program: KWDEF LID LID UNIT
 ## param
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected either a type annotation ‘:’ or ‘=’ followed by the function body.
 
 program: KWDEF LID COLON UNIT
 ##
@@ -341,7 +308,7 @@ program: KWDEF LID COLON UNIT
 ## COLON
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected type annotation after colon.
 
 program: KWDEF LID COLON UID UNIT
 ##
@@ -352,18 +319,8 @@ program: KWDEF LID COLON UID UNIT
 ## The known suffix of the stack is as follows:
 ## KWDEF olid list(located(param)) option(ann)
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production option(located(typing1)) ->
-## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
-## In state 14, spurious reduction of production typing -> typing1
-## In state 56, spurious reduction of production ann -> COLON typing
-## In state 134, spurious reduction of production option(ann) -> ann
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘=’ after function declaration to define the body.
 
 program: KWDEF LID EQUAL UNDERSCORE
 ##
@@ -375,7 +332,7 @@ program: KWDEF LID EQUAL UNDERSCORE
 ## KWDEF olid list(located(param)) option(ann) EQUAL
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected an expression for the function body.
 
 program: KWDEF LID EQUAL LPAREN UNDERSCORE
 ##
@@ -388,7 +345,7 @@ program: KWDEF LID EQUAL LPAREN UNDERSCORE
 ## LPAREN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected an expression or a comma-separated list of expressions inside parentheses.
 
 program: KWDEF LID EQUAL LBRACKET UNDERSCORE
 ##
@@ -400,7 +357,7 @@ program: KWDEF LID EQUAL LBRACKET UNDERSCORE
 ## LBRACKET
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected expressions separated by commas or closing bracket ‘]’ for an empty list.
 
 program: KWDEF LID EQUAL KWMATCH UNDERSCORE
 ##
@@ -412,7 +369,7 @@ program: KWDEF LID EQUAL KWMATCH UNDERSCORE
 ## KWMATCH
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected an expression to match against after ‘match’ keyword.
 
 program: KWDEF LID EQUAL KWLET UNIT
 ##
@@ -424,7 +381,7 @@ program: KWDEF LID EQUAL KWLET UNIT
 ## KWLET
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected binding(s) after ‘let’ keyword. Bindings should be of form ‘name = expression’.
 
 program: KWDEF LID EQUAL KWLET LID UNIT
 ##
@@ -436,7 +393,7 @@ program: KWDEF LID EQUAL KWLET LID UNIT
 ## LID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘=’ after name in let binding, or parameters if defining a local function.
 
 program: KWDEF LID EQUAL KWLET LID COLON UID UNIT
 ##
@@ -447,18 +404,8 @@ program: KWDEF LID EQUAL KWLET LID COLON UID UNIT
 ## The known suffix of the stack is as follows:
 ## LID list(located(param)) option(ann)
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production option(located(typing1)) ->
-## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
-## In state 14, spurious reduction of production typing -> typing1
-## In state 56, spurious reduction of production ann -> COLON typing
-## In state 134, spurious reduction of production option(ann) -> ann
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘=’ after binding name and optional type annotation.
 
 program: KWDEF LID EQUAL KWLET LID EQUAL UNDERSCORE
 ##
@@ -470,7 +417,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL UNDERSCORE
 ## LID list(located(param)) option(ann) EQUAL
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected an expression after ‘=’ in let binding.
 
 program: KWDEF LID EQUAL KWIF UNDERSCORE
 ##
@@ -482,7 +429,7 @@ program: KWDEF LID EQUAL KWIF UNDERSCORE
 ## KWIF
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected a condition expression after ‘if’ keyword.
 
 program: KWDEF LID EQUAL BACKSLASH UNIT
 ##
@@ -494,7 +441,7 @@ program: KWDEF LID EQUAL BACKSLASH UNIT
 ## BACKSLASH
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected at least one parameter after ‘\’ for lambda expression.
 
 program: KWDEF LID EQUAL BACKSLASH LID UNIT
 ##
@@ -507,7 +454,7 @@ program: KWDEF LID EQUAL BACKSLASH LID UNIT
 ## param
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘->’ after parameters in lambda expression.
 
 program: KWDEF LID EQUAL BACKSLASH LID ARROW UNDERSCORE
 ##
@@ -519,7 +466,7 @@ program: KWDEF LID EQUAL BACKSLASH LID ARROW UNDERSCORE
 ## BACKSLASH nonempty_list(located(param)) ARROW
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected body expression after ‘->’ in lambda expression.
 
 program: KWDEF LID EQUAL BANG UNDERSCORE
 ##
@@ -531,7 +478,7 @@ program: KWDEF LID EQUAL BANG UNDERSCORE
 ## un_op
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected an expression after unary operator.
 
 program: KWDEF LID EQUAL BOOL AMPERSAND UNDERSCORE
 ##
@@ -543,7 +490,7 @@ program: KWDEF LID EQUAL BOOL AMPERSAND UNDERSCORE
 ## expr9 bit_op
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected right operand for bitwise operation.
 
 program: KWDEF LID EQUAL BOOL AMPERSAND BOOL UNDERSCORE
 ##
@@ -556,7 +503,7 @@ program: KWDEF LID EQUAL BOOL AMPERSAND BOOL UNDERSCORE
 ## expr9 bit_op expr10
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Unexpected token after binary expression. Consider adding parentheses to clarify precedence.
 
 program: KWDEF LID EQUAL BOOL STARSTAR UNDERSCORE
 ##
@@ -568,7 +515,7 @@ program: KWDEF LID EQUAL BOOL STARSTAR UNDERSCORE
 ## expr8 STARSTAR
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected right operand for exponentiation operation.
 
 program: KWDEF LID EQUAL BOOL UNDERSCORE
 ##
@@ -581,7 +528,7 @@ program: KWDEF LID EQUAL BOOL UNDERSCORE
 ## expr10
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Unexpected token in expression. Function application must have arguments.
 
 program: KWDEF LID EQUAL BOOL PERCENT UNDERSCORE
 ##
@@ -593,7 +540,7 @@ program: KWDEF LID EQUAL BOOL PERCENT UNDERSCORE
 ## expr6 mul_op
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected right operand for multiplication operator.
 
 program: KWDEF LID EQUAL BOOL PLUSPLUS UNDERSCORE
 ##
@@ -605,7 +552,7 @@ program: KWDEF LID EQUAL BOOL PLUSPLUS UNDERSCORE
 ## expr5 PLUSPLUS
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected right operand for list concatenation operator ‘++’.
 
 program: KWDEF LID EQUAL BOOL MINUS UNDERSCORE
 ##
@@ -617,7 +564,7 @@ program: KWDEF LID EQUAL BOOL MINUS UNDERSCORE
 ## expr5 add_op
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected right operand for addition/subtraction operator.
 
 program: KWDEF LID EQUAL BOOL TRIANGLE UNDERSCORE
 ##
@@ -629,7 +576,7 @@ program: KWDEF LID EQUAL BOOL TRIANGLE UNDERSCORE
 ## expr3 TRIANGLE
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected right operand for pipe operator ‘▷’.
 
 program: KWDEF LID EQUAL BOOL BANGEQUAL UNDERSCORE
 ##
@@ -641,7 +588,7 @@ program: KWDEF LID EQUAL BOOL BANGEQUAL UNDERSCORE
 ## expr2 comp_op
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected right operand for comparison operator.
 
 program: KWDEF LID EQUAL BOOL ANDAND UNDERSCORE
 ##
@@ -653,7 +600,7 @@ program: KWDEF LID EQUAL BOOL ANDAND UNDERSCORE
 ## expr1 bool_op
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected right operand for logical operator.
 
 program: KWDEF LID EQUAL KWIF BOOL ARROW
 ##
@@ -664,24 +611,8 @@ program: KWDEF LID EQUAL KWIF BOOL ARROW
 ## The known suffix of the stack is as follows:
 ## KWIF expr
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 97, spurious reduction of production expr9 -> expr10
-## In state 84, spurious reduction of production expr8 -> expr9
-## In state 98, spurious reduction of production expr7 -> expr8
-## In state 99, spurious reduction of production expr6 -> expr7
-## In state 100, spurious reduction of production expr5 -> expr6
-## In state 106, spurious reduction of production expr4 -> expr5
-## In state 113, spurious reduction of production expr3 -> expr4
-## In state 114, spurious reduction of production expr2 -> expr3
-## In state 117, spurious reduction of production expr1 -> expr2
-## In state 128, spurious reduction of production option(ann) ->
-## In state 131, spurious reduction of production expr -> expr1 option(ann)
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘then’ after the condition in an if expression.
 
 program: KWDEF LID EQUAL KWIF BOOL KWTHEN UNDERSCORE
 ##
@@ -693,7 +624,7 @@ program: KWDEF LID EQUAL KWIF BOOL KWTHEN UNDERSCORE
 ## KWIF expr KWTHEN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected an expression for the ‘then’ branch of an if expression.
 
 program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL ARROW
 ##
@@ -704,24 +635,8 @@ program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL ARROW
 ## The known suffix of the stack is as follows:
 ## KWIF expr KWTHEN expr
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 97, spurious reduction of production expr9 -> expr10
-## In state 84, spurious reduction of production expr8 -> expr9
-## In state 98, spurious reduction of production expr7 -> expr8
-## In state 99, spurious reduction of production expr6 -> expr7
-## In state 100, spurious reduction of production expr5 -> expr6
-## In state 106, spurious reduction of production expr4 -> expr5
-## In state 113, spurious reduction of production expr3 -> expr4
-## In state 114, spurious reduction of production expr2 -> expr3
-## In state 117, spurious reduction of production expr1 -> expr2
-## In state 128, spurious reduction of production option(ann) ->
-## In state 131, spurious reduction of production expr -> expr1 option(ann)
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘else’ after the ‘then’ branch of an if expression.
 
 program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL KWELSE UNDERSCORE
 ##
@@ -733,7 +648,7 @@ program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL KWELSE UNDERSCORE
 ## KWIF expr KWTHEN expr KWELSE
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected an expression for the ‘else’ branch of an if expression.
 
 program: KWDEF LID EQUAL KWLET LID EQUAL BOOL KWIN UNDERSCORE
 ##
@@ -745,7 +660,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL BOOL KWIN UNDERSCORE
 ## KWLET separated_nonempty_list(SEMICOLON,located(bind)) KWIN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected an expression after ‘in’ in a let expression.
 
 program: KWDEF LID EQUAL KWLET LID EQUAL BOOL ARROW
 ##
@@ -757,25 +672,8 @@ program: KWDEF LID EQUAL KWLET LID EQUAL BOOL ARROW
 ## The known suffix of the stack is as follows:
 ## bind
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 97, spurious reduction of production expr9 -> expr10
-## In state 84, spurious reduction of production expr8 -> expr9
-## In state 98, spurious reduction of production expr7 -> expr8
-## In state 99, spurious reduction of production expr6 -> expr7
-## In state 100, spurious reduction of production expr5 -> expr6
-## In state 106, spurious reduction of production expr4 -> expr5
-## In state 113, spurious reduction of production expr3 -> expr4
-## In state 114, spurious reduction of production expr2 -> expr3
-## In state 117, spurious reduction of production expr1 -> expr2
-## In state 128, spurious reduction of production option(ann) ->
-## In state 131, spurious reduction of production expr -> expr1 option(ann)
-## In state 141, spurious reduction of production bind -> LID list(located(param)) option(ann) EQUAL expr
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘in’ after binding(s), or ‘;’ to add more bindings.
 
 program: KWDEF LID EQUAL KWLET LID EQUAL BOOL SEMICOLON UNIT
 ##
@@ -787,7 +685,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL BOOL SEMICOLON UNIT
 ## bind SEMICOLON
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected another binding after ‘;’ in let expression.
 
 program: KWDEF LID EQUAL KWMATCH BOOL ARROW
 ##
@@ -798,24 +696,8 @@ program: KWDEF LID EQUAL KWMATCH BOOL ARROW
 ## The known suffix of the stack is as follows:
 ## KWMATCH expr
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 97, spurious reduction of production expr9 -> expr10
-## In state 84, spurious reduction of production expr8 -> expr9
-## In state 98, spurious reduction of production expr7 -> expr8
-## In state 99, spurious reduction of production expr6 -> expr7
-## In state 100, spurious reduction of production expr5 -> expr6
-## In state 106, spurious reduction of production expr4 -> expr5
-## In state 113, spurious reduction of production expr3 -> expr4
-## In state 114, spurious reduction of production expr2 -> expr3
-## In state 117, spurious reduction of production expr1 -> expr2
-## In state 128, spurious reduction of production option(ann) ->
-## In state 131, spurious reduction of production expr -> expr1 option(ann)
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘{’ after expression in match statement.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UNIT
 ##
@@ -827,7 +709,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UNIT
 ## KWMATCH expr LBRACE
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected at least one case pattern in match expression.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID UNIT
 ##
@@ -839,7 +721,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID UNIT
 ## UID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘->’, ‘if’, or pattern parameters after constructor in pattern.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UNIT
 ##
@@ -852,7 +734,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UNIT
 ## LPAREN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected pattern inside parentheses.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UNIT
 ##
@@ -865,7 +747,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UNIT
 ## LBRACKET
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected patterns or ‘]’ for an empty list pattern.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID RPAREN
 ##
@@ -877,17 +759,8 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID RPAREN
 ## The known suffix of the stack is as follows:
 ## LBRACKET separated_nonempty_list(COMMA,located(pattern))
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 150, spurious reduction of production list(located(pattern1)) ->
-## In state 178, spurious reduction of production pattern1 -> UID list(located(pattern1))
-## In state 161, spurious reduction of production pattern -> pattern1
-## In state 167, spurious reduction of production separated_nonempty_list(COMMA,located(pattern)) -> pattern
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected either ‘]’ to close list pattern or ‘...’ for matching rest of list.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID ELLIPSIS UNIT
 ##
@@ -899,7 +772,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID ELLIPSIS UNIT
 ## LBRACKET separated_nonempty_list(COMMA,located(pattern)) ELLIPSIS
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected closing bracket ‘]’ after list spread pattern.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LID UNIT
 ##
@@ -912,7 +785,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LID UNIT
 ## pattern1
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘->’ after pattern or ‘;’ to start alternative pattern.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID SEMICOLON UNIT
 ##
@@ -924,7 +797,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID SEMICOLON UNIT
 ## pattern1 SEMICOLON
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected another pattern after ‘;’ in pattern alternative.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID KWIF
 ##
@@ -936,16 +809,8 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID KWIF
 ## The known suffix of the stack is as follows:
 ## pattern
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 150, spurious reduction of production list(located(pattern1)) ->
-## In state 178, spurious reduction of production pattern1 -> UID list(located(pattern1))
-## In state 161, spurious reduction of production pattern -> pattern1
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘,’ for more pattern items or closing delimiter for pattern list.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID COMMA UNIT
 ##
@@ -957,7 +822,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID COMMA UNIT
 ## pattern COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected another pattern after comma in pattern list.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID COMMA UID RBRACKET
 ##
@@ -968,18 +833,8 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID COMMA UID RBRACKET
 ## The known suffix of the stack is as follows:
 ## LPAREN separated_nonempty_list(COMMA,located(pattern))
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 150, spurious reduction of production list(located(pattern1)) ->
-## In state 178, spurious reduction of production pattern1 -> UID list(located(pattern1))
-## In state 161, spurious reduction of production pattern -> pattern1
-## In state 167, spurious reduction of production separated_nonempty_list(COMMA,located(pattern)) -> pattern
-## In state 169, spurious reduction of production separated_nonempty_list(COMMA,located(pattern)) -> pattern COMMA separated_nonempty_list(COMMA,located(pattern))
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected closing parenthesis ‘)’ after tuple pattern.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID RBRACKET
 ##
@@ -992,16 +847,8 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID RBRACKET
 ## The known suffix of the stack is as follows:
 ## LPAREN pattern
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 150, spurious reduction of production list(located(pattern1)) ->
-## In state 178, spurious reduction of production pattern1 -> UID list(located(pattern1))
-## In state 161, spurious reduction of production pattern -> pattern1
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected closing parenthesis ‘)’ after pattern or comma for tuple pattern.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID LID UNIT
 ##
@@ -1013,7 +860,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID LID UNIT
 ## pattern1
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘->’ or more pattern parameters for constructor pattern.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID RPAREN
 ##
@@ -1025,16 +872,8 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID RPAREN
 ## The known suffix of the stack is as follows:
 ## pattern
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 150, spurious reduction of production list(located(pattern1)) ->
-## In state 178, spurious reduction of production pattern1 -> UID list(located(pattern1))
-## In state 161, spurious reduction of production pattern -> pattern1
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘->’ or ‘if’ after pattern in match case.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF UNDERSCORE
 ##
@@ -1046,7 +885,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF UNDERSCORE
 ## pattern KWIF
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected a guard expression after ‘if’ in match case. This expression must evaluate to a boolean.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL SEMICOLON
 ##
@@ -1057,24 +896,8 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL SEMICOLON
 ## The known suffix of the stack is as follows:
 ## pattern KWIF expr
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 97, spurious reduction of production expr9 -> expr10
-## In state 84, spurious reduction of production expr8 -> expr9
-## In state 98, spurious reduction of production expr7 -> expr8
-## In state 99, spurious reduction of production expr6 -> expr7
-## In state 100, spurious reduction of production expr5 -> expr6
-## In state 106, spurious reduction of production expr4 -> expr5
-## In state 113, spurious reduction of production expr3 -> expr4
-## In state 114, spurious reduction of production expr2 -> expr3
-## In state 117, spurious reduction of production expr1 -> expr2
-## In state 128, spurious reduction of production option(ann) ->
-## In state 131, spurious reduction of production expr -> expr1 option(ann)
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected ‘->’ after guard condition in match case.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL ARROW UNDERSCORE
 ##
@@ -1086,7 +909,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL ARROW UNDERSCORE
 ## pattern KWIF expr ARROW
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected an expression for the match case body after ‘->’.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL ARROW BOOL ARROW
 ##
@@ -1097,24 +920,8 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL ARROW BOOL ARROW
 ## The known suffix of the stack is as follows:
 ## pattern KWIF expr ARROW expr
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 97, spurious reduction of production expr9 -> expr10
-## In state 84, spurious reduction of production expr8 -> expr9
-## In state 98, spurious reduction of production expr7 -> expr8
-## In state 99, spurious reduction of production expr6 -> expr7
-## In state 100, spurious reduction of production expr5 -> expr6
-## In state 106, spurious reduction of production expr4 -> expr5
-## In state 113, spurious reduction of production expr3 -> expr4
-## In state 114, spurious reduction of production expr2 -> expr3
-## In state 117, spurious reduction of production expr1 -> expr2
-## In state 128, spurious reduction of production option(ann) ->
-## In state 131, spurious reduction of production expr -> expr1 option(ann)
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected a semicolon ‘;’ after match case body.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW UNDERSCORE
 ##
@@ -1126,7 +933,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW UNDERSCORE
 ## pattern ARROW
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected an expression for the match case body after ‘->’.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL ARROW
 ##
@@ -1137,24 +944,8 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL ARROW
 ## The known suffix of the stack is as follows:
 ## pattern ARROW expr
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 97, spurious reduction of production expr9 -> expr10
-## In state 84, spurious reduction of production expr8 -> expr9
-## In state 98, spurious reduction of production expr7 -> expr8
-## In state 99, spurious reduction of production expr6 -> expr7
-## In state 100, spurious reduction of production expr5 -> expr6
-## In state 106, spurious reduction of production expr4 -> expr5
-## In state 113, spurious reduction of production expr3 -> expr4
-## In state 114, spurious reduction of production expr2 -> expr3
-## In state 117, spurious reduction of production expr1 -> expr2
-## In state 128, spurious reduction of production option(ann) ->
-## In state 131, spurious reduction of production expr -> expr1 option(ann)
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected a semicolon ‘;’ after match case body.
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL SEMICOLON UNIT
 ##
@@ -1167,7 +958,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL SEMICOLON UNIT
 ## case
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected either another pattern case or closing brace ‘}’ to end the match expression.
 
 program: KWDEF LID EQUAL LBRACKET BOOL RPAREN
 ##
@@ -1178,26 +969,8 @@ program: KWDEF LID EQUAL LBRACKET BOOL RPAREN
 ## The known suffix of the stack is as follows:
 ## LBRACKET loption(separated_nonempty_list(COMMA,located(expr)))
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 97, spurious reduction of production expr9 -> expr10
-## In state 84, spurious reduction of production expr8 -> expr9
-## In state 98, spurious reduction of production expr7 -> expr8
-## In state 99, spurious reduction of production expr6 -> expr7
-## In state 100, spurious reduction of production expr5 -> expr6
-## In state 106, spurious reduction of production expr4 -> expr5
-## In state 113, spurious reduction of production expr3 -> expr4
-## In state 114, spurious reduction of production expr2 -> expr3
-## In state 117, spurious reduction of production expr1 -> expr2
-## In state 128, spurious reduction of production option(ann) ->
-## In state 131, spurious reduction of production expr -> expr1 option(ann)
-## In state 195, spurious reduction of production separated_nonempty_list(COMMA,located(expr)) -> expr
-## In state 192, spurious reduction of production loption(separated_nonempty_list(COMMA,located(expr))) -> separated_nonempty_list(COMMA,located(expr))
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected closing bracket ‘]’ to end the list literal. Found ‘)’ instead.
 
 program: KWDEF LID EQUAL LBRACKET BOOL ARROW
 ##
@@ -1209,24 +982,8 @@ program: KWDEF LID EQUAL LBRACKET BOOL ARROW
 ## The known suffix of the stack is as follows:
 ## expr
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 97, spurious reduction of production expr9 -> expr10
-## In state 84, spurious reduction of production expr8 -> expr9
-## In state 98, spurious reduction of production expr7 -> expr8
-## In state 99, spurious reduction of production expr6 -> expr7
-## In state 100, spurious reduction of production expr5 -> expr6
-## In state 106, spurious reduction of production expr4 -> expr5
-## In state 113, spurious reduction of production expr3 -> expr4
-## In state 114, spurious reduction of production expr2 -> expr3
-## In state 117, spurious reduction of production expr1 -> expr2
-## In state 128, spurious reduction of production option(ann) ->
-## In state 131, spurious reduction of production expr -> expr1 option(ann)
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected either a comma ‘,’ for more list items or closing bracket ‘]’ to complete the list.
 
 program: KWDEF LID EQUAL LBRACKET BOOL COMMA UNDERSCORE
 ##
@@ -1238,7 +995,7 @@ program: KWDEF LID EQUAL LBRACKET BOOL COMMA UNDERSCORE
 ## expr COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected another expression after comma in list literal.
 
 program: KWDEF LID EQUAL LPAREN BOOL COMMA BOOL RBRACKET
 ##
@@ -1249,27 +1006,8 @@ program: KWDEF LID EQUAL LPAREN BOOL COMMA BOOL RBRACKET
 ## The known suffix of the stack is as follows:
 ## LPAREN loption(separated_nonempty_list(COMMA,located(expr)))
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 97, spurious reduction of production expr9 -> expr10
-## In state 84, spurious reduction of production expr8 -> expr9
-## In state 98, spurious reduction of production expr7 -> expr8
-## In state 99, spurious reduction of production expr6 -> expr7
-## In state 100, spurious reduction of production expr5 -> expr6
-## In state 106, spurious reduction of production expr4 -> expr5
-## In state 113, spurious reduction of production expr3 -> expr4
-## In state 114, spurious reduction of production expr2 -> expr3
-## In state 117, spurious reduction of production expr1 -> expr2
-## In state 128, spurious reduction of production option(ann) ->
-## In state 131, spurious reduction of production expr -> expr1 option(ann)
-## In state 195, spurious reduction of production separated_nonempty_list(COMMA,located(expr)) -> expr
-## In state 197, spurious reduction of production separated_nonempty_list(COMMA,located(expr)) -> expr COMMA separated_nonempty_list(COMMA,located(expr))
-## In state 192, spurious reduction of production loption(separated_nonempty_list(COMMA,located(expr))) -> separated_nonempty_list(COMMA,located(expr))
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected closing parenthesis ‘)’ to end the tuple or grouped expression. Found ‘]’ instead.
 
 program: KWDEF LID EQUAL LPAREN BOOL ARROW
 ##
@@ -1282,24 +1020,8 @@ program: KWDEF LID EQUAL LPAREN BOOL ARROW
 ## The known suffix of the stack is as follows:
 ## LPAREN expr
 ##
-## WARNING: This example involves spurious reductions.
-## This implies that, although the LR(1) items shown above provide an
-## accurate view of the past (what has been recognized so far), they
-## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 97, spurious reduction of production expr9 -> expr10
-## In state 84, spurious reduction of production expr8 -> expr9
-## In state 98, spurious reduction of production expr7 -> expr8
-## In state 99, spurious reduction of production expr6 -> expr7
-## In state 100, spurious reduction of production expr5 -> expr6
-## In state 106, spurious reduction of production expr4 -> expr5
-## In state 113, spurious reduction of production expr3 -> expr4
-## In state 114, spurious reduction of production expr2 -> expr3
-## In state 117, spurious reduction of production expr1 -> expr2
-## In state 128, spurious reduction of production option(ann) ->
-## In state 131, spurious reduction of production expr -> expr1 option(ann)
-##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Expected either a comma ‘,’ for tuple elements or closing parenthesis ‘)’ to complete the expression.
 
 program: COMMENT RIGHT
 ##
@@ -1311,5 +1033,4 @@ program: COMMENT RIGHT
 ## decl
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
-
+Unexpected token after declaration. Expected another declaration or end of file.

@@ -7,172 +7,172 @@ let message =
   fun s ->
     match s with
     | 207 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Unexpected token after declaration. Expected another declaration or end of file.\n"
     | 200 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected either a comma \226\128\152,\226\128\153 for tuple elements or closing parenthesis \226\128\152)\226\128\153 to complete the expression.\n"
     | 198 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected closing parenthesis \226\128\152)\226\128\153 to end the tuple or grouped expression. Found \226\128\152]\226\128\153 instead.\n"
     | 196 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected another expression after comma in list literal.\n"
     | 195 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected either a comma \226\128\152,\226\128\153 for more list items or closing bracket \226\128\152]\226\128\153 to complete the list.\n"
     | 193 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected closing bracket \226\128\152]\226\128\153 to end the list literal. Found \226\128\152)\226\128\153 instead.\n"
     | 190 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected either another pattern case or closing brace \226\128\152}\226\128\153 to end the match expression.\n"
     | 186 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected a semicolon \226\128\152;\226\128\153 after match case body.\n"
     | 185 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected an expression for the match case body after \226\128\152->\226\128\153.\n"
     | 183 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected a semicolon \226\128\152;\226\128\153 after match case body.\n"
     | 182 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected an expression for the match case body after \226\128\152->\226\128\153.\n"
     | 181 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152->\226\128\153 after guard condition in match case.\n"
     | 180 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected a guard expression after \226\128\152if\226\128\153 in match case. This expression must evaluate to a boolean.\n"
     | 179 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152->\226\128\153 or \226\128\152if\226\128\153 after pattern in match case.\n"
     | 176 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152->\226\128\153 or more pattern parameters for constructor pattern.\n"
     | 174 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected closing parenthesis \226\128\152)\226\128\153 after pattern or comma for tuple pattern.\n"
     | 172 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected closing parenthesis \226\128\152)\226\128\153 after tuple pattern.\n"
     | 168 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected another pattern after comma in pattern list.\n"
     | 167 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152,\226\128\153 for more pattern items or closing delimiter for pattern list.\n"
     | 162 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected another pattern after \226\128\152;\226\128\153 in pattern alternative.\n"
     | 161 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152->\226\128\153 after pattern or \226\128\152;\226\128\153 to start alternative pattern.\n"
     | 159 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected closing bracket \226\128\152]\226\128\153 after list spread pattern.\n"
     | 158 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected either \226\128\152]\226\128\153 to close list pattern or \226\128\152...\226\128\153 for matching rest of list.\n"
     | 153 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected patterns or \226\128\152]\226\128\153 for an empty list pattern.\n"
     | 152 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected pattern inside parentheses.\n"
     | 150 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152->\226\128\153, \226\128\152if\226\128\153, or pattern parameters after constructor in pattern.\n"
     | 149 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected at least one case pattern in match expression.\n"
     | 148 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152{\226\128\153 after expression in match statement.\n"
     | 146 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected another binding after \226\128\152;\226\128\153 in let expression.\n"
     | 145 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152in\226\128\153 after binding(s), or \226\128\152;\226\128\153 to add more bindings.\n"
     | 143 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected an expression after \226\128\152in\226\128\153 in a let expression.\n"
     | 139 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected an expression for the \226\128\152else\226\128\153 branch of an if expression.\n"
     | 138 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152else\226\128\153 after the \226\128\152then\226\128\153 branch of an if expression.\n"
     | 137 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected an expression for the \226\128\152then\226\128\153 branch of an if expression.\n"
     | 136 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152then\226\128\153 after the condition in an if expression.\n"
     | 132 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected right operand for logical operator.\n"
     | 126 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected right operand for comparison operator.\n"
     | 115 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected right operand for pipe operator \226\128\152\226\150\183\226\128\153.\n"
     | 111 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected right operand for addition/subtraction operator.\n"
     | 107 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected right operand for list concatenation operator \226\128\152++\226\128\153.\n"
     | 104 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected right operand for multiplication operator.\n"
     | 97 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Unexpected token in expression. Function application must have arguments.\n"
     | 95 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected right operand for exponentiation operation.\n"
     | 92 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Unexpected token after binary expression. Consider adding parentheses to clarify precedence.\n"
     | 90 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected right operand for bitwise operation.\n"
     | 83 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected an expression after unary operator.\n"
     | 82 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected body expression after \226\128\152->\226\128\153 in lambda expression.\n"
     | 79 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152->\226\128\153 after parameters in lambda expression.\n"
     | 78 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected at least one parameter after \226\128\152\\\226\128\153 for lambda expression.\n"
     | 73 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected a condition expression after \226\128\152if\226\128\153 keyword.\n"
     | 72 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected an expression after \226\128\152=\226\128\153 in let binding.\n"
     | 71 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152=\226\128\153 after binding name and optional type annotation.\n"
     | 69 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152=\226\128\153 after name in let binding, or parameters if defining a local function.\n"
     | 68 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected binding(s) after \226\128\152let\226\128\153 keyword. Bindings should be of form \226\128\152name = expression\226\128\153.\n"
     | 67 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected an expression to match against after \226\128\152match\226\128\153 keyword.\n"
     | 66 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected expressions separated by commas or closing bracket \226\128\152]\226\128\153 for an empty list.\n"
     | 64 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected an expression or a comma-separated list of expressions inside parentheses.\n"
     | 58 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected an expression for the function body.\n"
     | 57 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152=\226\128\153 after function declaration to define the body.\n"
     | 55 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected type annotation after colon.\n"
     | 52 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected either a type annotation \226\128\152:\226\128\153 or \226\128\152=\226\128\153 followed by the function body.\n"
     | 50 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected another parameter after comma in tuple parameter.\n"
     | 49 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected either a comma \226\128\152,\226\128\153 for more parameters or closing parenthesis \226\128\152)\226\128\153 to complete the tuple parameter.\n"
     | 44 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected parameter(s) inside parentheses for a tuple parameter.\n"
     | 43 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected parameters (if any) followed by \226\128\152=\226\128\153 and an expression body for the definition.\n"
     | 38 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected either another variant definition (starting with an uppercase identifier) or \226\128\152}\226\128\153 to close the ADT definition.\n"
     | 36 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected a semicolon \226\128\152;\226\128\153 after variant definition.\n"
     | 34 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected optional type information followed by a semicolon \226\128\152;\226\128\153 after variant name.\n"
     | 33 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected at least one variant definition for an ADT. Each variant should start with an uppercase identifier.\n"
     | 29 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152{\226\128\153 after type parameters to begin ADT variant definitions.\n"
     | 28 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152{\226\128\153 after type parameters for an ADT definition, or use a valid type expression for a type alias.\n"
     | 22 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected either a comma \226\128\152,\226\128\153 for more tuple elements or closing parenthesis \226\128\152)\226\128\153 to complete the tuple type.\n"
     | 21 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected another type after comma in tuple type definition.\n"
     | 19 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected either a comma \226\128\152,\226\128\153 for tuple types or closing parenthesis \226\128\152)\226\128\153 for grouped types.\n"
     | 17 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected closing bracket \226\128\152]\226\128\153 after list type definition.\n"
     | 15 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected return type after \226\128\152->\226\128\153 in function type definition.\n"
     | 14 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Unexpected token after type. For function types, use the arrow \226\128\152->\226\128\153 syntax.\n"
     | 8 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected a type expression inside brackets for a list type, e.g., [Int] or [String].\n"
     | 6 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected a type expression inside parentheses. For tuple types, specify at least one type.\n"
     | 5 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid type constructor application. Type arguments must be valid types.\n"
     | 4 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected either a type definition or type parameters (lowercase identifiers) for an ADT definition.\n"
     | 3 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected \226\128\152:=\226\128\153 after type name for a type definition.\n"
     | 1 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected an identifier after \226\128\152def\226\128\153. Use lowercase for functions/values or uppercase for types/ADTs.\n"
     | 0 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Expected a declaration starting with \226\128\152def\226\128\153 or a comment enclosed in backticks. Standalone expressions are not allowed at the top level.\n"
     | _ ->
         raise Not_found
