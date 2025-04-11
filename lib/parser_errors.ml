@@ -6,27 +6,23 @@
 let message =
   fun s ->
     match s with
-    | 209 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 202 ->
+    | 207 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 200 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 198 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 197 ->
+    | 196 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 195 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 192 ->
+    | 193 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 188 ->
+    | 190 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 187 ->
+    | 186 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 185 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 184 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 183 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
@@ -34,121 +30,123 @@ let message =
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 181 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 178 ->
+    | 180 ->
+        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+    | 179 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 176 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 174 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 170 ->
+    | 172 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 169 ->
+    | 168 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 164 ->
+    | 167 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 163 ->
+    | 162 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 161 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 160 ->
+    | 159 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 155 ->
+    | 158 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 154 ->
+    | 153 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 152 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 151 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 150 ->
+        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+    | 149 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 148 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 147 ->
+    | 146 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 145 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 141 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 140 ->
+    | 143 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 139 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 138 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 134 ->
+    | 137 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 128 ->
+    | 136 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 117 ->
+    | 132 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 113 ->
+    | 126 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 109 ->
+    | 115 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 106 ->
+    | 111 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 99 ->
+    | 107 ->
+        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+    | 104 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 97 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 94 ->
+    | 95 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 92 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 85 ->
+    | 90 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 84 ->
+    | 83 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 81 ->
+    | 82 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 80 ->
+    | 79 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 75 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 74 ->
+    | 78 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 73 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 71 ->
+    | 72 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 70 ->
+    | 71 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 69 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 68 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+    | 67 ->
+        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 66 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 60 ->
+    | 64 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 59 ->
+    | 58 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 57 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 54 ->
+    | 55 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 52 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 51 ->
+    | 50 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 46 ->
+    | 49 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 45 ->
+    | 44 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 40 ->
+    | 43 ->
+        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+    | 38 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 36 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 35 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 34 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 30 ->
+    | 33 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 29 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 26 ->
+    | 28 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 22 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"

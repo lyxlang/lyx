@@ -54,7 +54,7 @@ program: KWDEF UID COLONEQUAL UID UNDERSCORE
 ##
 ## Ends in an error in state: 5.
 ##
-## typing1 -> UID . list(located(typing1)) [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWUNIT KWTHEN KWSTRING KWMATCH KWLET KWINT KWIN KWIF KWFLOAT KWELSE KWDEF KWBOOL INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing1 -> UID . option(located(typing1)) [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## UID
@@ -66,8 +66,8 @@ program: KWDEF UID COLONEQUAL LPAREN UNIT
 ##
 ## Ends in an error in state: 6.
 ##
-## typing1 -> LPAREN . separated_nonempty_list(COMMA,located(typing)) RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWUNIT KWTHEN KWSTRING KWMATCH KWLET KWINT KWIN KWIF KWFLOAT KWELSE KWDEF KWBOOL INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-## typing1 -> LPAREN . typing RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWUNIT KWTHEN KWSTRING KWMATCH KWLET KWINT KWIN KWIF KWFLOAT KWELSE KWDEF KWBOOL INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing1 -> LPAREN . separated_nonempty_list(COMMA,located(typing)) RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing1 -> LPAREN . typing RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LPAREN
@@ -79,7 +79,7 @@ program: KWDEF UID COLONEQUAL LBRACKET UNIT
 ##
 ## Ends in an error in state: 8.
 ##
-## typing1 -> LBRACKET . typing RBRACKET [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWUNIT KWTHEN KWSTRING KWMATCH KWLET KWINT KWIN KWIF KWFLOAT KWELSE KWDEF KWBOOL INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing1 -> LBRACKET . typing RBRACKET [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LBRACKET
@@ -91,8 +91,8 @@ program: KWDEF UID COLONEQUAL KWBOOL UNDERSCORE
 ##
 ## Ends in an error in state: 14.
 ##
-## typing -> typing1 . ARROW typing [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWUNIT KWTHEN KWSTRING KWMATCH KWLET KWINT KWIN KWIF KWFLOAT KWELSE KWDEF KWBOOL INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-## typing -> typing1 . [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWUNIT KWTHEN KWSTRING KWMATCH KWLET KWINT KWIN KWIF KWFLOAT KWELSE KWDEF KWBOOL INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing -> typing1 . ARROW typing [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing -> typing1 . [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## typing1
@@ -104,7 +104,7 @@ program: KWDEF UID COLONEQUAL LID ARROW UNIT
 ##
 ## Ends in an error in state: 15.
 ##
-## typing -> typing1 ARROW . typing [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWUNIT KWTHEN KWSTRING KWMATCH KWLET KWINT KWIN KWIF KWFLOAT KWELSE KWDEF KWBOOL INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing -> typing1 ARROW . typing [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## typing1 ARROW
@@ -116,7 +116,7 @@ program: KWDEF UID COLONEQUAL LBRACKET UID UNIT
 ##
 ## Ends in an error in state: 17.
 ##
-## typing1 -> LBRACKET typing . RBRACKET [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWUNIT KWTHEN KWSTRING KWMATCH KWLET KWINT KWIN KWIF KWFLOAT KWELSE KWDEF KWBOOL INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing1 -> LBRACKET typing . RBRACKET [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LBRACKET typing
@@ -125,8 +125,8 @@ program: KWDEF UID COLONEQUAL LBRACKET UID UNIT
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production list(located(typing1)) ->
-## In state 28, spurious reduction of production typing1 -> UID list(located(typing1))
+## In state 5, spurious reduction of production option(located(typing1)) ->
+## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
 ## In state 14, spurious reduction of production typing -> typing1
 ##
 
@@ -138,7 +138,7 @@ program: KWDEF UID COLONEQUAL LPAREN UID UNIT
 ##
 ## separated_nonempty_list(COMMA,located(typing)) -> typing . [ RPAREN ]
 ## separated_nonempty_list(COMMA,located(typing)) -> typing . COMMA separated_nonempty_list(COMMA,located(typing)) [ RPAREN ]
-## typing1 -> LPAREN typing . RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWUNIT KWTHEN KWSTRING KWMATCH KWLET KWINT KWIN KWIF KWFLOAT KWELSE KWDEF KWBOOL INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing1 -> LPAREN typing . RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LPAREN typing
@@ -147,8 +147,8 @@ program: KWDEF UID COLONEQUAL LPAREN UID UNIT
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production list(located(typing1)) ->
-## In state 28, spurious reduction of production typing1 -> UID list(located(typing1))
+## In state 5, spurious reduction of production option(located(typing1)) ->
+## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
 ## In state 14, spurious reduction of production typing -> typing1
 ##
 
@@ -180,28 +180,16 @@ program: KWDEF UID COLONEQUAL LPAREN UID COMMA UID UNIT
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production list(located(typing1)) ->
-## In state 28, spurious reduction of production typing1 -> UID list(located(typing1))
+## In state 5, spurious reduction of production option(located(typing1)) ->
+## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
 ## In state 14, spurious reduction of production typing -> typing1
-##
-
-<YOUR SYNTAX ERROR MESSAGE HERE>
-
-program: KWDEF UID COLONEQUAL UID KWBOOL UNDERSCORE
-##
-## Ends in an error in state: 26.
-##
-## list(located(typing1)) -> typing1 . list(located(typing1)) [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWUNIT KWTHEN KWSTRING KWMATCH KWLET KWINT KWIN KWIF KWFLOAT KWELSE KWDEF KWBOOL INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-##
-## The known suffix of the stack is as follows:
-## typing1
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF UID COLONEQUAL LID UNIT
 ##
-## Ends in an error in state: 29.
+## Ends in an error in state: 28.
 ##
 ## list(located(LID)) -> LID . list(located(LID)) [ LBRACE ]
 ## typing1 -> LID . [ KWDEF EOF COMMENT ARROW ]
@@ -214,7 +202,7 @@ program: KWDEF UID COLONEQUAL LID UNIT
 
 program: KWDEF UID COLONEQUAL LID LID UNIT
 ##
-## Ends in an error in state: 30.
+## Ends in an error in state: 29.
 ##
 ## list(located(LID)) -> LID . list(located(LID)) [ LBRACE ]
 ##
@@ -226,7 +214,7 @@ program: KWDEF UID COLONEQUAL LID LID UNIT
 
 program: KWDEF UID COLONEQUAL LBRACE UNIT
 ##
-## Ends in an error in state: 34.
+## Ends in an error in state: 33.
 ##
 ## decl -> KWDEF UID COLONEQUAL list(located(LID)) LBRACE . nonempty_list(located(variant)) RBRACE [ KWDEF EOF COMMENT ]
 ##
@@ -238,9 +226,9 @@ program: KWDEF UID COLONEQUAL LBRACE UNIT
 
 program: KWDEF UID COLONEQUAL LBRACE UID UNIT
 ##
-## Ends in an error in state: 35.
+## Ends in an error in state: 34.
 ##
-## variant -> UID . list(located(typing)) SEMICOLON [ UID RBRACE ]
+## variant -> UID . option(located(typing)) SEMICOLON [ UID RBRACE ]
 ##
 ## The known suffix of the stack is as follows:
 ## UID
@@ -252,25 +240,26 @@ program: KWDEF UID COLONEQUAL LBRACE UID UID UNIT
 ##
 ## Ends in an error in state: 36.
 ##
-## list(located(typing)) -> typing . list(located(typing)) [ SEMICOLON ]
+## variant -> UID option(located(typing)) . SEMICOLON [ UID RBRACE ]
 ##
 ## The known suffix of the stack is as follows:
-## typing
+## UID option(located(typing))
 ##
 ## WARNING: This example involves spurious reductions.
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production list(located(typing1)) ->
-## In state 28, spurious reduction of production typing1 -> UID list(located(typing1))
+## In state 5, spurious reduction of production option(located(typing1)) ->
+## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
 ## In state 14, spurious reduction of production typing -> typing1
+## In state 35, spurious reduction of production option(located(typing)) -> typing
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF UID COLONEQUAL LBRACE UID SEMICOLON UNIT
 ##
-## Ends in an error in state: 40.
+## Ends in an error in state: 38.
 ##
 ## nonempty_list(located(variant)) -> variant . [ RBRACE ]
 ## nonempty_list(located(variant)) -> variant . nonempty_list(located(variant)) [ RBRACE ]
@@ -283,7 +272,7 @@ program: KWDEF UID COLONEQUAL LBRACE UID SEMICOLON UNIT
 
 program: KWDEF LID UNIT
 ##
-## Ends in an error in state: 45.
+## Ends in an error in state: 43.
 ##
 ## decl -> KWDEF olid . list(located(param)) option(ann) EQUAL expr [ KWDEF EOF COMMENT ]
 ##
@@ -295,7 +284,7 @@ program: KWDEF LID UNIT
 
 program: KWDEF LID LPAREN UNIT
 ##
-## Ends in an error in state: 46.
+## Ends in an error in state: 44.
 ##
 ## tuple_param -> LPAREN . separated_nonempty_list(COMMA,located(param)) RPAREN [ RPAREN LPAREN LID EQUAL COMMA COLON ARROW ]
 ##
@@ -307,7 +296,7 @@ program: KWDEF LID LPAREN UNIT
 
 program: KWDEF LID LPAREN LID UNIT
 ##
-## Ends in an error in state: 51.
+## Ends in an error in state: 49.
 ##
 ## separated_nonempty_list(COMMA,located(param)) -> param . [ RPAREN ]
 ## separated_nonempty_list(COMMA,located(param)) -> param . COMMA separated_nonempty_list(COMMA,located(param)) [ RPAREN ]
@@ -320,7 +309,7 @@ program: KWDEF LID LPAREN LID UNIT
 
 program: KWDEF LID LPAREN LID COMMA UNIT
 ##
-## Ends in an error in state: 52.
+## Ends in an error in state: 50.
 ##
 ## separated_nonempty_list(COMMA,located(param)) -> param COMMA . separated_nonempty_list(COMMA,located(param)) [ RPAREN ]
 ##
@@ -332,7 +321,7 @@ program: KWDEF LID LPAREN LID COMMA UNIT
 
 program: KWDEF LID LID UNIT
 ##
-## Ends in an error in state: 54.
+## Ends in an error in state: 52.
 ##
 ## list(located(param)) -> param . list(located(param)) [ EQUAL COLON ]
 ##
@@ -344,7 +333,7 @@ program: KWDEF LID LID UNIT
 
 program: KWDEF LID COLON UNIT
 ##
-## Ends in an error in state: 57.
+## Ends in an error in state: 55.
 ##
 ## ann -> COLON . typing [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -356,7 +345,7 @@ program: KWDEF LID COLON UNIT
 
 program: KWDEF LID COLON UID UNIT
 ##
-## Ends in an error in state: 59.
+## Ends in an error in state: 57.
 ##
 ## decl -> KWDEF olid list(located(param)) option(ann) . EQUAL expr [ KWDEF EOF COMMENT ]
 ##
@@ -367,18 +356,18 @@ program: KWDEF LID COLON UID UNIT
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production list(located(typing1)) ->
-## In state 28, spurious reduction of production typing1 -> UID list(located(typing1))
+## In state 5, spurious reduction of production option(located(typing1)) ->
+## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
 ## In state 14, spurious reduction of production typing -> typing1
-## In state 58, spurious reduction of production ann -> COLON typing
-## In state 136, spurious reduction of production option(ann) -> ann
+## In state 56, spurious reduction of production ann -> COLON typing
+## In state 134, spurious reduction of production option(ann) -> ann
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL UNDERSCORE
 ##
-## Ends in an error in state: 60.
+## Ends in an error in state: 58.
 ##
 ## decl -> KWDEF olid list(located(param)) option(ann) EQUAL . expr [ KWDEF EOF COMMENT ]
 ##
@@ -390,7 +379,7 @@ program: KWDEF LID EQUAL UNDERSCORE
 
 program: KWDEF LID EQUAL LPAREN UNDERSCORE
 ##
-## Ends in an error in state: 66.
+## Ends in an error in state: 64.
 ##
 ## expr11 -> LPAREN . loption(separated_nonempty_list(COMMA,located(expr))) RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ## expr11 -> LPAREN . expr RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
@@ -403,7 +392,7 @@ program: KWDEF LID EQUAL LPAREN UNDERSCORE
 
 program: KWDEF LID EQUAL LBRACKET UNDERSCORE
 ##
-## Ends in an error in state: 68.
+## Ends in an error in state: 66.
 ##
 ## expr11 -> LBRACKET . loption(separated_nonempty_list(COMMA,located(expr))) RBRACKET [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -415,7 +404,7 @@ program: KWDEF LID EQUAL LBRACKET UNDERSCORE
 
 program: KWDEF LID EQUAL KWMATCH UNDERSCORE
 ##
-## Ends in an error in state: 69.
+## Ends in an error in state: 67.
 ##
 ## expr11 -> KWMATCH . expr LBRACE nonempty_list(located(case)) RBRACE [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -427,7 +416,7 @@ program: KWDEF LID EQUAL KWMATCH UNDERSCORE
 
 program: KWDEF LID EQUAL KWLET UNIT
 ##
-## Ends in an error in state: 70.
+## Ends in an error in state: 68.
 ##
 ## expr11 -> KWLET . separated_nonempty_list(SEMICOLON,located(bind)) KWIN expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -439,7 +428,7 @@ program: KWDEF LID EQUAL KWLET UNIT
 
 program: KWDEF LID EQUAL KWLET LID UNIT
 ##
-## Ends in an error in state: 71.
+## Ends in an error in state: 69.
 ##
 ## bind -> LID . list(located(param)) option(ann) EQUAL expr [ SEMICOLON KWIN ]
 ##
@@ -451,7 +440,7 @@ program: KWDEF LID EQUAL KWLET LID UNIT
 
 program: KWDEF LID EQUAL KWLET LID COLON UID UNIT
 ##
-## Ends in an error in state: 73.
+## Ends in an error in state: 71.
 ##
 ## bind -> LID list(located(param)) option(ann) . EQUAL expr [ SEMICOLON KWIN ]
 ##
@@ -462,18 +451,18 @@ program: KWDEF LID EQUAL KWLET LID COLON UID UNIT
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 5, spurious reduction of production list(located(typing1)) ->
-## In state 28, spurious reduction of production typing1 -> UID list(located(typing1))
+## In state 5, spurious reduction of production option(located(typing1)) ->
+## In state 27, spurious reduction of production typing1 -> UID option(located(typing1))
 ## In state 14, spurious reduction of production typing -> typing1
-## In state 58, spurious reduction of production ann -> COLON typing
-## In state 136, spurious reduction of production option(ann) -> ann
+## In state 56, spurious reduction of production ann -> COLON typing
+## In state 134, spurious reduction of production option(ann) -> ann
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWLET LID EQUAL UNDERSCORE
 ##
-## Ends in an error in state: 74.
+## Ends in an error in state: 72.
 ##
 ## bind -> LID list(located(param)) option(ann) EQUAL . expr [ SEMICOLON KWIN ]
 ##
@@ -485,7 +474,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL UNDERSCORE
 
 program: KWDEF LID EQUAL KWIF UNDERSCORE
 ##
-## Ends in an error in state: 75.
+## Ends in an error in state: 73.
 ##
 ## expr11 -> KWIF . expr KWTHEN expr KWELSE expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -497,7 +486,7 @@ program: KWDEF LID EQUAL KWIF UNDERSCORE
 
 program: KWDEF LID EQUAL BACKSLASH UNIT
 ##
-## Ends in an error in state: 80.
+## Ends in an error in state: 78.
 ##
 ## expr11 -> BACKSLASH . nonempty_list(located(param)) ARROW expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -509,7 +498,7 @@ program: KWDEF LID EQUAL BACKSLASH UNIT
 
 program: KWDEF LID EQUAL BACKSLASH LID UNIT
 ##
-## Ends in an error in state: 81.
+## Ends in an error in state: 79.
 ##
 ## nonempty_list(located(param)) -> param . [ ARROW ]
 ## nonempty_list(located(param)) -> param . nonempty_list(located(param)) [ ARROW ]
@@ -522,7 +511,7 @@ program: KWDEF LID EQUAL BACKSLASH LID UNIT
 
 program: KWDEF LID EQUAL BACKSLASH LID ARROW UNDERSCORE
 ##
-## Ends in an error in state: 84.
+## Ends in an error in state: 82.
 ##
 ## expr11 -> BACKSLASH nonempty_list(located(param)) ARROW . expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -534,7 +523,7 @@ program: KWDEF LID EQUAL BACKSLASH LID ARROW UNDERSCORE
 
 program: KWDEF LID EQUAL BANG UNDERSCORE
 ##
-## Ends in an error in state: 85.
+## Ends in an error in state: 83.
 ##
 ## expr7 -> un_op . expr8 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -546,7 +535,7 @@ program: KWDEF LID EQUAL BANG UNDERSCORE
 
 program: KWDEF LID EQUAL BOOL AMPERSAND UNDERSCORE
 ##
-## Ends in an error in state: 92.
+## Ends in an error in state: 90.
 ##
 ## expr9 -> expr9 bit_op . expr10 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -558,7 +547,7 @@ program: KWDEF LID EQUAL BOOL AMPERSAND UNDERSCORE
 
 program: KWDEF LID EQUAL BOOL AMPERSAND BOOL UNDERSCORE
 ##
-## Ends in an error in state: 94.
+## Ends in an error in state: 92.
 ##
 ## expr10 -> expr10 . expr11 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ## expr9 -> expr9 bit_op expr10 . [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
@@ -571,7 +560,7 @@ program: KWDEF LID EQUAL BOOL AMPERSAND BOOL UNDERSCORE
 
 program: KWDEF LID EQUAL BOOL STARSTAR UNDERSCORE
 ##
-## Ends in an error in state: 97.
+## Ends in an error in state: 95.
 ##
 ## expr8 -> expr8 STARSTAR . expr9 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -583,7 +572,7 @@ program: KWDEF LID EQUAL BOOL STARSTAR UNDERSCORE
 
 program: KWDEF LID EQUAL BOOL UNDERSCORE
 ##
-## Ends in an error in state: 99.
+## Ends in an error in state: 97.
 ##
 ## expr10 -> expr10 . expr11 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ## expr9 -> expr10 . [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
@@ -596,7 +585,7 @@ program: KWDEF LID EQUAL BOOL UNDERSCORE
 
 program: KWDEF LID EQUAL BOOL PERCENT UNDERSCORE
 ##
-## Ends in an error in state: 106.
+## Ends in an error in state: 104.
 ##
 ## expr6 -> expr6 mul_op . expr7 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -608,7 +597,7 @@ program: KWDEF LID EQUAL BOOL PERCENT UNDERSCORE
 
 program: KWDEF LID EQUAL BOOL PLUSPLUS UNDERSCORE
 ##
-## Ends in an error in state: 109.
+## Ends in an error in state: 107.
 ##
 ## expr4 -> expr5 PLUSPLUS . expr4 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -620,7 +609,7 @@ program: KWDEF LID EQUAL BOOL PLUSPLUS UNDERSCORE
 
 program: KWDEF LID EQUAL BOOL MINUS UNDERSCORE
 ##
-## Ends in an error in state: 113.
+## Ends in an error in state: 111.
 ##
 ## expr5 -> expr5 add_op . expr6 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -632,7 +621,7 @@ program: KWDEF LID EQUAL BOOL MINUS UNDERSCORE
 
 program: KWDEF LID EQUAL BOOL TRIANGLE UNDERSCORE
 ##
-## Ends in an error in state: 117.
+## Ends in an error in state: 115.
 ##
 ## expr3 -> expr3 TRIANGLE . expr4 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -644,7 +633,7 @@ program: KWDEF LID EQUAL BOOL TRIANGLE UNDERSCORE
 
 program: KWDEF LID EQUAL BOOL BANGEQUAL UNDERSCORE
 ##
-## Ends in an error in state: 128.
+## Ends in an error in state: 126.
 ##
 ## expr2 -> expr2 comp_op . expr3 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -656,7 +645,7 @@ program: KWDEF LID EQUAL BOOL BANGEQUAL UNDERSCORE
 
 program: KWDEF LID EQUAL BOOL ANDAND UNDERSCORE
 ##
-## Ends in an error in state: 134.
+## Ends in an error in state: 132.
 ##
 ## expr1 -> expr1 bool_op . expr2 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -668,7 +657,7 @@ program: KWDEF LID EQUAL BOOL ANDAND UNDERSCORE
 
 program: KWDEF LID EQUAL KWIF BOOL ARROW
 ##
-## Ends in an error in state: 138.
+## Ends in an error in state: 136.
 ##
 ## expr11 -> KWIF expr . KWTHEN expr KWELSE expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -679,24 +668,24 @@ program: KWDEF LID EQUAL KWIF BOOL ARROW
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 99, spurious reduction of production expr9 -> expr10
-## In state 86, spurious reduction of production expr8 -> expr9
-## In state 100, spurious reduction of production expr7 -> expr8
-## In state 101, spurious reduction of production expr6 -> expr7
-## In state 102, spurious reduction of production expr5 -> expr6
-## In state 108, spurious reduction of production expr4 -> expr5
-## In state 115, spurious reduction of production expr3 -> expr4
-## In state 116, spurious reduction of production expr2 -> expr3
-## In state 119, spurious reduction of production expr1 -> expr2
-## In state 130, spurious reduction of production option(ann) ->
-## In state 133, spurious reduction of production expr -> expr1 option(ann)
+## In state 97, spurious reduction of production expr9 -> expr10
+## In state 84, spurious reduction of production expr8 -> expr9
+## In state 98, spurious reduction of production expr7 -> expr8
+## In state 99, spurious reduction of production expr6 -> expr7
+## In state 100, spurious reduction of production expr5 -> expr6
+## In state 106, spurious reduction of production expr4 -> expr5
+## In state 113, spurious reduction of production expr3 -> expr4
+## In state 114, spurious reduction of production expr2 -> expr3
+## In state 117, spurious reduction of production expr1 -> expr2
+## In state 128, spurious reduction of production option(ann) ->
+## In state 131, spurious reduction of production expr -> expr1 option(ann)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWIF BOOL KWTHEN UNDERSCORE
 ##
-## Ends in an error in state: 139.
+## Ends in an error in state: 137.
 ##
 ## expr11 -> KWIF expr KWTHEN . expr KWELSE expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -708,7 +697,7 @@ program: KWDEF LID EQUAL KWIF BOOL KWTHEN UNDERSCORE
 
 program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL ARROW
 ##
-## Ends in an error in state: 140.
+## Ends in an error in state: 138.
 ##
 ## expr11 -> KWIF expr KWTHEN expr . KWELSE expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -719,24 +708,24 @@ program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL ARROW
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 99, spurious reduction of production expr9 -> expr10
-## In state 86, spurious reduction of production expr8 -> expr9
-## In state 100, spurious reduction of production expr7 -> expr8
-## In state 101, spurious reduction of production expr6 -> expr7
-## In state 102, spurious reduction of production expr5 -> expr6
-## In state 108, spurious reduction of production expr4 -> expr5
-## In state 115, spurious reduction of production expr3 -> expr4
-## In state 116, spurious reduction of production expr2 -> expr3
-## In state 119, spurious reduction of production expr1 -> expr2
-## In state 130, spurious reduction of production option(ann) ->
-## In state 133, spurious reduction of production expr -> expr1 option(ann)
+## In state 97, spurious reduction of production expr9 -> expr10
+## In state 84, spurious reduction of production expr8 -> expr9
+## In state 98, spurious reduction of production expr7 -> expr8
+## In state 99, spurious reduction of production expr6 -> expr7
+## In state 100, spurious reduction of production expr5 -> expr6
+## In state 106, spurious reduction of production expr4 -> expr5
+## In state 113, spurious reduction of production expr3 -> expr4
+## In state 114, spurious reduction of production expr2 -> expr3
+## In state 117, spurious reduction of production expr1 -> expr2
+## In state 128, spurious reduction of production option(ann) ->
+## In state 131, spurious reduction of production expr -> expr1 option(ann)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL KWELSE UNDERSCORE
 ##
-## Ends in an error in state: 141.
+## Ends in an error in state: 139.
 ##
 ## expr11 -> KWIF expr KWTHEN expr KWELSE . expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -748,7 +737,7 @@ program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL KWELSE UNDERSCORE
 
 program: KWDEF LID EQUAL KWLET LID EQUAL BOOL KWIN UNDERSCORE
 ##
-## Ends in an error in state: 145.
+## Ends in an error in state: 143.
 ##
 ## expr11 -> KWLET separated_nonempty_list(SEMICOLON,located(bind)) KWIN . expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -760,7 +749,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL BOOL KWIN UNDERSCORE
 
 program: KWDEF LID EQUAL KWLET LID EQUAL BOOL ARROW
 ##
-## Ends in an error in state: 147.
+## Ends in an error in state: 145.
 ##
 ## separated_nonempty_list(SEMICOLON,located(bind)) -> bind . [ KWIN ]
 ## separated_nonempty_list(SEMICOLON,located(bind)) -> bind . SEMICOLON separated_nonempty_list(SEMICOLON,located(bind)) [ KWIN ]
@@ -772,25 +761,25 @@ program: KWDEF LID EQUAL KWLET LID EQUAL BOOL ARROW
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 99, spurious reduction of production expr9 -> expr10
-## In state 86, spurious reduction of production expr8 -> expr9
-## In state 100, spurious reduction of production expr7 -> expr8
-## In state 101, spurious reduction of production expr6 -> expr7
-## In state 102, spurious reduction of production expr5 -> expr6
-## In state 108, spurious reduction of production expr4 -> expr5
-## In state 115, spurious reduction of production expr3 -> expr4
-## In state 116, spurious reduction of production expr2 -> expr3
-## In state 119, spurious reduction of production expr1 -> expr2
-## In state 130, spurious reduction of production option(ann) ->
-## In state 133, spurious reduction of production expr -> expr1 option(ann)
-## In state 143, spurious reduction of production bind -> LID list(located(param)) option(ann) EQUAL expr
+## In state 97, spurious reduction of production expr9 -> expr10
+## In state 84, spurious reduction of production expr8 -> expr9
+## In state 98, spurious reduction of production expr7 -> expr8
+## In state 99, spurious reduction of production expr6 -> expr7
+## In state 100, spurious reduction of production expr5 -> expr6
+## In state 106, spurious reduction of production expr4 -> expr5
+## In state 113, spurious reduction of production expr3 -> expr4
+## In state 114, spurious reduction of production expr2 -> expr3
+## In state 117, spurious reduction of production expr1 -> expr2
+## In state 128, spurious reduction of production option(ann) ->
+## In state 131, spurious reduction of production expr -> expr1 option(ann)
+## In state 141, spurious reduction of production bind -> LID list(located(param)) option(ann) EQUAL expr
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWLET LID EQUAL BOOL SEMICOLON UNIT
 ##
-## Ends in an error in state: 148.
+## Ends in an error in state: 146.
 ##
 ## separated_nonempty_list(SEMICOLON,located(bind)) -> bind SEMICOLON . separated_nonempty_list(SEMICOLON,located(bind)) [ KWIN ]
 ##
@@ -802,7 +791,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL BOOL SEMICOLON UNIT
 
 program: KWDEF LID EQUAL KWMATCH BOOL ARROW
 ##
-## Ends in an error in state: 150.
+## Ends in an error in state: 148.
 ##
 ## expr11 -> KWMATCH expr . LBRACE nonempty_list(located(case)) RBRACE [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -813,24 +802,24 @@ program: KWDEF LID EQUAL KWMATCH BOOL ARROW
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 99, spurious reduction of production expr9 -> expr10
-## In state 86, spurious reduction of production expr8 -> expr9
-## In state 100, spurious reduction of production expr7 -> expr8
-## In state 101, spurious reduction of production expr6 -> expr7
-## In state 102, spurious reduction of production expr5 -> expr6
-## In state 108, spurious reduction of production expr4 -> expr5
-## In state 115, spurious reduction of production expr3 -> expr4
-## In state 116, spurious reduction of production expr2 -> expr3
-## In state 119, spurious reduction of production expr1 -> expr2
-## In state 130, spurious reduction of production option(ann) ->
-## In state 133, spurious reduction of production expr -> expr1 option(ann)
+## In state 97, spurious reduction of production expr9 -> expr10
+## In state 84, spurious reduction of production expr8 -> expr9
+## In state 98, spurious reduction of production expr7 -> expr8
+## In state 99, spurious reduction of production expr6 -> expr7
+## In state 100, spurious reduction of production expr5 -> expr6
+## In state 106, spurious reduction of production expr4 -> expr5
+## In state 113, spurious reduction of production expr3 -> expr4
+## In state 114, spurious reduction of production expr2 -> expr3
+## In state 117, spurious reduction of production expr1 -> expr2
+## In state 128, spurious reduction of production option(ann) ->
+## In state 131, spurious reduction of production expr -> expr1 option(ann)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UNIT
 ##
-## Ends in an error in state: 151.
+## Ends in an error in state: 149.
 ##
 ## expr11 -> KWMATCH expr LBRACE . nonempty_list(located(case)) RBRACE [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -842,7 +831,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UNIT
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID UNIT
 ##
-## Ends in an error in state: 152.
+## Ends in an error in state: 150.
 ##
 ## pattern1 -> UID . list(located(pattern1)) [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
 ##
@@ -854,7 +843,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID UNIT
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UNIT
 ##
-## Ends in an error in state: 154.
+## Ends in an error in state: 152.
 ##
 ## pattern1 -> LPAREN . pattern RPAREN [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
 ## tuple_pat -> LPAREN . separated_nonempty_list(COMMA,located(pattern)) RPAREN [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
@@ -867,7 +856,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UNIT
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UNIT
 ##
-## Ends in an error in state: 155.
+## Ends in an error in state: 153.
 ##
 ## list_pat -> LBRACKET . loption(separated_nonempty_list(COMMA,located(pattern))) RBRACKET [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
 ## list_spd_pat -> LBRACKET . separated_nonempty_list(COMMA,located(pattern)) ELLIPSIS RBRACKET [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
@@ -880,7 +869,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UNIT
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID RPAREN
 ##
-## Ends in an error in state: 160.
+## Ends in an error in state: 158.
 ##
 ## list_spd_pat -> LBRACKET separated_nonempty_list(COMMA,located(pattern)) . ELLIPSIS RBRACKET [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
 ## loption(separated_nonempty_list(COMMA,located(pattern))) -> separated_nonempty_list(COMMA,located(pattern)) . [ RBRACKET ]
@@ -892,17 +881,17 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID RPAREN
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 152, spurious reduction of production list(located(pattern1)) ->
-## In state 180, spurious reduction of production pattern1 -> UID list(located(pattern1))
-## In state 163, spurious reduction of production pattern -> pattern1
-## In state 169, spurious reduction of production separated_nonempty_list(COMMA,located(pattern)) -> pattern
+## In state 150, spurious reduction of production list(located(pattern1)) ->
+## In state 178, spurious reduction of production pattern1 -> UID list(located(pattern1))
+## In state 161, spurious reduction of production pattern -> pattern1
+## In state 167, spurious reduction of production separated_nonempty_list(COMMA,located(pattern)) -> pattern
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID ELLIPSIS UNIT
 ##
-## Ends in an error in state: 161.
+## Ends in an error in state: 159.
 ##
 ## list_spd_pat -> LBRACKET separated_nonempty_list(COMMA,located(pattern)) ELLIPSIS . RBRACKET [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
 ##
@@ -914,7 +903,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID ELLIPSIS UNIT
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LID UNIT
 ##
-## Ends in an error in state: 163.
+## Ends in an error in state: 161.
 ##
 ## pattern -> pattern1 . SEMICOLON pattern [ RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
 ## pattern -> pattern1 . [ RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
@@ -927,7 +916,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LID UNIT
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID SEMICOLON UNIT
 ##
-## Ends in an error in state: 164.
+## Ends in an error in state: 162.
 ##
 ## pattern -> pattern1 SEMICOLON . pattern [ RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
 ##
@@ -939,7 +928,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID SEMICOLON UNIT
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID KWIF
 ##
-## Ends in an error in state: 169.
+## Ends in an error in state: 167.
 ##
 ## separated_nonempty_list(COMMA,located(pattern)) -> pattern . [ RPAREN RBRACKET ELLIPSIS ]
 ## separated_nonempty_list(COMMA,located(pattern)) -> pattern . COMMA separated_nonempty_list(COMMA,located(pattern)) [ RPAREN RBRACKET ELLIPSIS ]
@@ -951,16 +940,16 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID KWIF
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 152, spurious reduction of production list(located(pattern1)) ->
-## In state 180, spurious reduction of production pattern1 -> UID list(located(pattern1))
-## In state 163, spurious reduction of production pattern -> pattern1
+## In state 150, spurious reduction of production list(located(pattern1)) ->
+## In state 178, spurious reduction of production pattern1 -> UID list(located(pattern1))
+## In state 161, spurious reduction of production pattern -> pattern1
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID COMMA UNIT
 ##
-## Ends in an error in state: 170.
+## Ends in an error in state: 168.
 ##
 ## separated_nonempty_list(COMMA,located(pattern)) -> pattern COMMA . separated_nonempty_list(COMMA,located(pattern)) [ RPAREN RBRACKET ELLIPSIS ]
 ##
@@ -972,7 +961,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID COMMA UNIT
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID COMMA UID RBRACKET
 ##
-## Ends in an error in state: 174.
+## Ends in an error in state: 172.
 ##
 ## tuple_pat -> LPAREN separated_nonempty_list(COMMA,located(pattern)) . RPAREN [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
 ##
@@ -983,18 +972,18 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID COMMA UID RBRACKET
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 152, spurious reduction of production list(located(pattern1)) ->
-## In state 180, spurious reduction of production pattern1 -> UID list(located(pattern1))
-## In state 163, spurious reduction of production pattern -> pattern1
-## In state 169, spurious reduction of production separated_nonempty_list(COMMA,located(pattern)) -> pattern
-## In state 171, spurious reduction of production separated_nonempty_list(COMMA,located(pattern)) -> pattern COMMA separated_nonempty_list(COMMA,located(pattern))
+## In state 150, spurious reduction of production list(located(pattern1)) ->
+## In state 178, spurious reduction of production pattern1 -> UID list(located(pattern1))
+## In state 161, spurious reduction of production pattern -> pattern1
+## In state 167, spurious reduction of production separated_nonempty_list(COMMA,located(pattern)) -> pattern
+## In state 169, spurious reduction of production separated_nonempty_list(COMMA,located(pattern)) -> pattern COMMA separated_nonempty_list(COMMA,located(pattern))
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID RBRACKET
 ##
-## Ends in an error in state: 176.
+## Ends in an error in state: 174.
 ##
 ## pattern1 -> LPAREN pattern . RPAREN [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
 ## separated_nonempty_list(COMMA,located(pattern)) -> pattern . [ RPAREN ]
@@ -1007,16 +996,16 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID RBRACKET
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 152, spurious reduction of production list(located(pattern1)) ->
-## In state 180, spurious reduction of production pattern1 -> UID list(located(pattern1))
-## In state 163, spurious reduction of production pattern -> pattern1
+## In state 150, spurious reduction of production list(located(pattern1)) ->
+## In state 178, spurious reduction of production pattern1 -> UID list(located(pattern1))
+## In state 161, spurious reduction of production pattern -> pattern1
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID LID UNIT
 ##
-## Ends in an error in state: 178.
+## Ends in an error in state: 176.
 ##
 ## list(located(pattern1)) -> pattern1 . list(located(pattern1)) [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
 ##
@@ -1028,7 +1017,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID LID UNIT
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID RPAREN
 ##
-## Ends in an error in state: 181.
+## Ends in an error in state: 179.
 ##
 ## case -> pattern . ARROW expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
 ## case -> pattern . KWIF expr ARROW expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
@@ -1040,16 +1029,16 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID RPAREN
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 152, spurious reduction of production list(located(pattern1)) ->
-## In state 180, spurious reduction of production pattern1 -> UID list(located(pattern1))
-## In state 163, spurious reduction of production pattern -> pattern1
+## In state 150, spurious reduction of production list(located(pattern1)) ->
+## In state 178, spurious reduction of production pattern1 -> UID list(located(pattern1))
+## In state 161, spurious reduction of production pattern -> pattern1
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF UNDERSCORE
 ##
-## Ends in an error in state: 182.
+## Ends in an error in state: 180.
 ##
 ## case -> pattern KWIF . expr ARROW expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
 ##
@@ -1061,7 +1050,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF UNDERSCORE
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL SEMICOLON
 ##
-## Ends in an error in state: 183.
+## Ends in an error in state: 181.
 ##
 ## case -> pattern KWIF expr . ARROW expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
 ##
@@ -1072,24 +1061,24 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL SEMICOLON
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 99, spurious reduction of production expr9 -> expr10
-## In state 86, spurious reduction of production expr8 -> expr9
-## In state 100, spurious reduction of production expr7 -> expr8
-## In state 101, spurious reduction of production expr6 -> expr7
-## In state 102, spurious reduction of production expr5 -> expr6
-## In state 108, spurious reduction of production expr4 -> expr5
-## In state 115, spurious reduction of production expr3 -> expr4
-## In state 116, spurious reduction of production expr2 -> expr3
-## In state 119, spurious reduction of production expr1 -> expr2
-## In state 130, spurious reduction of production option(ann) ->
-## In state 133, spurious reduction of production expr -> expr1 option(ann)
+## In state 97, spurious reduction of production expr9 -> expr10
+## In state 84, spurious reduction of production expr8 -> expr9
+## In state 98, spurious reduction of production expr7 -> expr8
+## In state 99, spurious reduction of production expr6 -> expr7
+## In state 100, spurious reduction of production expr5 -> expr6
+## In state 106, spurious reduction of production expr4 -> expr5
+## In state 113, spurious reduction of production expr3 -> expr4
+## In state 114, spurious reduction of production expr2 -> expr3
+## In state 117, spurious reduction of production expr1 -> expr2
+## In state 128, spurious reduction of production option(ann) ->
+## In state 131, spurious reduction of production expr -> expr1 option(ann)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL ARROW UNDERSCORE
 ##
-## Ends in an error in state: 184.
+## Ends in an error in state: 182.
 ##
 ## case -> pattern KWIF expr ARROW . expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
 ##
@@ -1101,7 +1090,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL ARROW UNDERSCORE
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL ARROW BOOL ARROW
 ##
-## Ends in an error in state: 185.
+## Ends in an error in state: 183.
 ##
 ## case -> pattern KWIF expr ARROW expr . SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
 ##
@@ -1112,24 +1101,24 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL ARROW BOOL ARROW
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 99, spurious reduction of production expr9 -> expr10
-## In state 86, spurious reduction of production expr8 -> expr9
-## In state 100, spurious reduction of production expr7 -> expr8
-## In state 101, spurious reduction of production expr6 -> expr7
-## In state 102, spurious reduction of production expr5 -> expr6
-## In state 108, spurious reduction of production expr4 -> expr5
-## In state 115, spurious reduction of production expr3 -> expr4
-## In state 116, spurious reduction of production expr2 -> expr3
-## In state 119, spurious reduction of production expr1 -> expr2
-## In state 130, spurious reduction of production option(ann) ->
-## In state 133, spurious reduction of production expr -> expr1 option(ann)
+## In state 97, spurious reduction of production expr9 -> expr10
+## In state 84, spurious reduction of production expr8 -> expr9
+## In state 98, spurious reduction of production expr7 -> expr8
+## In state 99, spurious reduction of production expr6 -> expr7
+## In state 100, spurious reduction of production expr5 -> expr6
+## In state 106, spurious reduction of production expr4 -> expr5
+## In state 113, spurious reduction of production expr3 -> expr4
+## In state 114, spurious reduction of production expr2 -> expr3
+## In state 117, spurious reduction of production expr1 -> expr2
+## In state 128, spurious reduction of production option(ann) ->
+## In state 131, spurious reduction of production expr -> expr1 option(ann)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW UNDERSCORE
 ##
-## Ends in an error in state: 187.
+## Ends in an error in state: 185.
 ##
 ## case -> pattern ARROW . expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
 ##
@@ -1141,7 +1130,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW UNDERSCORE
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL ARROW
 ##
-## Ends in an error in state: 188.
+## Ends in an error in state: 186.
 ##
 ## case -> pattern ARROW expr . SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
 ##
@@ -1152,24 +1141,24 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL ARROW
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 99, spurious reduction of production expr9 -> expr10
-## In state 86, spurious reduction of production expr8 -> expr9
-## In state 100, spurious reduction of production expr7 -> expr8
-## In state 101, spurious reduction of production expr6 -> expr7
-## In state 102, spurious reduction of production expr5 -> expr6
-## In state 108, spurious reduction of production expr4 -> expr5
-## In state 115, spurious reduction of production expr3 -> expr4
-## In state 116, spurious reduction of production expr2 -> expr3
-## In state 119, spurious reduction of production expr1 -> expr2
-## In state 130, spurious reduction of production option(ann) ->
-## In state 133, spurious reduction of production expr -> expr1 option(ann)
+## In state 97, spurious reduction of production expr9 -> expr10
+## In state 84, spurious reduction of production expr8 -> expr9
+## In state 98, spurious reduction of production expr7 -> expr8
+## In state 99, spurious reduction of production expr6 -> expr7
+## In state 100, spurious reduction of production expr5 -> expr6
+## In state 106, spurious reduction of production expr4 -> expr5
+## In state 113, spurious reduction of production expr3 -> expr4
+## In state 114, spurious reduction of production expr2 -> expr3
+## In state 117, spurious reduction of production expr1 -> expr2
+## In state 128, spurious reduction of production option(ann) ->
+## In state 131, spurious reduction of production expr -> expr1 option(ann)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL SEMICOLON UNIT
 ##
-## Ends in an error in state: 192.
+## Ends in an error in state: 190.
 ##
 ## nonempty_list(located(case)) -> case . [ RBRACE ]
 ## nonempty_list(located(case)) -> case . nonempty_list(located(case)) [ RBRACE ]
@@ -1182,7 +1171,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL SEMICOLON UNIT
 
 program: KWDEF LID EQUAL LBRACKET BOOL RPAREN
 ##
-## Ends in an error in state: 195.
+## Ends in an error in state: 193.
 ##
 ## expr11 -> LBRACKET loption(separated_nonempty_list(COMMA,located(expr))) . RBRACKET [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -1193,26 +1182,26 @@ program: KWDEF LID EQUAL LBRACKET BOOL RPAREN
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 99, spurious reduction of production expr9 -> expr10
-## In state 86, spurious reduction of production expr8 -> expr9
-## In state 100, spurious reduction of production expr7 -> expr8
-## In state 101, spurious reduction of production expr6 -> expr7
-## In state 102, spurious reduction of production expr5 -> expr6
-## In state 108, spurious reduction of production expr4 -> expr5
-## In state 115, spurious reduction of production expr3 -> expr4
-## In state 116, spurious reduction of production expr2 -> expr3
-## In state 119, spurious reduction of production expr1 -> expr2
-## In state 130, spurious reduction of production option(ann) ->
-## In state 133, spurious reduction of production expr -> expr1 option(ann)
-## In state 197, spurious reduction of production separated_nonempty_list(COMMA,located(expr)) -> expr
-## In state 194, spurious reduction of production loption(separated_nonempty_list(COMMA,located(expr))) -> separated_nonempty_list(COMMA,located(expr))
+## In state 97, spurious reduction of production expr9 -> expr10
+## In state 84, spurious reduction of production expr8 -> expr9
+## In state 98, spurious reduction of production expr7 -> expr8
+## In state 99, spurious reduction of production expr6 -> expr7
+## In state 100, spurious reduction of production expr5 -> expr6
+## In state 106, spurious reduction of production expr4 -> expr5
+## In state 113, spurious reduction of production expr3 -> expr4
+## In state 114, spurious reduction of production expr2 -> expr3
+## In state 117, spurious reduction of production expr1 -> expr2
+## In state 128, spurious reduction of production option(ann) ->
+## In state 131, spurious reduction of production expr -> expr1 option(ann)
+## In state 195, spurious reduction of production separated_nonempty_list(COMMA,located(expr)) -> expr
+## In state 192, spurious reduction of production loption(separated_nonempty_list(COMMA,located(expr))) -> separated_nonempty_list(COMMA,located(expr))
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL LBRACKET BOOL ARROW
 ##
-## Ends in an error in state: 197.
+## Ends in an error in state: 195.
 ##
 ## separated_nonempty_list(COMMA,located(expr)) -> expr . [ RPAREN RBRACKET ]
 ## separated_nonempty_list(COMMA,located(expr)) -> expr . COMMA separated_nonempty_list(COMMA,located(expr)) [ RPAREN RBRACKET ]
@@ -1224,24 +1213,24 @@ program: KWDEF LID EQUAL LBRACKET BOOL ARROW
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 99, spurious reduction of production expr9 -> expr10
-## In state 86, spurious reduction of production expr8 -> expr9
-## In state 100, spurious reduction of production expr7 -> expr8
-## In state 101, spurious reduction of production expr6 -> expr7
-## In state 102, spurious reduction of production expr5 -> expr6
-## In state 108, spurious reduction of production expr4 -> expr5
-## In state 115, spurious reduction of production expr3 -> expr4
-## In state 116, spurious reduction of production expr2 -> expr3
-## In state 119, spurious reduction of production expr1 -> expr2
-## In state 130, spurious reduction of production option(ann) ->
-## In state 133, spurious reduction of production expr -> expr1 option(ann)
+## In state 97, spurious reduction of production expr9 -> expr10
+## In state 84, spurious reduction of production expr8 -> expr9
+## In state 98, spurious reduction of production expr7 -> expr8
+## In state 99, spurious reduction of production expr6 -> expr7
+## In state 100, spurious reduction of production expr5 -> expr6
+## In state 106, spurious reduction of production expr4 -> expr5
+## In state 113, spurious reduction of production expr3 -> expr4
+## In state 114, spurious reduction of production expr2 -> expr3
+## In state 117, spurious reduction of production expr1 -> expr2
+## In state 128, spurious reduction of production option(ann) ->
+## In state 131, spurious reduction of production expr -> expr1 option(ann)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL LBRACKET BOOL COMMA UNDERSCORE
 ##
-## Ends in an error in state: 198.
+## Ends in an error in state: 196.
 ##
 ## separated_nonempty_list(COMMA,located(expr)) -> expr COMMA . separated_nonempty_list(COMMA,located(expr)) [ RPAREN RBRACKET ]
 ##
@@ -1253,7 +1242,7 @@ program: KWDEF LID EQUAL LBRACKET BOOL COMMA UNDERSCORE
 
 program: KWDEF LID EQUAL LPAREN BOOL COMMA BOOL RBRACKET
 ##
-## Ends in an error in state: 200.
+## Ends in an error in state: 198.
 ##
 ## expr11 -> LPAREN loption(separated_nonempty_list(COMMA,located(expr))) . RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ##
@@ -1264,27 +1253,27 @@ program: KWDEF LID EQUAL LPAREN BOOL COMMA BOOL RBRACKET
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 99, spurious reduction of production expr9 -> expr10
-## In state 86, spurious reduction of production expr8 -> expr9
-## In state 100, spurious reduction of production expr7 -> expr8
-## In state 101, spurious reduction of production expr6 -> expr7
-## In state 102, spurious reduction of production expr5 -> expr6
-## In state 108, spurious reduction of production expr4 -> expr5
-## In state 115, spurious reduction of production expr3 -> expr4
-## In state 116, spurious reduction of production expr2 -> expr3
-## In state 119, spurious reduction of production expr1 -> expr2
-## In state 130, spurious reduction of production option(ann) ->
-## In state 133, spurious reduction of production expr -> expr1 option(ann)
-## In state 197, spurious reduction of production separated_nonempty_list(COMMA,located(expr)) -> expr
-## In state 199, spurious reduction of production separated_nonempty_list(COMMA,located(expr)) -> expr COMMA separated_nonempty_list(COMMA,located(expr))
-## In state 194, spurious reduction of production loption(separated_nonempty_list(COMMA,located(expr))) -> separated_nonempty_list(COMMA,located(expr))
+## In state 97, spurious reduction of production expr9 -> expr10
+## In state 84, spurious reduction of production expr8 -> expr9
+## In state 98, spurious reduction of production expr7 -> expr8
+## In state 99, spurious reduction of production expr6 -> expr7
+## In state 100, spurious reduction of production expr5 -> expr6
+## In state 106, spurious reduction of production expr4 -> expr5
+## In state 113, spurious reduction of production expr3 -> expr4
+## In state 114, spurious reduction of production expr2 -> expr3
+## In state 117, spurious reduction of production expr1 -> expr2
+## In state 128, spurious reduction of production option(ann) ->
+## In state 131, spurious reduction of production expr -> expr1 option(ann)
+## In state 195, spurious reduction of production separated_nonempty_list(COMMA,located(expr)) -> expr
+## In state 197, spurious reduction of production separated_nonempty_list(COMMA,located(expr)) -> expr COMMA separated_nonempty_list(COMMA,located(expr))
+## In state 192, spurious reduction of production loption(separated_nonempty_list(COMMA,located(expr))) -> separated_nonempty_list(COMMA,located(expr))
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL LPAREN BOOL ARROW
 ##
-## Ends in an error in state: 202.
+## Ends in an error in state: 200.
 ##
 ## expr11 -> LPAREN expr . RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
 ## separated_nonempty_list(COMMA,located(expr)) -> expr . [ RPAREN ]
@@ -1297,24 +1286,24 @@ program: KWDEF LID EQUAL LPAREN BOOL ARROW
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 99, spurious reduction of production expr9 -> expr10
-## In state 86, spurious reduction of production expr8 -> expr9
-## In state 100, spurious reduction of production expr7 -> expr8
-## In state 101, spurious reduction of production expr6 -> expr7
-## In state 102, spurious reduction of production expr5 -> expr6
-## In state 108, spurious reduction of production expr4 -> expr5
-## In state 115, spurious reduction of production expr3 -> expr4
-## In state 116, spurious reduction of production expr2 -> expr3
-## In state 119, spurious reduction of production expr1 -> expr2
-## In state 130, spurious reduction of production option(ann) ->
-## In state 133, spurious reduction of production expr -> expr1 option(ann)
+## In state 97, spurious reduction of production expr9 -> expr10
+## In state 84, spurious reduction of production expr8 -> expr9
+## In state 98, spurious reduction of production expr7 -> expr8
+## In state 99, spurious reduction of production expr6 -> expr7
+## In state 100, spurious reduction of production expr5 -> expr6
+## In state 106, spurious reduction of production expr4 -> expr5
+## In state 113, spurious reduction of production expr3 -> expr4
+## In state 114, spurious reduction of production expr2 -> expr3
+## In state 117, spurious reduction of production expr1 -> expr2
+## In state 128, spurious reduction of production option(ann) ->
+## In state 131, spurious reduction of production expr -> expr1 option(ann)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: COMMENT RIGHT
 ##
-## Ends in an error in state: 209.
+## Ends in an error in state: 207.
 ##
 ## list(located(decl)) -> decl . list(located(decl)) [ EOF ]
 ##
