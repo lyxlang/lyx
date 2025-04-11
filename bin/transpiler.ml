@@ -398,19 +398,12 @@ and build_variant variant =
   add "|" ;
   add_space () ;
   add (encode_uid variant.value.id.value) ;
-  if variant.value.typings <> [] then (
-    add_space () ;
-    add "of" ;
-    add_space () ;
-    build_variant_typings variant.value.typings ) ;
+  ( match variant.value.typing with
+  | Some t ->
+      add_space () ; add "of" ; add_space () ; build_typing t
+  | None ->
+      () ) ;
   add_space ()
-
-and build_variant_typings typings =
-  match typings with
-  | [t] ->
-      build_typing t
-  | _ ->
-      add_list "*" build_typing typings
 
 and build_typing t =
   match t.value with
@@ -433,12 +426,12 @@ and build_typing t =
   | TPoly p ->
       add "'" ;
       add (encode_lid p.value)
-  | TConstructor {id; typings} ->
+  | TConstructor {id; typing} -> (
       add (encode_uid id.value) ;
-      if typings <> [] then (
-        add_space () ;
-        add "of" ;
-        add_space () ;
-        build_variant_typings typings )
+      match typing with
+      | Some t ->
+          add_space () ; add "of" ; add_space () ; build_typing t
+      | None ->
+          () )
   | TTyping t' ->
       scoped (fun () -> build_typing t')

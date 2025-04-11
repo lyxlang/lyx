@@ -105,17 +105,19 @@ let rec analyze_type typing =
       List.iter (fun typing -> analyze_type typing.value) lst
   | TFunc {l; r} ->
       analyze_type l.value ; analyze_type r.value
-  | TConstructor {id; typings} -> (
-    match Hashtbl.find_opt output.types id.value with
+  | TConstructor variant -> (
+    match Hashtbl.find_opt output.types variant.id.value with
     | Some (span, arity) ->
-        if List.length typings <> arity then
+        let expected_arity = if Option.is_some variant.typing then 1 else 0 in
+        if expected_arity <> arity then
           output.errors <-
-            ArityMismatch {name= id.value; expected= arity; span}
+            ArityMismatch {name= variant.id.value; expected= arity; span}
             :: output.errors ;
-        Hashtbl.remove output.warnings id.value
+        Hashtbl.remove output.warnings variant.id.value
     | None ->
         output.errors <-
-          Undefined {name= id.value; span= id.loc} :: output.errors )
+          Undefined {name= variant.id.value; span= variant.id.loc}
+          :: output.errors )
   | TTyping t ->
       analyze_type t.value
   | TInt | TFloat | TString | TBool | TUnit | TPoly _ ->
@@ -239,10 +241,11 @@ let rec analyze_variant_type scope typing =
   | TFunc {l; r} ->
       analyze_variant_type scope l.value ;
       analyze_variant_type scope r.value
-  | TConstructor {id; typings} -> (
+  | TConstructor {id; typing} -> (
     match Hashtbl.find_opt output.types id.value with
     | Some (_, arity) ->
-        if List.length typings <> arity then
+        let expected_arity = if Option.is_some typing then 1 else 0 in
+        if expected_arity <> arity then
           output.errors <-
             ArityMismatch {name= id.value; expected= arity; span= id.loc}
             :: output.errors ;
@@ -265,11 +268,13 @@ and analyze_variant scope (variant : variant) =
           ; newest_span= variant.id.loc }
         :: output.errors
   | None ->
-      List.iter
-        (fun typing -> analyze_variant_type scope typing.value)
-        variant.typings ;
+      ( match variant.typing with
+      | Some typing ->
+          analyze_variant_type scope typing.value
+      | None ->
+          () ) ;
       Hashtbl.add output.variants variant.id.value
-        (variant.id.loc, List.length variant.typings) ;
+        (variant.id.loc, if Option.is_some variant.typing then 1 else 0) ;
       Hashtbl.add output.warnings variant.id.value
         (Unused {name= variant.id.value; span= variant.id.loc})
 

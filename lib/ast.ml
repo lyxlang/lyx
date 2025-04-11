@@ -114,7 +114,7 @@ and list_spd_pat = pattern located list [@@deriving show {with_path= false}]
 
 and tuple_pat = pattern located list [@@deriving show {with_path= false}]
 
-and variant = {id: string located; typings: typing located list}
+and variant = {id: string located; typing: typing located option}
 [@@deriving show {with_path= false}]
 
 and typing =

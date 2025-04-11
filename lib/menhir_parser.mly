@@ -246,7 +246,7 @@ let list_spd_pat := LBRACKET; ~ = separated_nonempty_list(COMMA, located(pattern
 
 let tuple_pat := LPAREN; ~ = separated_nonempty_list(COMMA, located(pattern)); RPAREN; < >
 
-let variant := id = located(UID); typings = list(located(typing)); SEMICOLON; { {id; typings} }
+let variant := id = located(UID); typing = option(located(typing)); SEMICOLON; { {id; typing} }
 
 let typing :=
   | l = located(typing1); ARROW; r = located(typing); { TFunc {l; r} }
@@ -261,5 +261,5 @@ let typing1 :=
   | LBRACKET; ~ = located(typing); RBRACKET; < TList >
   | LPAREN; ~ = separated_nonempty_list(COMMA, located(typing)); RPAREN; < TTuple >
   | ~ = located(LID); < TPoly >
-  | id = located(UID); typings = list(located(typing1)); { TConstructor {id; typings} }
+  | id = located(UID); typing = option(located(typing1)); { TConstructor {id; typing} }
   | LPAREN; ~ = located(typing); RPAREN; < TTyping >

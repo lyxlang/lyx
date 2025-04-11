@@ -105,7 +105,7 @@ and list_spd_pat = pattern located list
 
 and tuple_pat = pattern located list
 
-and variant = {id: string located; typings: typing located list}
+and variant = {id: string located; typing: typing located option}
 
 and typing =
   | TInt

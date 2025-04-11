@@ -28,6 +28,7 @@ module Node = struct
     | EmptyLine
     | Indent of t list
     | IndentNext of t list
+    | Empty
 
   let text str = Text (str, unicode_width str)
 
@@ -44,7 +45,7 @@ module Node = struct
         limit
     | SpaceOrLine ->
         1
-    | Line ->
+    | Line | Empty ->
         0
 end
 
@@ -156,7 +157,7 @@ module Generator = struct
         else t.depth <- t.depth - 1
     | IndentNext nodes ->
         List.iter (fun node -> node_gen t wrap node) nodes
-    | Line ->
+    | Line | Empty ->
         ()
 
   let generate t node =
@@ -519,10 +520,11 @@ module Builder = struct
     Group
       ( new_id t
       , [ text variant.value.id.value
-        ; Fill
-            (spaced
-               (separated_nodes SpaceOrLine
-                  (List.map build_typing variant.value.typings) ) )
+        ; ( match variant.value.typing with
+          | Some t ->
+              build_typing t
+          | None ->
+              Empty )
         ; text ";" ] )
 
   and build_typing typing =
@@ -552,13 +554,10 @@ module Builder = struct
           [build_typing l; SpaceOrLine; text "->"; SpaceOrLine; build_typing r]
     | TPoly str ->
         text str.value
-    | TConstructor {id; typings} ->
+    | TConstructor {id; typing} ->
         Nodes
           [ text id.value
-          ; Nodes
-              (spaced
-                 (separated_nodes SpaceOrLine (List.map build_typing typings)) )
-          ]
+          ; (match typing with Some t -> build_typing t | None -> Empty) ]
     | TTyping typing ->
         Nodes [text "("; build_typing typing; text ")"]
 end
