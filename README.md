@@ -39,6 +39,8 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 - VS Code language support
   - Syntax highlighting
   - Formatting
+  - Parsing
+- Helpful error messages
 - Unicode support
 
 ## Examples
