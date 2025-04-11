@@ -245,9 +245,9 @@ module Builder = struct
         Group
           ( new_id t
           , [ text "`"
-            ; SpaceOrLine
+            ; (if String.contains s '\n' then HardLine else SpaceOrLine)
             ; Indent [text (String.trim s)]
-            ; SpaceOrLine
+            ; (if String.contains s '\n' then HardLine else SpaceOrLine)
             ; text "`" ] )
 
   and build_olid olid =

@@ -14,13 +14,15 @@
 
 syn Point = (Float, Float)
 
-` Algebraic data type (ADT) representing different geometric shapes.
+`
+  Algebraic data type (ADT) representing different geometric shapes.
   The PascalCase naming convention is required for ADT names.
   A Shape can be one of the following:
     - Circle: defined by its radius (a Float).
     - Rectangle: defined by its width and height (a tuple of two Floats).
     - Square: defined by its width and height (a tuple of two Floats),
-      explicitly separated for use with the match expression below. `
+      explicitly separated for use with the match expression below.
+`
 
 uni Shape
 \ Circle Float
@@ -56,8 +58,10 @@ def offset : Int = -16
 
 def greeting : String = "Hello"
 
-` Variable and function declarations prefer camelCase naming convention.
-  Strings can span multiple lines by default. `
+`
+  Variable and function declarations prefer camelCase naming convention.
+  Strings can span multiple lines by default.
+`
 
 def loremIpsum : String = "Lorem \"ipsum\" dolor sit amet.
 Lorem ipsum dolor sit amet."
@@ -74,14 +78,16 @@ def distance (x1, y1) (x2, y2) : Point -> Point -> Float =
   let dx = x2 - x1; dy = y2 - y1
   in sqrt (dx ** 2.0 + dy ** 2.0)
 
-` Function definition for calculating the area of different geometric shapes.
+`
+  Function definition for calculating the area of different geometric shapes.
   The function ‘area’ takes a Shape as input and returns a Float representing the area.
   The ‘match … with’ expression provides pattern matching capabilities, similar to a switch statement but more powerful.
     - If the shape is a Circle, the pattern ‘\ Circle r’ matches,
       and ‘r’ is bound to the circle’s radius. The area is calculated as π × r × r.
     - If the shape is either a Rectangle or a Square, the pattern ‘\ Rectangle (w, h) \ Square (w, h)’ matches,
       and ‘w’ and ‘h’ are bound to the width and height, respectively. The area is calculated as w × h.
-  Note that all branches of the match expression must return the same type (in this case, Float). `
+  Note that all branches of the match expression must return the same type (in this case, Float).
+`
 
 def area shape : Shape -> Float =
   match shape with
@@ -101,13 +107,15 @@ def area shape : Shape -> Float =
 def safeDivide x y : Int -> Float -> Option Float =
   if y ~~ 0.0 then None else Some (x / y)
 
-` Special function named ‘_’ which serves as the entry point of the program.
+`
+  Special function named ‘_’ which serves as the entry point of the program.
   It demonstrates the usage of the ‘distance’ and ‘area’ functions.
   Built-in functions available in this language include:
     - map: applies a function to each element of a list.
     - filter: creates a new list containing elements that satisfy a given predicate.
     - foldLeft: applies a function to each element of a list, from left to right, accumulating a result.
-    - foldRight: applies a function to each element of a list, from right to left, accumulating a result. `
+    - foldRight: applies a function to each element of a list, from right to left, accumulating a result.
+`
 
 def _ =
   let
@@ -117,35 +125,43 @@ def _ =
     rectangle = Rectangle (2.0, 3.0)
   in map printNumber [distance point1 point2, area circle, area rectangle]
 
-` Example of using the ‘map’ function with an anonymous function (lambda).
+`
+  Example of using the ‘map’ function with an anonymous function (lambda).
   The lambda expression ‘(lambda a. 2 * 2)’ defines a function that takes an argument ‘a’,
   but always returns 4, regardless of the input.
-  This lambda function is applied to each element of the list ‘[1, 2, 3, 4]’. `
+  This lambda function is applied to each element of the list ‘[1, 2, 3, 4]’.
+`
 
 def mapped = map (lambda a. 2 * 2) [1, 2, 3, 4]
 
-` Example of using the ‘filter’ function with a lambda expression.
+`
+  Example of using the ‘filter’ function with a lambda expression.
   The lambda expression ‘(lambda x. x > 2)’ defines a function that takes an argument ‘x’,
   and returns true if ‘x’ is greater than 2, and false otherwise.
-  The ‘filter’ function keeps only the elements from the list ‘[1, 2, 3, 4]’ for which the lambda function returns true. `
+  The ‘filter’ function keeps only the elements from the list ‘[1, 2, 3, 4]’ for which the lambda function returns true.
+`
 
 def filtered = filter (λ x. x > 2) [1, 2, 3, 4]
 
-` Example of using the ‘foldLeft’ function.
+`
+  Example of using the ‘foldLeft’ function.
   ‘foldLeft’ takes a combining function, an initial value (accumulator), and a list.
   The lambda expression ‘(λ acc x. acc + x)’ defines a function that takes the current accumulator ‘acc’,
   and the current element ‘x’ and returns their sum.
   In this case, it sums all the elements of the list ‘[1, 2, 3, 4]’, starting with an initial accumulator value of 0.
-  The result will be (((0 + 1) + 2) + 3) + 4 = 10. `
+  The result will be (((0 + 1) + 2) + 3) + 4 = 10.
+`
 
 def foldedLeft = foldLeft (λ acc x. acc + x) 0 [1, 2, 3, 4]
 
-` Example of using the ‘foldRight’ function.
+`
+  Example of using the ‘foldRight’ function.
   ‘foldRight’ takes a combining function, a list, and an initial value (accumulator).
   The lambda expression ‘(λ x acc. x + acc)’ defines a function that takes the current element ‘x’,
   and the current accumulator ‘acc’ and returns their sum.
   In this case, it sums all the elements of the list ‘[1, 2, 3, 4]’, starting with an initial accumulator value of 0.
-  The result will be 1 + (2 + (3 + (4 + 0))) = 10. `
+  The result will be 1 + (2 + (3 + (4 + 0))) = 10.
+`
 
 def foldedRight = foldRight (λ x acc. x + acc) [1, 2, 3, 4] 0
 
