@@ -314,7 +314,7 @@ let analyze_declaration scope decl =
       analyze_expression scope' body.value
   | Decls _ ->
       assert false
-  | UnionDecl {id; polys; variants} ->
+  | DeclADT {id; polys; variants} ->
       (* Name *)
       ( match Hashtbl.find_opt output.types id.value with
       (* Was not already defined *)
@@ -347,7 +347,7 @@ let analyze_declaration scope decl =
         polys ;
       (* Variants *)
       List.iter (fun variant -> analyze_variant scope' variant.value) variants
-  | SynDecl {id; typing} -> (
+  | DeclAlias {id; typing} -> (
       analyze_type typing.value ;
       match Hashtbl.find_opt output.types id.value with
       | Some (span, _) ->

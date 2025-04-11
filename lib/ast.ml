@@ -14,11 +14,11 @@ and program = decl located list [@@deriving show {with_path= false}]
 and decl =
   | Decl of tlbind
   | Decls of tlbind list
-  | UnionDecl of
+  | DeclADT of
       { id: string located
       ; polys: string located list
       ; variants: variant located list }
-  | SynDecl of {id: string located; typing: typing located}
+  | DeclAlias of {id: string located; typing: typing located}
   | Comment of string
 [@@deriving show {with_path= false}]
 

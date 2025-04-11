@@ -111,8 +111,8 @@ let ann := COLON; ~ = located(typing); < >
 
 let decl :=
   | KWDEF; id = located(olid); params = list(located(param)); signature = option(ann); EQUAL; body = located(expr); { Decl {id; params; signature; body} }
-  | KWDEF; id = located(UID); COLONEQUAL; polys = list(located(LID)); LBRACE; variants = nonempty_list(located(variant)); RBRACE; { UnionDecl {id; polys; variants} }
-  | KWDEF; id = located(UID); COLONEQUAL; typing = located(typing); { SynDecl {id; typing} }
+  | KWDEF; id = located(UID); COLONEQUAL; polys = list(located(LID)); LBRACE; variants = nonempty_list(located(variant)); RBRACE; { DeclADT {id; polys; variants} }
+  | KWDEF; id = located(UID); COLONEQUAL; typing = located(typing); { DeclAlias {id; typing} }
   | ~ = COMMENT; < Comment >
 
 let olid :=

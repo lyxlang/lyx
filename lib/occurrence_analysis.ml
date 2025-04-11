@@ -445,7 +445,7 @@ let process_program (program : Ast.program) =
                 , fst (process_expression scope' body) )
             ; loc= decl.loc }
             :: acc
-        | Decls _ | UnionDecl _ | SynDecl _ | Comment _ ->
+        | Decls _ | DeclADT _ | DeclAlias _ | Comment _ ->
             acc )
       [] program
   in

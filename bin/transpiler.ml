@@ -58,14 +58,14 @@ let is_type_decl decl =
   match decl.value with
   | Decl _ | Decls _ | Comment _ ->
       false
-  | UnionDecl _ | SynDecl _ ->
+  | DeclADT _ | DeclAlias _ ->
       true
 
 let is_entry_point decl =
   match decl.value with
   | Decl {id; params= _; signature= _; body= _} ->
       id.value = Wildcard
-  | Decls _ | Comment _ | UnionDecl _ | SynDecl _ ->
+  | Decls _ | Comment _ | DeclADT _ | DeclAlias _ ->
       false
 
 let rec build_program decls =
@@ -97,7 +97,7 @@ and build_decl decl =
       build_expr body
   | Decls _ ->
       ()
-  | UnionDecl {id; polys; variants} ->
+  | DeclADT {id; polys; variants} ->
       if !first_type then (
         add "type" ;
         first_type := false )
@@ -114,7 +114,7 @@ and build_decl decl =
       add "=" ;
       add_space () ;
       List.iter build_variant variants
-  | SynDecl {id; typing} ->
+  | DeclAlias {id; typing} ->
       if !first_type then (
         add "type" ;
         first_type := false )

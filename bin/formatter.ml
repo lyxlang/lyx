@@ -220,7 +220,7 @@ module Builder = struct
           ; Group (new_id t, [SpaceOrLine; Indent [build_expr t body]]) ]
     | Decls _ ->
         assert false
-    | UnionDecl {id; polys; variants} ->
+    | DeclADT {id; polys; variants} ->
         Nodes
           [ text "def"
           ; SpaceOrLine
@@ -240,7 +240,7 @@ module Builder = struct
                      (fun v -> Nodes [Indent [build_variant t v]; HardLine])
                      variants ) )
           ; text "}" ]
-    | SynDecl {id; typing} ->
+    | DeclAlias {id; typing} ->
         Nodes
           [ text "def"
           ; SpaceOrLine
