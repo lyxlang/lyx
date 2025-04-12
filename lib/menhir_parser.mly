@@ -52,6 +52,11 @@
 %token SLASH
 %token PERCENT
 %token BANG
+%token LEFT
+%token RIGHT
+%token AMPERSAND
+%token BAR
+%token HAT
 %token ARROW
 %token SEMICOLON
 %token BACKSLASH
@@ -82,10 +87,12 @@
 %type <Ast.expr> expr8
 %type <Ast.expr> expr9
 %type <Ast.expr> expr10
+%type <Ast.expr> expr11
 %type <Ast.bool_op> bool_op
 %type <Ast.comp_op> comp_op
 %type <Ast.add_op> add_op
 %type <Ast.mul_op> mul_op
+%type <Ast.bit_op> bit_op
 %type <Ast.un_op> un_op
 %type <Ast.bind> bind
 %type <Ast.case> case
@@ -153,17 +160,21 @@ let expr8 :=
   | ~ = expr9; < >
 
 let expr9 :=
-  | fn = located(expr9); arg = located(expr10); { EApp {fn; arg} }
+  | l = located(expr9); op = located(bit_op); r = located(expr10); { EBitOp {l; op; r} }
   | ~ = expr10; < >
 
 let expr10 :=
+  | fn = located(expr10); arg = located(expr11); { EApp {fn; arg} }
+  | ~ = expr11; < >
+
+let expr11 :=
   | BACKSLASH; params = nonempty_list(located(param)); ARROW; body = located(expr); { ELambda {params; body} }
   | KWMATCH; ref = located(expr); LBRACE; cases = nonempty_list(located(case)); RBRACE; { EMatch {ref; cases} }
   | KWLET; binds = separated_nonempty_list(SEMICOLON, located(bind)); KWIN; body = located(expr); { ELets {binds; body} }
   | KWIF; predicate = located(expr); KWTHEN; truthy = located(expr); KWELSE; falsy = located(expr); { EIf {predicate; truthy; falsy} }
   | ~ = located(UID); < EUID >
   | ~ = located(LID); < ELID >
-  | LPAREN; e = located(expr); COMMA; l = separated_list(COMMA, located(expr)); RPAREN; { ETuple (e :: l) }
+  | LPAREN; ~ = separated_list(COMMA, located(expr)); RPAREN; < ETuple >
   | LBRACKET; ~ = separated_list(COMMA, located(expr)); RBRACKET; < EList >
   | UNIT; { EUnit }
   | ~ = located(BOOL); < EBool >
@@ -200,6 +211,13 @@ let un_op :=
   | MINUS; { UnNeg }
   | BANG; { UnBoolNot }
 
+let bit_op :=
+  | LEFT; { OpBitLShift }
+  | RIGHT; { OpBitRShift }
+  | AMPERSAND; { OpBitAnd }
+  | BAR; { OpBitOr }
+  | HAT; { OpBitXor }
+
 let bind := id = located(LID); params = list(located(param)); signature = option(ann); EQUAL; body = located(expr); { {id; params; signature; body} }
 
 let case :=
@@ -216,18 +234,7 @@ let pattern1 :=
   | ~ = located(STRING); < PString >
   | ~ = located(BOOL); < PBool >
   | ~ = located(olid); < POLID >
-  | id = located(UID); params = list(located(constructor_sub_pattern)); { PConstructor {id; params} }
-  | ~ = located(list_pat); < PList >
-  | ~ = located(list_spd_pat); < PListSpd >
-  | ~ = located(tuple_pat); < PTuple >
-  | LPAREN; ~ = located(pattern); RPAREN; < PParenthesized >
-
-let constructor_sub_pattern :=
-  | ~ = located(INT); < PInt >
-  | ~ = located(FLOAT); < PFloat >
-  | ~ = located(STRING); < PString >
-  | ~ = located(BOOL); < PBool >
-  | ~ = located(olid); < POLID >
+  | id = located(UID); params = list(located(pattern1)); { PConstructor {id; params} }
   | ~ = located(list_pat); < PList >
   | ~ = located(list_spd_pat); < PListSpd >
   | ~ = located(tuple_pat); < PTuple >
@@ -237,7 +244,7 @@ let list_pat := LBRACKET; ~ = separated_list(COMMA, located(pattern)); RBRACKET;
 
 let list_spd_pat := LBRACKET; ~ = separated_nonempty_list(COMMA, located(pattern)); ELLIPSIS; RBRACKET; < >
 
-let tuple_pat := LPAREN; e = located(pattern); COMMA; l = separated_list(COMMA, located(pattern)); RPAREN; { e :: l}
+let tuple_pat := LPAREN; ~ = separated_nonempty_list(COMMA, located(pattern)); RPAREN; < >
 
 let variant := id = located(UID); typing = option(located(typing)); SEMICOLON; { {id; typing} }
 
@@ -252,18 +259,7 @@ let typing1 :=
   | KWBOOL; { TBool }
   | KWUNIT; { TUnit }
   | LBRACKET; ~ = located(typing); RBRACKET; < TList >
-  | LPAREN; t = located(typing); COMMA; l = separated_list(COMMA, located(typing)); RPAREN; { TTuple (t :: l) }
+  | LPAREN; ~ = separated_nonempty_list(COMMA, located(typing)); RPAREN; < TTuple >
   | ~ = located(LID); < TPoly >
-  | id = located(UID); typing = option(located(constructor_sub_typing)); { TConstructor {id; typing} }
-  | LPAREN; ~ = located(typing); RPAREN; < TTyping >
-
-let constructor_sub_typing :=
-  | KWINT; { TInt }
-  | KWFLOAT; { TFloat }
-  | KWSTRING; { TString }
-  | KWBOOL; { TBool }
-  | KWUNIT; { TUnit }
-  | LBRACKET; ~ = located(typing); RBRACKET; < TList >
-  | LPAREN; t = located(typing); COMMA; l = separated_list(COMMA, located(typing)); RPAREN; { TTuple (t :: l) }
-  | ~ = located(LID); < TPoly >
+  | id = located(UID); typing = option(located(typing1)); { TConstructor {id; typing} }
   | LPAREN; ~ = located(typing); RPAREN; < TTyping >

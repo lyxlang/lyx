@@ -345,7 +345,8 @@ let rec process_expression (scope : scope) (expr : Ast.expr located) =
   | EConcatOp {l; r}
   | EAddOp {l; r; _}
   | EMulOp {l; r; _}
-  | EExpOp {l; r} ->
+  | EExpOp {l; r}
+  | EBitOp {l; r; _} ->
       let l_fv, l = process_expression scope l in
       let r_fv, r = process_expression scope r in
       let new_bin_op =
@@ -364,6 +365,8 @@ let rec process_expression (scope : scope) (expr : Ast.expr located) =
             EMulOp {l; r; op}
         | EExpOp _ ->
             EExpOp {l; r}
+        | EBitOp {op; _} ->
+            EBitOp {l; r; op}
         | EParenthesized _
         | ETyped _
         | EUnOp _

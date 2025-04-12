@@ -302,6 +302,8 @@ module Builder = struct
         Fill [build_un_op op; build_expr t body]
     | EExpOp {l; r} ->
         operator (build_expr t l) (build_expr t r) (text "**")
+    | EBitOp {l; op; r} ->
+        operator (build_expr t l) (build_expr t r) (build_bit_op op)
     | EApp {fn; arg} ->
         Fill [build_expr t fn; SpaceOrLine; build_expr t arg]
     | ELambda {params; body} ->
@@ -417,6 +419,19 @@ module Builder = struct
         text "-"
     | UnBoolNot ->
         text "!"
+
+  and build_bit_op op =
+    match op.value with
+    | OpBitLShift ->
+        text "<<"
+    | OpBitRShift ->
+        text ">>"
+    | OpBitAnd ->
+        text "&"
+    | OpBitOr ->
+        text "|"
+    | OpBitXor ->
+        text "^"
 
   and build_bind t bind =
     Group

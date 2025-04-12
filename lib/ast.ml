@@ -40,6 +40,7 @@ and expr =
   | EMulOp of {l: expr located; op: mul_op located; r: expr located}
   | EUnOp of {op: un_op located; body: expr located}
   | EExpOp of {l: expr located; r: expr located}
+  | EBitOp of {l: expr located; op: bit_op located; r: expr located}
   | EApp of {fn: expr located; arg: expr located}
   | ELambda of {params: param located list; body: expr located}
   | EMatch of {ref: expr located; cases: case located list}
@@ -65,6 +66,8 @@ and add_op = OpAdd | OpSub
 and mul_op = OpMul | OpDiv | OpMod
 
 and un_op = UnPlus | UnNeg | UnBoolNot
+
+and bit_op = OpBitLShift | OpBitRShift | OpBitAnd | OpBitOr | OpBitXor
 
 and tlbind =
   { id: olid located
