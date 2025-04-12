@@ -20,10 +20,10 @@ let parse ?(json = false) buf =
       exit code
 
 let analyze ast =
-  let output = Semantics_analysis.analyze_program ast in
-  Semantics_analysis.debug_output output
+  let output = Semantic_analysis.analyze_program ast in
+  Semantic_analysis.debug_output output
 (*
- * if Semantics_analysis.get_errors output = [] then
+ * if Semantic_analysis.get_errors output = [] then
  *   Occurrence_analysis.analyze ast
  *   |> Occurrence_analysis.show_program |> print_endline
  *)
