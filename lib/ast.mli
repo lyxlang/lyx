@@ -40,7 +40,6 @@ and expr =
   | EMulOp of {l: expr located; op: mul_op located; r: expr located}
   | EUnOp of {op: un_op located; body: expr located}
   | EExpOp of {l: expr located; r: expr located}
-  | EBitOp of {l: expr located; op: bit_op located; r: expr located}
   | EApp of {fn: expr located; arg: expr located}
   | ELambda of {params: param located list; body: expr located}
   | EMatch of {ref: expr located; cases: case located list}
@@ -66,8 +65,6 @@ and add_op = OpAdd | OpSub
 and mul_op = OpMul | OpDiv | OpMod
 
 and un_op = UnPlus | UnNeg | UnBoolNot
-
-and bit_op = OpBitLShift | OpBitRShift | OpBitAnd | OpBitOr | OpBitXor
 
 and tlbind =
   { id: olid located
@@ -176,10 +173,6 @@ val show_mul_op : mul_op -> string
 val pp_un_op : Format.formatter -> un_op -> unit
 
 val show_un_op : un_op -> string
-
-val pp_bit_op : Format.formatter -> bit_op -> unit
-
-val show_bit_op : bit_op -> string
 
 val pp_tlbind : Format.formatter -> tlbind -> unit
 

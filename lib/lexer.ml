@@ -150,16 +150,6 @@ let rec tokenizer buf =
       PERCENT
   | '!' ->
       BANG
-  | "<<" ->
-      LEFT
-  | ">>" ->
-      RIGHT
-  | '&' ->
-      AMPERSAND
-  | '|' ->
-      BAR
-  | '^' ->
-      HAT
   | "->" ->
       ARROW
   | ';' ->

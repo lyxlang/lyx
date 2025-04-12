@@ -179,7 +179,6 @@ and analyze_expression scope expr =
   | ECompOp {l; r; _}
   | EAddOp {l; r; _}
   | EMulOp {l; r; _}
-  | EBitOp {l; r; _}
   | EPipeOp {l; r}
   | EConcatOp {l; r}
   | EExpOp {l; r} ->
