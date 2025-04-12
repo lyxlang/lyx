@@ -19,13 +19,14 @@ let parse ?(json = false) buf =
       Reporter.create_report Reporter.Error code msg (start, fin) ~json ;
       exit code
 
-let show prog = Format.printf "%a@." Ast.pp_program prog
-
 let analyze ast =
   let output = Semantics_analysis.analyze_program ast in
   Semantics_analysis.debug_output output
-(* ; if Semantics_analysis.get_errors output = [] then
-   Occurrence_analysis.analyze ast |> Occurrence_analysis.debug_output *)
+(*
+ * if Semantics_analysis.get_errors output = [] then
+ *   Occurrence_analysis.analyze ast
+ *   |> Occurrence_analysis.show_program |> print_endline
+ *)
 
 let transpile_file file =
   Sedlexing.Utf8.from_channel (open_in_bin file)
@@ -51,11 +52,13 @@ let parse_file file =
   let buf = Sedlexing.Utf8.from_channel (open_in_bin file) in
   Sedlexing.set_filename buf file ;
   let ast = parse buf in
-  show ast ; analyze ast
+  Ast.show_program ast |> print_endline ;
+  analyze ast
 
 let parse_stdin () =
   let ast = Sedlexing.Utf8.from_channel stdin |> parse in
-  show ast ; analyze ast
+  Ast.show_program ast |> print_endline ;
+  analyze ast
 
 let print_usage () =
   print_endline

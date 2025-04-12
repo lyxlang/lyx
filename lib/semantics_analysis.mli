@@ -7,30 +7,36 @@
 
 type arity = int
 
+val pp_arity : Format.formatter -> arity -> unit
+
+val show_arity : arity -> string
+
 type info = Ast.span * arity
 
 type name = string
 
+val pp_name : Format.formatter -> name -> unit
+
+val show_name : name -> string
+
 type map = (name, info) Hashtbl.t
 
 type error =
-  | AlreadyDefined of {prev: Ast.span; new': string; newest_span: Ast.span}
-  | Undefined of {name: string; span: Ast.span}
-  | ReservedName of {name: string; span: Ast.span}
-  | NotACallee of {name: string; span: Ast.span}
-  | ArityMismatch of {name: string; expected: int; span: Ast.span}
+  | AlreadyDefined of {prev: Ast.span; new': name; newest_span: Ast.span}
+  | Undefined of {name: name; span: Ast.span}
+  | ReservedName of {name: name; span: Ast.span}
+  | NotACallee of {name: name; span: Ast.span}
+  | ArityMismatch of {name: name; expected: arity; span: Ast.span}
 
-val pp_error :
-  Ppx_deriving_runtime.Format.formatter -> error -> Ppx_deriving_runtime.unit
+val pp_error : Format.formatter -> error -> unit
 
-val show_error : error -> Ppx_deriving_runtime.string
+val show_error : error -> string
 
-type warning = Unused of {name: string; span: Ast.span}
+type warning = Unused of {name: name; span: Ast.span}
 
-val pp_warning :
-  Ppx_deriving_runtime.Format.formatter -> warning -> Ppx_deriving_runtime.unit
+val pp_warning : Format.formatter -> warning -> unit
 
-val show_warning : warning -> Ppx_deriving_runtime.string
+val show_warning : warning -> string
 
 type analysis_output =
   { mutable errors: error list

@@ -120,134 +120,99 @@ and typing =
   | TConstructor of variant
   | TTyping of typing located
 
-val pp_span :
-  Ppx_deriving_runtime.Format.formatter -> span -> Ppx_deriving_runtime.unit
+val pp_span : Format.formatter -> span -> unit
 
-val show_span : span -> Ppx_deriving_runtime.string
+val show_span : span -> string
 
 val pp_located :
-     (Ppx_deriving_runtime.Format.formatter -> 'a -> Ppx_deriving_runtime.unit)
-  -> Ppx_deriving_runtime.Format.formatter
-  -> 'a located
-  -> Ppx_deriving_runtime.unit
+  (Format.formatter -> 'a -> unit) -> Format.formatter -> 'a located -> unit
 
-val show_located :
-     (Ppx_deriving_runtime.Format.formatter -> 'a -> Ppx_deriving_runtime.unit)
-  -> 'a located
-  -> Ppx_deriving_runtime.string
+val show_located : (Format.formatter -> 'a -> unit) -> 'a located -> string
 
-val pp_program :
-  Ppx_deriving_runtime.Format.formatter -> program -> Ppx_deriving_runtime.unit
+val pp_program : Format.formatter -> program -> unit
 
-val show_program : program -> Ppx_deriving_runtime.string
+val show_program : program -> string
 
-val pp_decl :
-  Ppx_deriving_runtime.Format.formatter -> decl -> Ppx_deriving_runtime.unit
+val pp_decl : Format.formatter -> decl -> unit
 
-val show_decl : decl -> Ppx_deriving_runtime.string
+val show_decl : decl -> string
 
-val pp_olid :
-  Ppx_deriving_runtime.Format.formatter -> olid -> Ppx_deriving_runtime.unit
+val pp_olid : Format.formatter -> olid -> unit
 
-val show_olid : olid -> Ppx_deriving_runtime.string
+val show_olid : olid -> string
 
-val pp_param :
-  Ppx_deriving_runtime.Format.formatter -> param -> Ppx_deriving_runtime.unit
+val pp_param : Format.formatter -> param -> unit
 
-val show_param : param -> Ppx_deriving_runtime.string
+val show_param : param -> string
 
-val pp_ann :
-  Ppx_deriving_runtime.Format.formatter -> ann -> Ppx_deriving_runtime.unit
+val pp_ann : Format.formatter -> ann -> unit
 
-val show_ann : ann -> Ppx_deriving_runtime.string
+val show_ann : ann -> string
 
-val pp_tuple_param :
-     Ppx_deriving_runtime.Format.formatter
-  -> tuple_param
-  -> Ppx_deriving_runtime.unit
+val pp_tuple_param : Format.formatter -> tuple_param -> unit
 
-val show_tuple_param : tuple_param -> Ppx_deriving_runtime.string
+val show_tuple_param : tuple_param -> string
 
-val pp_expr :
-  Ppx_deriving_runtime.Format.formatter -> expr -> Ppx_deriving_runtime.unit
+val pp_expr : Format.formatter -> expr -> unit
 
-val show_expr : expr -> Ppx_deriving_runtime.string
+val show_expr : expr -> string
 
-val pp_bool_op :
-  Ppx_deriving_runtime.Format.formatter -> bool_op -> Ppx_deriving_runtime.unit
+val pp_bool_op : Format.formatter -> bool_op -> unit
 
-val show_bool_op : bool_op -> Ppx_deriving_runtime.string
+val show_bool_op : bool_op -> string
 
-val pp_comp_op :
-  Ppx_deriving_runtime.Format.formatter -> comp_op -> Ppx_deriving_runtime.unit
+val pp_comp_op : Format.formatter -> comp_op -> unit
 
-val show_comp_op : comp_op -> Ppx_deriving_runtime.string
+val show_comp_op : comp_op -> string
 
-val pp_add_op :
-  Ppx_deriving_runtime.Format.formatter -> add_op -> Ppx_deriving_runtime.unit
+val pp_add_op : Format.formatter -> add_op -> unit
 
-val show_add_op : add_op -> Ppx_deriving_runtime.string
+val show_add_op : add_op -> string
 
-val pp_mul_op :
-  Ppx_deriving_runtime.Format.formatter -> mul_op -> Ppx_deriving_runtime.unit
+val pp_mul_op : Format.formatter -> mul_op -> unit
 
-val show_mul_op : mul_op -> Ppx_deriving_runtime.string
+val show_mul_op : mul_op -> string
 
-val pp_un_op :
-  Ppx_deriving_runtime.Format.formatter -> un_op -> Ppx_deriving_runtime.unit
+val pp_un_op : Format.formatter -> un_op -> unit
 
-val show_un_op : un_op -> Ppx_deriving_runtime.string
+val show_un_op : un_op -> string
 
-val pp_bit_op :
-  Ppx_deriving_runtime.Format.formatter -> bit_op -> Ppx_deriving_runtime.unit
+val pp_bit_op : Format.formatter -> bit_op -> unit
 
-val show_bit_op : bit_op -> Ppx_deriving_runtime.string
+val show_bit_op : bit_op -> string
 
-val pp_tlbind :
-  Ppx_deriving_runtime.Format.formatter -> tlbind -> Ppx_deriving_runtime.unit
+val pp_tlbind : Format.formatter -> tlbind -> unit
 
-val show_tlbind : tlbind -> Ppx_deriving_runtime.string
+val show_tlbind : tlbind -> string
 
-val pp_bind :
-  Ppx_deriving_runtime.Format.formatter -> bind -> Ppx_deriving_runtime.unit
+val pp_bind : Format.formatter -> bind -> unit
 
-val show_bind : bind -> Ppx_deriving_runtime.string
+val show_bind : bind -> string
 
-val pp_case :
-  Ppx_deriving_runtime.Format.formatter -> case -> Ppx_deriving_runtime.unit
+val pp_case : Format.formatter -> case -> unit
 
-val show_case : case -> Ppx_deriving_runtime.string
+val show_case : case -> string
 
-val pp_pattern :
-  Ppx_deriving_runtime.Format.formatter -> pattern -> Ppx_deriving_runtime.unit
+val pp_pattern : Format.formatter -> pattern -> unit
 
-val show_pattern : pattern -> Ppx_deriving_runtime.string
+val show_pattern : pattern -> string
 
-val pp_list_pat :
-  Ppx_deriving_runtime.Format.formatter -> list_pat -> Ppx_deriving_runtime.unit
+val pp_list_pat : Format.formatter -> list_pat -> unit
 
-val show_list_pat : list_pat -> Ppx_deriving_runtime.string
+val show_list_pat : list_pat -> string
 
-val pp_list_spd_pat :
-     Ppx_deriving_runtime.Format.formatter
-  -> list_spd_pat
-  -> Ppx_deriving_runtime.unit
+val pp_list_spd_pat : Format.formatter -> list_spd_pat -> unit
 
-val show_list_spd_pat : list_spd_pat -> Ppx_deriving_runtime.string
+val show_list_spd_pat : list_spd_pat -> string
 
-val pp_tuple_pat :
-     Ppx_deriving_runtime.Format.formatter
-  -> tuple_pat
-  -> Ppx_deriving_runtime.unit
+val pp_tuple_pat : Format.formatter -> tuple_pat -> unit
 
-val show_tuple_pat : tuple_pat -> Ppx_deriving_runtime.string
+val show_tuple_pat : tuple_pat -> string
 
-val pp_variant :
-  Ppx_deriving_runtime.Format.formatter -> variant -> Ppx_deriving_runtime.unit
+val pp_variant : Format.formatter -> variant -> unit
 
-val show_variant : variant -> Ppx_deriving_runtime.string
+val show_variant : variant -> string
 
-val pp_typing :
-  Ppx_deriving_runtime.Format.formatter -> typing -> Ppx_deriving_runtime.unit
+val pp_typing : Format.formatter -> typing -> unit
 
-val show_typing : typing -> Ppx_deriving_runtime.string
+val show_typing : typing -> string

@@ -3,9 +3,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-bnfc:
-    bnfc lys.cf --ocaml-menhir -o bnfc
-
 list-errors:
     menhir lib/menhir_parser.mly --table --list-errors > lib/parser.messages
 

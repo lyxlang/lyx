@@ -7,11 +7,8 @@
 
 type program = Ast.decl list
 
-val pp_program :
-  Ppx_deriving_runtime.Format.formatter -> program -> Ppx_deriving_runtime.unit
+val pp_program : Format.formatter -> program -> unit
 
-val show_program : program -> Ppx_deriving_runtime.string
+val show_program : program -> string
 
 val analyze : Ast.program -> Ast.decl list
-
-val debug_output : Ast.decl list -> unit

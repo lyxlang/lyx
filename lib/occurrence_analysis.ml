@@ -7,7 +7,7 @@
 
 open Ast
 
-type program = decl list [@@deriving show]
+type program = decl list [@@deriving show {with_path= false}]
 
 (** [varMap] maps each variables to its associated numerical ids. *)
 type varMap = (string, int) Hashtbl.t
@@ -20,22 +20,22 @@ and scope = Scope of varMap * scope | Root
 let id_map : (int, string located) Hashtbl.t = Hashtbl.create 1000
 
 (** [id] corresponds to a unique numerical identifier. *)
-type id = int [@@deriving show]
+type id = int [@@deriving show {with_path= false}]
 
 (** [ids] represents a list of unique numeric identifiers that appear in the
     bind body. *)
-and ids = id list [@@deriving show]
+and ids = id list [@@deriving show {with_path= false}]
 
 (** [params] represents a list of parameters given to a function *)
-and params = Ast.param located list [@@deriving show]
+and params = Ast.param located list [@@deriving show {with_path= false}]
 
 (** [signature] represents the type signature of a function *)
-and signature = Ast.ann [@@deriving show]
+and signature = Ast.ann [@@deriving show {with_path= false}]
 
 (** [bind] corresponds to a binding. It has the form `(Var, Parameters,
     Signature, Expr, fv(Expr)) located` *)
 and bind = (id * params * signature * expr located * ids) located
-[@@deriving show]
+[@@deriving show {with_path= false}]
 
 (** [scc] represents a strongly connected component (SCC) in a graph.
 
@@ -46,10 +46,11 @@ and bind = (id * params * signature * expr located * ids) located
 
     SCCs are used to identify groups of bindings that are mutually dependent and
     dead code. *)
-type scc = AcyclicSCC of bind | CyclicSCC of bind list [@@deriving show]
+type scc = AcyclicSCC of bind | CyclicSCC of bind list
+[@@deriving show {with_path= false}]
 
 (** [sccs] is a list of all SCCs found in the program. *)
-(* let sccs : scc list ref = ref [] [@@deriving show] *)
+(* let sccs : scc list ref = ref [] [@@deriving show {with_path= false}] *)
 
 let new_map () = Hashtbl.create 100
 
@@ -269,9 +270,9 @@ let rec process_expression (scope : scope) (expr : Ast.expr located) =
          reference in id_map *)
       List.iter (fun param -> analyze_param scope' param.value) params ;
       (* Process_expression the body of the lambda and get the free variables *)
-      let fv, body = process_expression scope' body in
+      let fv, body = process_expression scope' body
       (* Get the variables of the current scope *)
-      let varMap =
+      and varMap =
         match scope' with Scope (map, _) -> map | Root -> assert false
       in
       (* Collects the identifiers of lambda parameters (which are therefore
@@ -280,8 +281,8 @@ let rec process_expression (scope : scope) (expr : Ast.expr located) =
       (* Remove the lambda parameters from the free variables *)
       (List.filter (fun id -> not (List.mem id ids)) fv, body)
   | EApp {fn; arg} ->
-      let fn_fv, fn = process_expression scope fn in
-      let arg_fv, arg = process_expression scope arg in
+      let fn_fv, fn = process_expression scope fn
+      and arg_fv, arg = process_expression scope arg in
       (List.append fn_fv arg_fv, {value= EApp {fn; arg}; loc})
   | ELets {binds; body} ->
       let scope' = Scope (new_map (), scope) in
@@ -305,8 +306,8 @@ let rec process_expression (scope : scope) (expr : Ast.expr located) =
             List.iter
               (fun param -> analyze_param scope'' param.value)
               bind.value.params ;
-            let fv, bind_body = process_expression scope'' bind.value.body in
-            let index = List.length acc in
+            let fv, bind_body = process_expression scope'' bind.value.body
+            and index = List.length acc in
             { value=
                 ( List.nth ids index
                 , bind.value.params
@@ -317,15 +318,14 @@ let rec process_expression (scope : scope) (expr : Ast.expr located) =
             :: acc )
           [] binds
       in
-      let bindings = rebuild_let_binds (tarjans_algorithm binds) body in
-      let body_fv =
+      let bindings = rebuild_let_binds (tarjans_algorithm binds) body
+      and body_fv =
         List.filter
           (fun id -> not (List.mem id ids))
           (fst (process_expression scope' body))
-      in
       (* Remove binds variables from the free variables in the body of all
          binds *)
-      let cleaned_binds =
+      and cleaned_binds =
         List.map
           (fun {value= id, _, _, body, fv; _} ->
             (id, body, List.filter (fun id -> not (List.mem id ids)) fv) )
@@ -452,5 +452,3 @@ let process_program (program : Ast.program) =
   tarjans_algorithm binds
 
 let analyze program = process_program program |> rebuild_decl_binds
-
-let debug_output output = Format.printf "%a@." pp_program output

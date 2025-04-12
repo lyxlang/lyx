@@ -7,25 +7,26 @@
 
 open Ast
 
-type arity = int
+type arity = int [@@deriving show {with_path= false}]
 
 type info = span * arity
 
-type name = string
+type name = string [@@deriving show {with_path= false}]
 
 type map = (name, info) Hashtbl.t
 
 type scope = Scope of map * scope | Root
 
 type error =
-  | AlreadyDefined of {prev: span; new': string; newest_span: span}
-  | Undefined of {name: string; span: span}
-  | ReservedName of {name: string; span: span}
-  | NotACallee of {name: string; span: span}
-  | ArityMismatch of {name: string; expected: int; span: span}
-[@@deriving show]
+  | AlreadyDefined of {prev: span; new': name; newest_span: span}
+  | Undefined of {name: name; span: span}
+  | ReservedName of {name: name; span: span}
+  | NotACallee of {name: name; span: span}
+  | ArityMismatch of {name: name; expected: arity; span: span}
+[@@deriving show {with_path= false}]
 
-type warning = Unused of {name: string; span: span} [@@deriving show]
+type warning = Unused of {name: name; span: span}
+[@@deriving show {with_path= false}]
 
 type analysis_output =
   { mutable errors: error list

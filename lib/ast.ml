@@ -9,7 +9,7 @@ type span = {start: int; fin: int}
 
 and 'a located = {loc: span; value: 'a}
 
-and program = decl located list [@@deriving show {with_path= false}]
+and program = decl located list
 
 and decl =
   | Decl of tlbind
@@ -20,16 +20,14 @@ and decl =
       ; variants: variant located list }
   | DeclAlias of {id: string located; typing: typing located}
   | Comment of string
-[@@deriving show {with_path= false}]
 
-and olid = Wildcard | L of string [@@deriving show {with_path= false}]
+and olid = Wildcard | L of string
 
 and param = PRLID of string located | PRTuple of tuple_param
-[@@deriving show {with_path= false}]
 
-and ann = typing located option [@@deriving show {with_path= false}]
+and ann = typing located option
 
-and tuple_param = param located list [@@deriving show {with_path= false}]
+and tuple_param = param located list
 
 and expr =
   | EParenthesized of expr located
@@ -58,40 +56,34 @@ and expr =
   | EString of string located
   | EFloat of string located
   | EInt of string located
-[@@deriving show {with_path= false}]
 
-and bool_op = OpBoolAnd | OpBoolOr [@@deriving show {with_path= false}]
+and bool_op = OpBoolAnd | OpBoolOr
 
 and comp_op = OpGt | OpGeq | OpLt | OpLeq | OpEq | OpFeq | OpNeq | OpNFeq
-[@@deriving show {with_path= false}]
 
-and add_op = OpAdd | OpSub [@@deriving show {with_path= false}]
+and add_op = OpAdd | OpSub
 
-and mul_op = OpMul | OpDiv | OpMod [@@deriving show {with_path= false}]
+and mul_op = OpMul | OpDiv | OpMod
 
-and un_op = UnPlus | UnNeg | UnBoolNot [@@deriving show {with_path= false}]
+and un_op = UnPlus | UnNeg | UnBoolNot
 
 and bit_op = OpBitLShift | OpBitRShift | OpBitAnd | OpBitOr | OpBitXor
-[@@deriving show {with_path= false}]
 
 and tlbind =
   { id: olid located
   ; params: param located list
   ; signature: ann
   ; body: expr located }
-[@@deriving show {with_path= false}]
 
 and bind =
   { id: string located
   ; params: param located list
   ; signature: ann
   ; body: expr located }
-[@@deriving show {with_path= false}]
 
 and case =
   | Case of {pat: pattern located; body: expr located}
   | CaseGuard of {pat: pattern located; guard: expr located; body: expr located}
-[@@deriving show {with_path= false}]
 
 and pattern =
   | PInt of string located
@@ -106,16 +98,14 @@ and pattern =
   | PTuple of tuple_pat located
   | POr of {l: pattern located; r: pattern located}
   | PParenthesized of pattern located
-[@@deriving show {with_path= false}]
 
-and list_pat = pattern located list [@@deriving show {with_path= false}]
+and list_pat = pattern located list
 
-and list_spd_pat = pattern located list [@@deriving show {with_path= false}]
+and list_spd_pat = pattern located list
 
-and tuple_pat = pattern located list [@@deriving show {with_path= false}]
+and tuple_pat = pattern located list
 
 and variant = {id: string located; typing: typing located option}
-[@@deriving show {with_path= false}]
 
 and typing =
   | TInt
