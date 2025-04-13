@@ -106,7 +106,26 @@ let rec analyze_pattern scope pattern =
   | PTuple lst | PList lst | PListSpread lst ->
       List.iter (fun pattern -> analyze_pattern scope pattern) lst
   | POr {l; r} ->
-      analyze_pattern scope l ; analyze_pattern scope r
+      analyze_pattern scope l ;
+      analyze_pattern scope r ;
+      let rec vars_collected pattern =
+        match pattern with
+        | PInt _ | PFloat _ | PString _ | PBool _ ->
+            []
+        | PLid lid ->
+            [lid.value]
+        | PTuple lst | PList lst | PListSpread lst ->
+            List.concat_map vars_collected lst
+        | PConstructor {pattern= Some p; _} ->
+            vars_collected p
+        | PConstructor {pattern= None; _} ->
+            []
+        | POr {l; r} ->
+            vars_collected l @ vars_collected r
+      in
+      List.iter
+        (fun var -> Hashtbl.remove output.warnings var)
+        (vars_collected l @ vars_collected r)
 
 let rec analyze_type typing =
   match typing with
@@ -136,51 +155,35 @@ let rec check_poly_pattern pattern =
   | PInt _ | PFloat _ | PBool _ | PString _ | PLid _ ->
       None
   | PConstructor {id; pattern= p} -> (
-      let current =
-        match Hashtbl.find_opt output.types id.value with
-        | Some (_, arity) when arity > 0 ->
-            Some (id.value, id.loc)
-        | _ ->
-            None
-      in
-      match (current, p) with
-      | (Some _ as result), _ ->
-          result
-      | None, Some sub_pattern ->
-          check_poly_pattern sub_pattern
-      | None, None ->
-          None )
+    match Hashtbl.find_opt output.types id.value with
+    | Some (_, arity) when arity > 0 ->
+        Some (id.value, id.loc)
+    | _ ->
+        Option.bind p check_poly_pattern )
   | PTuple lst | PList lst | PListSpread lst ->
-      let rec check_list = function
-        | [] ->
-            None
-        | x :: xs -> (
-          match check_poly_pattern x with
-          | Some _ as result ->
-              result
-          | None ->
-              check_list xs )
-      in
-      check_list lst
+      List.find_map check_poly_pattern lst
   | POr {l; r} -> (
     match check_poly_pattern l with
-    | Some _ as result ->
-        result
+    | Some res ->
+        Some res
     | None ->
         check_poly_pattern r )
 
 (* Check if the pattern has a guard to avoid undertermined behavior in the type
    checking *)
-and analyze_case scope case =
+let rec analyze_case scope case =
   let scope' = Scope (new_map (), scope) in
-  let poly = check_poly_pattern case.pattern in
   analyze_pattern scope' case.pattern ;
-  Option.iter
-    (fun (p, loc) ->
-      if Option.is_none case.guard then
-        output.errors <-
-          ArityMismatch {name= p; expected= 1; span= loc} :: output.errors )
-    poly
+  (* si polymorphique ... *)
+  ( match check_poly_pattern case.pattern with
+  | Some (name, loc) when Option.is_none case.guard ->
+      (* si aucune guard, erreur car ambiguitée au typechecking *)
+      output.errors <-
+        ArityMismatch {name; expected= 1; span= loc} :: output.errors
+  | _ ->
+      () ) ;
+  Option.iter (analyze_expression scope') case.guard ;
+  analyze_expression scope' case.body
 
 and analyze_binding scope ({id; signature; body} : binding) =
   (match signature with Some sign -> analyze_type sign | None -> ()) ;
@@ -359,9 +362,7 @@ let analyze_declaration scope decl =
                 :: output.errors
           | None ->
               add_identifier scope' poly.value
-                (poly.loc, List.length polymorphics) ;
-              Hashtbl.add output.warnings poly.value
-                (Unused {name= poly.value; span= poly.loc}) )
+                (poly.loc, List.length polymorphics) )
         polymorphics ;
       (* Variants *)
       List.iter (fun variant -> analyze_variant scope' variant) variants

@@ -116,7 +116,7 @@ def _ =
   List literals are created with square brackets.
 `
 
-def mapped = map (\a -> 2 * 2) [1, 2, 3, 4]
+def mapped = map (\z -> 2 * 2) [1, 2, 3, 4]
 
 `
   The standard library includes common functional programming utilities
