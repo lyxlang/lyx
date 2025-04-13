@@ -34,6 +34,7 @@ and typing =
   | TBool
   | TString
   | TUnit
+  | TConstructor of {id: uid; typing: typing option}
   | TUid of uid
   | TPolymorphic of lid
   | TTuple of typing list
