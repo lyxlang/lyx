@@ -22,6 +22,8 @@
         "x86_64-darwin"
         "aarch64-darwin"
       ];
+
+      # https://ayats.org/blog/no-flake-utils
       forAllSystems = f:
         nixpkgs.lib.genAttrs systems (system: f nixpkgs.legacyPackages.${system});
     in
