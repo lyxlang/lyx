@@ -23,9 +23,9 @@ def Point := (Float, Float)
 `
 
 def Shape := {
-  Circle Float;
-  Rectangle (Float, Float);
-  Square (Float, Float);
+  Circle as Float;
+  Rectangle as (Float, Float);
+  Square as (Float, Float);
 }
 
 `
@@ -34,7 +34,7 @@ def Shape := {
 `
 
 def Option := a {
-  Some a;
+  Some as a;
   None;
 }
 
@@ -90,11 +90,10 @@ def area shape : Shape -> Float =
 
 `
   Conditional expressions use standard if-then-else syntax.
-  The ‘~~’ operator checks for approximate equality between floating point values.
 `
 
 def safeDivide x y : Int -> Float -> Option Float =
-  if y ~~ 0.0 then None else Some (x / y)
+  if y == 0.0 then None else Some (x / y)
 
 `
   Local bindings are defined using ‘let … in’ expressions.
@@ -142,13 +141,13 @@ def foldedRight = foldRight (\x acc -> x + acc) [1, 2, 3, 4] 0
 
 `
   Pattern matching on lists supports empty list and head/tail destructuring.
-  The ‘...’ syntax in patterns denotes the tail of the list (everything except the first element).
+  The ‘...’ syntax in patterns denotes the tail/rest of the list.
   Recursive functions are naturally expressed through self-reference.
 `
 
-def product lst = match lst { [] -> 0; [hd, tl...] -> hd * product tl; }
+def product lst = match lst { [] -> 0; [hd ...tl] -> hd * product tl; }
 
-def sum lst = match lst { [] -> 0; [hd, tl...] -> hd + sum tl; }
+def sum lst = match lst { [] -> 0; [hd ...tl] -> hd + sum tl; }
 
 `
   Recursive functions with termination conditions are a common pattern.

@@ -5,189 +5,143 @@
  * SPDX-License-Identifier: GPL-3.0-only
  *)
 
-type span = {start: int; fin: int}
+type uid = string
 
-and 'a located = {loc: span; value: 'a}
+and lid = string
 
-and program = decl located list
+and program = declaration list
 
-and decl =
-  | Decl of tlbind
-  | Decls of tlbind list
-  | DeclADT of
-      { id: string located
-      ; polys: string located list
-      ; variants: variant located list }
-  | DeclAlias of {id: string located; typing: typing located}
+and declaration =
   | Comment of string
+  | ValueBinding of binding
+  | TypeDefinition of {id: uid; body: typing}
+  | FunctionDefinition of
+      { id: lid
+      ; parameters: parameter list
+      ; signature: signature
+      ; body: expression }
+  | AdtDefinition of {id: uid; polymorphics: lid list; variants: variant list}
 
-and olid = Wildcard | L of string
+and binding = {id: lid; signature: signature; body: expression}
 
-and param = PRLID of string located | PRTuple of tuple_param
+and signature = typing option
 
-and ann = typing located option
-
-and tuple_param = param located list
-
-and expr =
-  | EParenthesized of expr located
-  | ETyped of {body: expr located; signature: ann}
-  | EBoolOp of {l: expr located; op: bool_op located; r: expr located}
-  | ECompOp of {l: expr located; op: comp_op located; r: expr located}
-  | EPipeOp of {l: expr located; r: expr located}
-  | EConcatOp of {l: expr located; r: expr located}
-  | EAddOp of {l: expr located; op: add_op located; r: expr located}
-  | EMulOp of {l: expr located; op: mul_op located; r: expr located}
-  | EUnOp of {op: un_op located; body: expr located}
-  | EExpOp of {l: expr located; r: expr located}
-  | EBitOp of {l: expr located; op: bit_op located; r: expr located}
-  | EApp of {fn: expr located; arg: expr located}
-  | ELambda of {params: param located list; body: expr located}
-  | EMatch of {ref: expr located; cases: case located list}
-  | ELets of {binds: bind located list; body: expr located}
-  | ELet of {bind: bind located; body: expr located}
-  | EIf of {predicate: expr located; truthy: expr located; falsy: expr located}
-  | EUID of string located
-  | ELID of string located
-  | ETuple of expr located list
-  | EList of expr located list
-  | EUnit
-  | EBool of bool located
-  | EString of string located
-  | EFloat of string located
-  | EInt of string located
-
-and bool_op = OpBoolAnd | OpBoolOr
-
-and comp_op = OpGt | OpGeq | OpLt | OpLeq | OpEq | OpFeq | OpNeq | OpNFeq
-
-and add_op = OpAdd | OpSub
-
-and mul_op = OpMul | OpDiv | OpMod
-
-and un_op = UnPlus | UnNeg | UnBoolNot
-
-and bit_op = OpBitLShift | OpBitRShift | OpBitAnd | OpBitOr | OpBitXor
-
-and tlbind =
-  { id: olid located
-  ; params: param located list
-  ; signature: ann
-  ; body: expr located }
-
-and bind =
-  { id: string located
-  ; params: param located list
-  ; signature: ann
-  ; body: expr located }
-
-and case =
-  | Case of {pat: pattern located; body: expr located}
-  | CaseGuard of {pat: pattern located; guard: expr located; body: expr located}
-
-and pattern =
-  | PInt of string located
-  | PFloat of string located
-  | PString of string located
-  | PBool of bool located
-  | POLID of olid located
-  | PTail of olid located
-  | PConstructor of {id: string located; params: pattern located list}
-  | PList of list_pat located
-  | PListSpd of list_spd_pat located
-  | PTuple of tuple_pat located
-  | POr of {l: pattern located; r: pattern located}
-  | PParenthesized of pattern located
-
-and list_pat = pattern located list
-
-and list_spd_pat = pattern located list
-
-and tuple_pat = pattern located list
-
-and variant = {id: string located; typing: typing located option}
+and parameter = ALid of lid | ATuple of parameter list
 
 and typing =
   | TInt
   | TFloat
-  | TString
   | TBool
+  | TString
   | TUnit
-  | TList of typing located
-  | TTuple of typing located list
-  | TFunc of {l: typing located; r: typing located}
-  | TPoly of string located
-  | TConstructor of variant
-  | TTyping of typing located
+  | TConstructor of {id: uid; typing: typing option}
+  | TPolymorphic of lid
+  | TTuple of typing list
+  | TList of typing
+  | TFunction of {l: typing; r: typing}
 
-val pp_span : Format.formatter -> span -> unit
+and expression =
+  | Int of int
+  | Float of float
+  | Bool of bool
+  | String of string
+  | Unit
+  | Uid of uid
+  | Lid of lid
+  | Tuple of expression list
+  | List of expression list
+  | BinaryOperation of {l: expression; operator: binary_operator; r: expression}
+  | UnaryOperation of {operator: unary_operator; body: expression}
+  | Let of {bindings: binding list; body: expression}
+  | If of {predicate: expression; truthy: expression; falsy: expression}
+  | Match of {body: expression; cases: case list}
+  | Lambda of {parameters: parameter list; body: expression}
+  | Application of {body: expression; argument: expression}
+  | Expression of {body: expression; signature: signature}
 
-val show_span : span -> string
+and binary_operator =
+  | BPipe
+  | BOr
+  | BAnd
+  | BEqual
+  | BNotEqual
+  | BGreaterThan
+  | BGreaterOrEqual
+  | BLessThan
+  | BLessOrEqual
+  | BConcatenate
+  | BAdd
+  | BSubstract
+  | BMultiply
+  | BDivide
+  | BModulo
+  | BExponentiate
 
-val pp_located :
-  (Format.formatter -> 'a -> unit) -> Format.formatter -> 'a located -> unit
+and unary_operator = UPlus | UMinus | UNot
 
-val show_located : (Format.formatter -> 'a -> unit) -> 'a located -> string
+and variant = {id: uid; typing: typing option}
+
+and case = {pattern: pattern; guard: expression option; body: expression}
+
+and pattern =
+  | PInt of int
+  | PFloat of float
+  | PBool of bool
+  | PString of string
+  | PLid of lid
+  | PTuple of pattern list
+  | PList of pattern list
+  | PListSpread of pattern list
+  | PConstructor of {id: uid; pattern: pattern option}
+  | POr of {l: pattern; r: pattern}
+
+val pp_uid : Format.formatter -> uid -> unit
+
+val show_uid : uid -> string
+
+val pp_lid : Format.formatter -> lid -> unit
+
+val show_lid : lid -> string
 
 val pp_program : Format.formatter -> program -> unit
 
 val show_program : program -> string
 
-val pp_decl : Format.formatter -> decl -> unit
+val pp_declaration : Format.formatter -> declaration -> unit
 
-val show_decl : decl -> string
+val show_declaration : declaration -> string
 
-val pp_olid : Format.formatter -> olid -> unit
+val pp_binding : Format.formatter -> binding -> unit
 
-val show_olid : olid -> string
+val show_binding : binding -> string
 
-val pp_param : Format.formatter -> param -> unit
+val pp_signature : Format.formatter -> signature -> unit
 
-val show_param : param -> string
+val show_signature : signature -> string
 
-val pp_ann : Format.formatter -> ann -> unit
+val pp_parameter : Format.formatter -> parameter -> unit
 
-val show_ann : ann -> string
+val show_parameter : parameter -> string
 
-val pp_tuple_param : Format.formatter -> tuple_param -> unit
+val pp_typing : Format.formatter -> typing -> unit
 
-val show_tuple_param : tuple_param -> string
+val show_typing : typing -> string
 
-val pp_expr : Format.formatter -> expr -> unit
+val pp_expression : Format.formatter -> expression -> unit
 
-val show_expr : expr -> string
+val show_expression : expression -> string
 
-val pp_bool_op : Format.formatter -> bool_op -> unit
+val pp_binary_operator : Format.formatter -> binary_operator -> unit
 
-val show_bool_op : bool_op -> string
+val show_binary_operator : binary_operator -> string
 
-val pp_comp_op : Format.formatter -> comp_op -> unit
+val pp_unary_operator : Format.formatter -> unary_operator -> unit
 
-val show_comp_op : comp_op -> string
+val show_unary_operator : unary_operator -> string
 
-val pp_add_op : Format.formatter -> add_op -> unit
+val pp_variant : Format.formatter -> variant -> unit
 
-val show_add_op : add_op -> string
-
-val pp_mul_op : Format.formatter -> mul_op -> unit
-
-val show_mul_op : mul_op -> string
-
-val pp_un_op : Format.formatter -> un_op -> unit
-
-val show_un_op : un_op -> string
-
-val pp_bit_op : Format.formatter -> bit_op -> unit
-
-val show_bit_op : bit_op -> string
-
-val pp_tlbind : Format.formatter -> tlbind -> unit
-
-val show_tlbind : tlbind -> string
-
-val pp_bind : Format.formatter -> bind -> unit
-
-val show_bind : bind -> string
+val show_variant : variant -> string
 
 val pp_case : Format.formatter -> case -> unit
 
@@ -196,23 +150,3 @@ val show_case : case -> string
 val pp_pattern : Format.formatter -> pattern -> unit
 
 val show_pattern : pattern -> string
-
-val pp_list_pat : Format.formatter -> list_pat -> unit
-
-val show_list_pat : list_pat -> string
-
-val pp_list_spd_pat : Format.formatter -> list_spd_pat -> unit
-
-val show_list_spd_pat : list_spd_pat -> string
-
-val pp_tuple_pat : Format.formatter -> tuple_pat -> unit
-
-val show_tuple_pat : tuple_pat -> string
-
-val pp_variant : Format.formatter -> variant -> unit
-
-val show_variant : variant -> string
-
-val pp_typing : Format.formatter -> typing -> unit
-
-val show_typing : typing -> string

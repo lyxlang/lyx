@@ -3,263 +3,189 @@
 //
 // SPDX-License-Identifier: GPL-3.0-only
 
-%{
-  open Ast
-%}
+%token EOF
+
+%token <string> COMMENT
+%token <int> INT
+%token <float> FLOAT
+%token <bool> BOOL
+%token <string> STRING
+%token <Ast.uid> UID
+%token <Ast.lid> LID
 
 %token KWDEF
-%token <bool> BOOL
+%token KWLET
+%token KWIN
 %token KWIF
 %token KWTHEN
 %token KWELSE
-%token KWLET
-%token KWIN
-%token KWMATCH
 %token KWINT
 %token KWFLOAT
-%token KWSTRING
 %token KWBOOL
+%token KWSTRING
 %token KWUNIT
+%token KWMATCH
+%token KWAS
+
 %token EQUAL
-%token COLON
 %token COLONEQUAL
-%token UNDERSCORE
-%token COMMA
-%token ELLIPSIS
-%token LBRACKET
-%token RBRACKET
-%token LPAREN
-%token RPAREN
+%token COLON
 %token LBRACE
 %token RBRACE
-%token TRIANGLE
-%token PLUSPLUS
-%token STARSTAR
+%token LPAREN
+%token RPAREN
+%token LBRACKET
+%token RBRACKET
+%token COMMA
+%token ARROW
+%token SEMICOLON
 %token UNIT
-%token ANDAND
+%token BACKSLASH
+%token ELLIPSIS
+
+%token TRIANGLE
 %token BARBAR
+%token ANDAND
+%token EQUALEQUAL
+%token BANGEQUAL
 %token GT
 %token GEQ
 %token LT
 %token LEQ
-%token EQUALEQUAL
-%token TILDETILDE
-%token BANGEQUAL
-%token BANGTILDE
+%token PLUSPLUS
 %token PLUS
 %token MINUS
 %token STAR
 %token SLASH
 %token PERCENT
+%token STARSTAR
 %token BANG
-%token LEFT
-%token RIGHT
-%token AMPERSAND
-%token BAR
-%token HAT
-%token ARROW
-%token SEMICOLON
-%token BACKSLASH
-%token <string> INT
-%token <string> FLOAT
-%token <string> STRING
-%token <string> UID
-%token <string> LID
-%token <string> COMMENT
-%token EOF
 
 %start <Ast.program> program
 
-%type <Ast.decl> decl
-%type <Ast.olid> olid
-%type <Ast.param> param
-%type <Ast.tuple_param> tuple_param
-%type <Ast.list_pat> list_pat
-%type <Ast.tuple_pat> tuple_pat
-%type <Ast.expr> expr
-%type <Ast.expr> expr1
-%type <Ast.expr> expr2
-%type <Ast.expr> expr3
-%type <Ast.expr> expr4
-%type <Ast.expr> expr5
-%type <Ast.expr> expr6
-%type <Ast.expr> expr7
-%type <Ast.expr> expr8
-%type <Ast.expr> expr9
-%type <Ast.expr> expr10
-%type <Ast.expr> expr11
-%type <Ast.bool_op> bool_op
-%type <Ast.comp_op> comp_op
-%type <Ast.add_op> add_op
-%type <Ast.mul_op> mul_op
-%type <Ast.bit_op> bit_op
-%type <Ast.un_op> un_op
-%type <Ast.bind> bind
-%type <Ast.case> case
-%type <Ast.pattern> pattern
-%type <Ast.variant> variant
-%type <Ast.typing> typing
-%type <Ast.typing> typing1
+%{ open Ast %}
 
 %%
 
-let located(x) == ~ = x; { {loc= {start= $startofs; fin= $endofs}; value= x} }
+let program := ~ = list(declaration); EOF; < >
 
-let program := ~ = list(located(decl)); EOF; < >
-
-let ann := COLON; ~ = located(typing); < >
-
-let decl :=
-  | KWDEF; id = located(olid); params = list(located(param)); signature = option(ann); EQUAL; body = located(expr); { Decl {id; params; signature; body} }
-  | KWDEF; id = located(UID); COLONEQUAL; polys = list(located(LID)); LBRACE; variants = nonempty_list(located(variant)); RBRACE; { DeclADT {id; polys; variants} }
-  | KWDEF; id = located(UID); COLONEQUAL; typing = located(typing); { DeclAlias {id; typing} }
+let declaration :=
   | ~ = COMMENT; < Comment >
+  | KWDEF; ~ = binding; < ValueBinding >
+  | KWDEF; id = UID; COLONEQUAL; body = typing; { TypeDefinition {id; body} }
+  | KWDEF; id = LID; parameters = nonempty_list(parameter); signature = signature; EQUAL; body = expression; { FunctionDefinition {id; parameters; signature; body} }
+  | KWDEF; id = UID; COLONEQUAL; polymorphics = list(LID); LBRACE; variants = nonempty_list(variant); RBRACE; { AdtDefinition {id; polymorphics; variants} }
 
-let olid :=
-  | UNDERSCORE; { Wildcard }
-  | ~ = LID; < L >
+let binding == id = LID; signature = signature; EQUAL; body = expression; { {id; signature; body} }
 
-let param :=
-  | ~ = located(LID); < PRLID >
-  | ~ = tuple_param; < PRTuple >
+let signature == option(preceded(COLON, typing))
 
-let tuple_param := LPAREN; ~ = separated_nonempty_list(COMMA, located(param)); RPAREN; < >
+let parameter :=
+  | ~ = LID; < ALid >
+  | LPAREN; p = parameter; COMMA; ps = separated_list(COMMA, parameter); RPAREN; { ATuple (p :: ps) }
 
-let expr := body = located(expr1); signature = option(ann); { ETyped {body; signature}}
-
-let expr1 :=
-  | l = located(expr1); op = located(bool_op); r = located(expr2); { EBoolOp {l; op; r} }
-  | ~ = expr2; < >
-
-let expr2 :=
-  | l = located(expr2); op = located(comp_op); r = located(expr3); { ECompOp {l; op; r} }
-  | ~ = expr3; < >
-
-let expr3 :=
-  | l = located(expr3); TRIANGLE; r = located(expr4); { EPipeOp {l; r} }
-  | ~ = expr4; < >
-
-let expr4 :=
-  | l = located(expr5); PLUSPLUS; r = located(expr4); { EConcatOp {l; r} }
-  | ~ = expr5; < >
-
-let expr5 :=
-  | l = located(expr5); op = located(add_op); r = located(expr6); { EAddOp {l; op; r} }
-  | ~ = expr6; < >
-
-let expr6 :=
-  | l = located(expr6); op = located(mul_op); r = located(expr7); { EMulOp {l; op; r} }
-  | ~ = expr7; < >
-
-let expr7 :=
-  | op = located(un_op); body = located(expr8); { EUnOp {op; body} }
-  | ~ = expr8; < >
-
-let expr8 :=
-  | l = located(expr8); STARSTAR; r = located(expr9); { EExpOp {l; r} }
-  | ~ = expr9; < >
-
-let expr9 :=
-  | l = located(expr9); op = located(bit_op); r = located(expr10); { EBitOp {l; op; r} }
-  | ~ = expr10; < >
-
-let expr10 :=
-  | fn = located(expr10); arg = located(expr11); { EApp {fn; arg} }
-  | ~ = expr11; < >
-
-let expr11 :=
-  | BACKSLASH; params = nonempty_list(located(param)); ARROW; body = located(expr); { ELambda {params; body} }
-  | KWMATCH; ref = located(expr); LBRACE; cases = nonempty_list(located(case)); RBRACE; { EMatch {ref; cases} }
-  | KWLET; binds = separated_nonempty_list(SEMICOLON, located(bind)); KWIN; body = located(expr); { ELets {binds; body} }
-  | KWIF; predicate = located(expr); KWTHEN; truthy = located(expr); KWELSE; falsy = located(expr); { EIf {predicate; truthy; falsy} }
-  | ~ = located(UID); < EUID >
-  | ~ = located(LID); < ELID >
-  | LPAREN; ~ = separated_list(COMMA, located(expr)); RPAREN; < ETuple >
-  | LBRACKET; ~ = separated_list(COMMA, located(expr)); RBRACKET; < EList >
-  | UNIT; { EUnit }
-  | ~ = located(BOOL); < EBool >
-  | ~ = located(STRING); < EString >
-  | ~ = located(FLOAT); < EFloat >
-  | ~ = located(INT); < EInt >
-  | LPAREN; ~ = located(expr); RPAREN; < EParenthesized >
-
-let bool_op :=
-  | ANDAND; { OpBoolAnd }
-  | BARBAR; { OpBoolOr }
-
-let comp_op :=
-  | GT; { OpGt }
-  | GEQ; { OpGeq }
-  | LT; { OpLt }
-  | LEQ; { OpLeq }
-  | EQUALEQUAL; { OpEq }
-  | TILDETILDE; { OpFeq }
-  | BANGEQUAL; { OpNeq }
-  | BANGTILDE; { OpNFeq }
-
-let add_op :=
-  | PLUS; { OpAdd }
-  | MINUS; { OpSub }
-
-let mul_op :=
-  | STAR; { OpMul }
-  | SLASH; { OpDiv }
-  | PERCENT; { OpMod }
-
-let un_op :=
-  | PLUS; { UnPlus }
-  | MINUS; { UnNeg }
-  | BANG; { UnBoolNot }
-
-let bit_op :=
-  | LEFT; { OpBitLShift }
-  | RIGHT; { OpBitRShift }
-  | AMPERSAND; { OpBitAnd }
-  | BAR; { OpBitOr }
-  | HAT; { OpBitXor }
-
-let bind := id = located(LID); params = list(located(param)); signature = option(ann); EQUAL; body = located(expr); { {id; params; signature; body} }
-
-let case :=
-  | pat = located(pattern); ARROW; body = located(expr); SEMICOLON; { Case {pat; body} }
-  | pat = located(pattern); KWIF; guard = located(expr); ARROW; body = located(expr); SEMICOLON; { CaseGuard {pat; guard; body} }
-
-let pattern :=
-  | l = located(pattern1); SEMICOLON; r = located(pattern); { POr {l; r} }
-  | ~ = pattern1; < >
-
-let pattern1 :=
-  | ~ = located(INT); < PInt >
-  | ~ = located(FLOAT); < PFloat >
-  | ~ = located(STRING); < PString >
-  | ~ = located(BOOL); < PBool >
-  | ~ = located(olid); < POLID >
-  | id = located(UID); params = list(located(pattern1)); { PConstructor {id; params} }
-  | ~ = located(list_pat); < PList >
-  | ~ = located(list_spd_pat); < PListSpd >
-  | ~ = located(tuple_pat); < PTuple >
-  | LPAREN; ~ = located(pattern); RPAREN; < PParenthesized >
-
-let list_pat := LBRACKET; ~ = separated_list(COMMA, located(pattern)); RBRACKET; < >
-
-let list_spd_pat := LBRACKET; ~ = separated_nonempty_list(COMMA, located(pattern)); ELLIPSIS; RBRACKET; < >
-
-let tuple_pat := LPAREN; ~ = separated_nonempty_list(COMMA, located(pattern)); RPAREN; < >
-
-let variant := id = located(UID); typing = option(located(typing)); SEMICOLON; { {id; typing} }
-
-let typing :=
-  | l = located(typing1); ARROW; r = located(typing); { TFunc {l; r} }
-  | ~ = typing1; < >
-
-let typing1 :=
+let typing_atom :=
   | KWINT; { TInt }
   | KWFLOAT; { TFloat }
-  | KWSTRING; { TString }
   | KWBOOL; { TBool }
+  | KWSTRING; { TString }
   | KWUNIT; { TUnit }
-  | LBRACKET; ~ = located(typing); RBRACKET; < TList >
-  | LPAREN; ~ = separated_nonempty_list(COMMA, located(typing)); RPAREN; < TTuple >
-  | ~ = located(LID); < TPoly >
-  | id = located(UID); typing = option(located(typing1)); { TConstructor {id; typing} }
-  | LPAREN; ~ = located(typing); RPAREN; < TTyping >
+  | id = UID; typing = option(typing_atom); { TConstructor {id; typing} }
+  | ~ = LID; < TPolymorphic >
+  | LPAREN; t = typing; COMMA; ts = separated_list(COMMA, typing); RPAREN; { TTuple (t :: ts) }
+  | LBRACKET; t = typing; RBRACKET; < TList >
+
+let typing :=
+  | typing_atom
+  | l = typing; ARROW; r = typing_atom; { TFunction {l; r} }
+
+let expression_atom :=
+  | ~ = INT; < Int >
+  | ~ = FLOAT; < Float >
+  | ~ = BOOL; < Bool >
+  | ~ = STRING; < String >
+  | UNIT; { Unit }
+  | ~ = UID; < Uid >
+  | ~ = LID; < Lid >
+  | LPAREN; e = expression; COMMA; es = separated_list(COMMA, expression); RPAREN; { Tuple (e :: es) }
+  | LBRACKET; ~ = separated_list(COMMA, expression); RBRACKET; < List >
+  | LPAREN; body = expression; signature = signature; RPAREN; { Expression {body; signature} }
+
+let application :=
+  | expression_atom
+  | body = application; argument = expression_atom; { Application {body; argument} }
+
+let expression :=
+  | KWLET; bindings = separated_nonempty_list(SEMICOLON, binding); KWIN; body = expression; { Let {bindings; body} }
+  | KWIF; predicate = expression; KWTHEN; truthy = expression; KWELSE; falsy = expression; { If {predicate; truthy; falsy} }
+  | KWMATCH; body = expression; LBRACE; cases = nonempty_list(case); RBRACE; { Match {body; cases} }
+  | BACKSLASH; parameters = nonempty_list(parameter); ARROW; body = expression; { Lambda {parameters; body} }
+  | expression_pipe
+
+let expression_pipe :=
+  | expression_or
+  | l = expression_pipe; TRIANGLE; r = expression_or; { BinaryOperation {l; operator= BPipe; r} }
+
+let expression_or :=
+  | expression_and
+  | l = expression_or; BARBAR; r = expression_and; { BinaryOperation {l; operator= BOr; r} }
+
+let expression_and :=
+  | expression_equality
+  | l = expression_and; ANDAND; r = expression_equality; { BinaryOperation {l; operator= BAnd; r} }
+
+let expression_equality :=
+  | expression_compare
+  | l = expression_equality; EQUALEQUAL; r = expression_compare; { BinaryOperation {l; operator= BEqual; r} }
+  | l = expression_equality; BANGEQUAL; r = expression_compare; { BinaryOperation {l; operator= BNotEqual; r} }
+
+let expression_compare :=
+  | expression_concatenate
+  | l = expression_compare; GT; r = expression_concatenate; { BinaryOperation {l; operator= BGreaterThan; r} }
+  | l = expression_compare; GEQ; r = expression_concatenate; { BinaryOperation {l; operator= BGreaterOrEqual; r} }
+  | l = expression_compare; LT; r = expression_concatenate; { BinaryOperation {l; operator= BLessThan; r} }
+  | l = expression_compare; LEQ; r = expression_concatenate; { BinaryOperation {l; operator= BLessOrEqual; r} }
+
+let expression_concatenate :=
+  | expression_addition
+  | l = expression_concatenate; PLUSPLUS; r = expression_addition; { BinaryOperation {l; operator= BConcatenate; r} }
+
+let expression_addition :=
+  | expression_multiplication
+  | l = expression_addition; PLUS; r = expression_multiplication; { BinaryOperation {l; operator= BAdd; r} }
+  | l = expression_addition; MINUS; r = expression_multiplication; { BinaryOperation {l; operator= BSubstract; r} }
+
+let expression_multiplication :=
+  | expression_exponentiation
+  | l = expression_multiplication; STAR; r = expression_exponentiation; { BinaryOperation {l; operator= BMultiply; r} }
+  | l = expression_multiplication; SLASH; r = expression_exponentiation; { BinaryOperation {l; operator= BDivide; r} }
+  | l = expression_multiplication; PERCENT; r = expression_exponentiation; { BinaryOperation {l; operator= BModulo; r} }
+
+let expression_exponentiation :=
+  | expression_unary
+  | l = expression_unary; STARSTAR; r = expression_exponentiation; { BinaryOperation {l; operator= BExponentiate; r} }
+
+let expression_unary :=
+  | application
+  | PLUS; body = expression_unary; { UnaryOperation {operator= UPlus; body} }
+  | MINUS; body = expression_unary; { UnaryOperation {operator= UMinus; body} }
+  | BANG; body = expression_unary; { UnaryOperation {operator= UNot; body} }
+
+let variant == id = UID; typing = option(preceded(KWAS, typing)); SEMICOLON; { {id; typing} } 
+
+let case == pattern = pattern; guard = option(preceded(KWIF, expression)); ARROW; body = expression; SEMICOLON; { {pattern; guard; body} }
+
+let pattern_atom :=
+  | ~ = INT; < PInt >
+  | ~ = FLOAT; < PFloat >
+  | ~ = BOOL; < PBool >
+  | ~ = STRING; < PString >
+  | ~ = LID; < PLid >
+  | LPAREN; p = pattern_atom; COMMA; ps = separated_list(COMMA, pattern_atom); RPAREN; { PTuple (p :: ps) }
+  | LBRACKET; ~ = separated_list(COMMA, pattern_atom); RBRACKET; < PList >
+  | LBRACKET; ps = separated_nonempty_list(COMMA, pattern_atom); ELLIPSIS; p = LID; RBRACKET; { PListSpread (ps @ [PLid p]) }
+  | id = UID; pattern = option(pattern_atom); { PConstructor {id; pattern} }
+
+let pattern :=
+  | pattern_atom
+  | l = pattern; SEMICOLON; r = pattern_atom; { POr {l; r} }
