@@ -132,6 +132,18 @@ let rec analyze_type typing =
       ()
 
 let rec analyze_case scope case =
+  (* TODO: Check that polymorphic types appear in every predicate *)
+  (*
+  let scope' =
+    List.fold_left
+      (fun acc predicate ->
+        let scope' = Scope (new_map (), acc) in
+        analyze_pattern scope' predicate.value ;
+        scope' )
+      (Scope (new_map (), Root))
+      predicates
+  in
+  *)
   let scope' = Scope (new_map (), scope) in
   analyze_pattern scope' case.pattern ;
   ( match case.guard with
