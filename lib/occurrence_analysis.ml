@@ -85,14 +85,20 @@ let rec strongconnect (binds : bind list) (v : bind) (sccs : scc list) =
   Hashtbl.add on_stack id true ;
   List.fold_left
     (fun acc w ->
-      if not (Hashtbl.mem index_map w) then (
-        let w_bind =
-          List.find (fun {value= id, _, _, _, _; _} -> id = w) binds
+      if not (Hashtbl.mem index_map w) then
+        let w_bind_opt =
+          List.find_opt (fun {value= id, _, _, _, _; _} -> id = w) binds
         in
-        let acc = strongconnect binds w_bind acc in
-        Hashtbl.replace lowlink_map id
-          (min (Hashtbl.find lowlink_map id) (Hashtbl.find lowlink_map w)) ;
-        acc )
+        match w_bind_opt with
+        | Some w_bind ->
+            let acc = strongconnect binds w_bind acc in
+            Hashtbl.replace lowlink_map id
+              (min (Hashtbl.find lowlink_map id) (Hashtbl.find lowlink_map w)) ;
+            acc
+        | None ->
+            (* Reference to a variable not in the binds list (external
+               variable) *)
+            acc
       else if Hashtbl.find on_stack w then (
         Hashtbl.replace lowlink_map id
           (min (Hashtbl.find lowlink_map id) (Hashtbl.find index_map w)) ;
@@ -123,6 +129,12 @@ let rec strongconnect (binds : bind list) (v : bind) (sccs : scc list) =
     @param binds The list of bindings (nodes) in the graph.
     @return The list of SCCs. *)
 let tarjans_algorithm (binds : bind list) =
+  (* Clear the maps and stack for fresh analysis *)
+  Hashtbl.clear index_map ;
+  Hashtbl.clear lowlink_map ;
+  Hashtbl.clear on_stack ;
+  Stack.clear stack ;
+  index := 0 ;
   List.fold_left
     (fun sccs bind ->
       let {value= id, _, _, _, _; _} = bind in
