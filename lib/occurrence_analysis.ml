@@ -7,12 +7,12 @@
 
 open Ast
 
-(** [varMap] maps each variables to its associated numerical ids. *)
-type varMap = (string, int) Hashtbl.t
+(** [variable_map] maps each variables to its associated numerical ids. *)
+type variable_map = (string, int) Hashtbl.t
 
 (** [scope] represents an environment of variables, where lhs represents those
     of the current scope and rhs the parent one. *)
-and scope = Scope of varMap * scope | Root
+and scope = Scope of variable_map * scope | Root
 
 (** [id_map] maps each numerical ids to its associated variables. *)
 let id_map : (int, string located) Hashtbl.t = Hashtbl.create 1000
@@ -25,14 +25,11 @@ type id = int [@@deriving show {with_path= false}]
 and ids = id list [@@deriving show {with_path= false}]
 
 (** [params] represents a list of parameters given to a function *)
-and params = parameter list [@@deriving show {with_path= false}]
-
-(** [signature] represents the type signature of a function *)
-and signature = typing option [@@deriving show {with_path= false}]
+and parameters = parameter list [@@deriving show {with_path= false}]
 
 (** [bind] corresponds to a binding. It has the form `(Var, Parameters,
     Signature, Expr, fv(Expr)) located` *)
-and bind = (id * params * signature * expression * ids) located
+and bind = (id * parameters * signature * expression * ids) located
 [@@deriving show {with_path= false}]
 
 (** [scc] represents a strongly connected component (SCC) in a graph.
