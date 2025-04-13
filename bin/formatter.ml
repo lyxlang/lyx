@@ -221,7 +221,7 @@ module Builder = struct
         Nodes
           [ text "def"
           ; SpaceOrLine
-          ; text id
+          ; text id.value
           ; SpaceOrLine
           ; text ":="
           ; Group (new_id t, [SpaceOrLine; Indent [build_typing t body]]) ]
@@ -229,7 +229,7 @@ module Builder = struct
         Nodes
           [ text "def"
           ; SpaceOrLine
-          ; text id
+          ; text id.value
           ; Nodes
               (spaced
                  (separated_nodes SpaceOrLine
@@ -242,13 +242,13 @@ module Builder = struct
         Nodes
           [ text "def"
           ; SpaceOrLine
-          ; text id
+          ; text id.value
           ; SpaceOrLine
           ; text ":="
           ; Nodes
               (spaced
                  (separated_nodes SpaceOrLine
-                    (List.map (fun poly -> text poly) polymorphics) ) )
+                    (List.map (fun poly -> text poly.value) polymorphics) ) )
           ; SpaceOrLine
           ; text "{"
           ; Group
@@ -261,7 +261,7 @@ module Builder = struct
 
   and build_binding t binding =
     Fill
-      [ text binding.id
+      [ text binding.id.value
       ; build_signature t binding.signature
       ; SpaceOrLine
       ; text "="
@@ -278,7 +278,7 @@ module Builder = struct
   and build_parameter t param =
     match param with
     | ALid lid ->
-        text lid
+        text lid.value
     | ATuple params -> (
       match params with
       | [param] ->
@@ -320,10 +320,10 @@ module Builder = struct
           ; SpaceOrLine
           ; build_typing t r ]
     | TPolymorphic lid ->
-        text lid
+        text lid.value
     | TConstructor {id; typing} ->
         Nodes
-          [ text id
+          [ text id.value
           ; ( match typing with
             | Some ty ->
                 Nodes [SpaceOrLine; build_typing t ty]
@@ -343,9 +343,9 @@ module Builder = struct
     | Unit ->
         text "()"
     | Uid uid ->
-        text uid
+        text uid.value
     | Lid lid ->
-        text lid
+        text lid.value
     | Tuple exprs -> (
       match exprs with
       | [expr] ->
@@ -499,7 +499,7 @@ module Builder = struct
     | PBool b ->
         boolean_string b
     | PLid lid ->
-        text lid
+        text lid.value
     | PTuple patterns -> (
       match patterns with
       | [pattern] ->
@@ -524,7 +524,7 @@ module Builder = struct
           @ [Nodes [SpaceOrLine; text "..."; build_pattern t spread_pattern]] )
     | PConstructor {id; pattern} ->
         Fill
-          [ text id
+          [ text id.value
           ; ( match pattern with
             | Some p ->
                 Fill [SpaceOrLine; build_pattern t p]
@@ -536,7 +536,7 @@ module Builder = struct
   and build_variant t variant =
     Group
       ( new_id t
-      , [ text variant.id
+      , [ text variant.id.value
         ; ( match variant.typing with
           | Some ty ->
               Nodes [SpaceOrLine; text "as"; SpaceOrLine; build_typing t ty]

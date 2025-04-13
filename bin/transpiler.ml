@@ -64,7 +64,7 @@ let is_type_decl decl =
 let is_entry_point decl =
   match decl with
   | ValueBinding {id; signature= _; body= _} ->
-      id = "_"
+      id.value = "_"
   | Comment _ | FunctionDefinition _ | TypeDefinition _ | AdtDefinition _ ->
       false
 
@@ -85,13 +85,13 @@ and build_declaration declaration =
   | Comment _ ->
       ()
   | ValueBinding {id; signature= _; body} ->
-      if id = "_" then add "let"
+      if id.value = "_" then add "let"
       else if !first_bind then (
         add "let rec" ;
         first_bind := false )
       else add "and" ;
       add_space () ;
-      add @@ encode_lid id ;
+      add @@ encode_lid id.value ;
       add_space () ;
       add "=" ;
       add_space () ;
@@ -102,19 +102,19 @@ and build_declaration declaration =
         first_type := false )
       else add "and" ;
       add_space () ;
-      add @@ encode_lid id ;
+      add @@ encode_lid id.value ;
       add_space () ;
       add "=" ;
       add_space () ;
       build_typing body
   | FunctionDefinition {id; parameters; signature= _; body} ->
-      if id = "_" then add "let"
+      if id.value = "_" then add "let"
       else if !first_bind then (
         add "let rec" ;
         first_bind := false )
       else add "and" ;
       add_space () ;
-      add @@ encode_lid id ;
+      add @@ encode_lid id.value ;
       add_space () ;
       List.iter (fun p -> build_parameter p ; add_space ()) parameters ;
       add "=" ;
@@ -129,10 +129,10 @@ and build_declaration declaration =
       List.iter
         (fun p ->
           add "'" ;
-          add @@ encode_lid p ;
+          add @@ encode_lid p.value ;
           add_space () )
         polymorphics ;
-      add @@ encode_lid id ;
+      add @@ encode_lid id.value ;
       add_space () ;
       add "=" ;
       add_space () ;
@@ -141,7 +141,7 @@ and build_declaration declaration =
 and build_parameter parameter =
   match parameter with
   | ALid str ->
-      add @@ encode_lid str
+      add @@ encode_lid str.value
   | ATuple tuple_param ->
       scoped (fun () -> add_list "," build_parameter tuple_param)
 
@@ -165,9 +165,9 @@ and build_typing typing =
       build_typing l ; add_space () ; add "->" ; add_space () ; build_typing r
   | TPolymorphic p ->
       add "'" ;
-      add @@ encode_lid p
+      add @@ encode_lid p.value
   | TConstructor {id; typing} -> (
-      add @@ encode_lid id ;
+      add @@ encode_lid id.value ;
       match typing with
       | Some t ->
           add_space () ; add "of" ; add_space () ; build_typing t
@@ -191,9 +191,9 @@ and build_expression expr =
   | Unit ->
       add "()"
   | Uid id ->
-      add @@ encode_uid id
+      add @@ encode_uid id.value
   | Lid id ->
-      add @@ encode_lid id
+      add @@ encode_lid id.value
   | Tuple exprs ->
       scoped (fun () -> add_list "," build_expression exprs)
   | List exprs ->
@@ -287,7 +287,7 @@ and build_unary_operator op =
 and build_binding binding =
   add "let" ;
   add_space () ;
-  add @@ encode_lid binding.id ;
+  add @@ encode_lid binding.id.value ;
   add_space () ;
   add "=" ;
   add_space () ;
@@ -320,7 +320,7 @@ and build_pattern pat =
       add @@ String.escaped s ;
       add "\""
   | PLid lid ->
-      add @@ encode_lid lid
+      add @@ encode_lid lid.value
   | PTuple pats ->
       scoped (fun () -> add_list "," build_pattern pats)
   | PList pats ->
@@ -330,7 +330,7 @@ and build_pattern pat =
   | PListSpread pats ->
       add_list "::" build_pattern pats
   | PConstructor {id; pattern} -> (
-      add @@ encode_uid id ;
+      add @@ encode_uid id.value ;
       match pattern with Some p -> add_space () ; build_pattern p | None -> () )
   | POr {l; r} ->
       build_pattern l ; add_space () ; add "|" ; add_space () ; build_pattern r
@@ -338,7 +338,7 @@ and build_pattern pat =
 and build_variant variant =
   add "|" ;
   add_space () ;
-  add @@ encode_uid variant.id ;
+  add @@ encode_uid variant.id.value ;
   match variant.typing with
   | Some t ->
       add_space () ; add "of" ; add_space () ; build_typing t

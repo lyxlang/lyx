@@ -67,21 +67,23 @@
 
 %%
 
+let located(x) == ~ = x; { { loc= { start= $startofs(x); fin= $endofs(x) }; value= x } }
+
 let program := ~ = list(declaration); EOF; < >
 
 let declaration :=
   | ~ = COMMENT; < Comment >
   | KWDEF; ~ = binding; < ValueBinding >
-  | KWDEF; id = UID; COLONEQUAL; body = typing; { TypeDefinition {id; body} }
-  | KWDEF; id = LID; parameters = nonempty_list(parameter); signature = signature; EQUAL; body = expression; { FunctionDefinition {id; parameters; signature; body} }
-  | KWDEF; id = UID; COLONEQUAL; polymorphics = list(LID); LBRACE; variants = nonempty_list(variant); RBRACE; { AdtDefinition {id; polymorphics; variants} }
+  | KWDEF; id = located(UID); COLONEQUAL; body = typing; { TypeDefinition {id; body} }
+  | KWDEF; id = located(LID); parameters = nonempty_list(parameter); signature = signature; EQUAL; body = expression; { FunctionDefinition {id; parameters; signature; body} }
+  | KWDEF; id = located(UID); COLONEQUAL; polymorphics = list(located(LID)); LBRACE; variants = nonempty_list(variant); RBRACE; { AdtDefinition {id; polymorphics; variants} }
 
-let binding == id = LID; signature = signature; EQUAL; body = expression; { {id; signature; body} }
+let binding == id = located(LID); signature = signature; EQUAL; body = expression; { {id; signature; body} }
 
 let signature == option(preceded(COLON, typing))
 
 let parameter :=
-  | ~ = LID; < ALid >
+  | ~ = located(LID); < ALid >
   | LPAREN; p = parameter; COMMA; ps = separated_list(COMMA, parameter); RPAREN; { ATuple (p :: ps) }
 
 let typing_atom :=
@@ -90,8 +92,8 @@ let typing_atom :=
   | KWBOOL; { TBool }
   | KWSTRING; { TString }
   | KWUNIT; { TUnit }
-  | id = UID; typing = option(typing_atom); { TConstructor {id; typing} }
-  | ~ = LID; < TPolymorphic >
+  | id = located(UID); typing = option(typing_atom); { TConstructor {id; typing} }
+  | ~ = located(LID); < TPolymorphic >
   | LPAREN; t = typing; COMMA; ts = separated_list(COMMA, typing); RPAREN; { TTuple (t :: ts) }
   | LBRACKET; t = typing; RBRACKET; < TList >
 
@@ -105,8 +107,8 @@ let expression_atom :=
   | ~ = BOOL; < Bool >
   | ~ = STRING; < String >
   | UNIT; { Unit }
-  | ~ = UID; < Uid >
-  | ~ = LID; < Lid >
+  | ~ = located(UID); < Uid >
+  | ~ = located(LID); < Lid >
   | LPAREN; e = expression; COMMA; es = separated_list(COMMA, expression); RPAREN; { Tuple (e :: es) }
   | LBRACKET; ~ = separated_list(COMMA, expression); RBRACKET; < List >
   | LPAREN; body = expression; signature = signature; RPAREN; { Expression {body; signature} }
@@ -171,7 +173,7 @@ let expression_unary :=
   | MINUS; body = expression_unary; { UnaryOperation {operator= UMinus; body} }
   | BANG; body = expression_unary; { UnaryOperation {operator= UNot; body} }
 
-let variant == id = UID; typing = option(preceded(KWAS, typing)); SEMICOLON; { {id; typing} } 
+let variant == id = located(UID); typing = option(preceded(KWAS, typing)); SEMICOLON; { {id; typing} } 
 
 let case == pattern = pattern; guard = option(preceded(KWIF, expression)); ARROW; body = expression; SEMICOLON; { {pattern; guard; body} }
 
@@ -180,11 +182,11 @@ let pattern_atom :=
   | ~ = FLOAT; < PFloat >
   | ~ = BOOL; < PBool >
   | ~ = STRING; < PString >
-  | ~ = LID; < PLid >
+  | ~ = located(LID); < PLid >
   | LPAREN; p = pattern_atom; COMMA; ps = separated_list(COMMA, pattern_atom); RPAREN; { PTuple (p :: ps) }
   | LBRACKET; ~ = separated_list(COMMA, pattern_atom); RBRACKET; < PList >
-  | LBRACKET; ps = separated_nonempty_list(COMMA, pattern_atom); ELLIPSIS; p = LID; RBRACKET; { PListSpread (ps @ [PLid p]) }
-  | id = UID; pattern = option(pattern_atom); { PConstructor {id; pattern} }
+  | LBRACKET; ps = separated_nonempty_list(COMMA, pattern_atom); ELLIPSIS; p = located(LID); RBRACKET; { PListSpread (ps @ [PLid p]) }
+  | id = located(UID); pattern = option(pattern_atom); { PConstructor {id; pattern} }
 
 let pattern :=
   | pattern_atom

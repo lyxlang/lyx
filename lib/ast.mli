@@ -5,7 +5,11 @@
  * SPDX-License-Identifier: GPL-3.0-only
  *)
 
-type uid = string
+type span = {start: int; fin: int}
+
+and 'a located = {loc: span; value: 'a}
+
+and uid = string
 
 and lid = string
 
@@ -14,19 +18,20 @@ and program = declaration list
 and declaration =
   | Comment of string
   | ValueBinding of binding
-  | TypeDefinition of {id: uid; body: typing}
+  | TypeDefinition of {id: uid located; body: typing}
   | FunctionDefinition of
-      { id: lid
+      { id: lid located
       ; parameters: parameter list
       ; signature: signature
       ; body: expression }
-  | AdtDefinition of {id: uid; polymorphics: lid list; variants: variant list}
+  | AdtDefinition of
+      {id: uid located; polymorphics: lid located list; variants: variant list}
 
-and binding = {id: lid; signature: signature; body: expression}
+and binding = {id: lid located; signature: signature; body: expression}
 
 and signature = typing option
 
-and parameter = ALid of lid | ATuple of parameter list
+and parameter = ALid of lid located | ATuple of parameter list
 
 and typing =
   | TInt
@@ -34,8 +39,8 @@ and typing =
   | TBool
   | TString
   | TUnit
-  | TConstructor of {id: uid; typing: typing option}
-  | TPolymorphic of lid
+  | TConstructor of {id: uid located; typing: typing option}
+  | TPolymorphic of lid located
   | TTuple of typing list
   | TList of typing
   | TFunction of {l: typing; r: typing}
@@ -46,8 +51,8 @@ and expression =
   | Bool of bool
   | String of string
   | Unit
-  | Uid of uid
-  | Lid of lid
+  | Uid of uid located
+  | Lid of lid located
   | Tuple of expression list
   | List of expression list
   | BinaryOperation of {l: expression; operator: binary_operator; r: expression}
@@ -79,7 +84,7 @@ and binary_operator =
 
 and unary_operator = UPlus | UMinus | UNot
 
-and variant = {id: uid; typing: typing option}
+and variant = {id: uid located; typing: typing option}
 
 and case = {pattern: pattern; guard: expression option; body: expression}
 
@@ -88,12 +93,21 @@ and pattern =
   | PFloat of float
   | PBool of bool
   | PString of string
-  | PLid of lid
+  | PLid of lid located
   | PTuple of pattern list
   | PList of pattern list
   | PListSpread of pattern list
-  | PConstructor of {id: uid; pattern: pattern option}
+  | PConstructor of {id: uid located; pattern: pattern option}
   | POr of {l: pattern; r: pattern}
+
+val pp_span : Format.formatter -> span -> unit
+
+val show_span : span -> string
+
+val pp_located :
+  (Format.formatter -> 'a -> unit) -> Format.formatter -> 'a located -> unit
+
+val show_located : (Format.formatter -> 'a -> unit) -> 'a located -> string
 
 val pp_uid : Format.formatter -> uid -> unit
 
