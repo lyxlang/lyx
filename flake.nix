@@ -92,15 +92,31 @@
           packages =
             with pkgs;
             [
+              llvm
               reuse
               just
-              glibc
               ocamlformat_0_27_0
             ]
+            ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
+                  pkgs.darwin.apple_sdk.frameworks.CoreServices
+                  pkgs.darwin.apple_sdk.frameworks.Foundation
+                  pkgs.darwin.apple_sdk.frameworks.Security
+                  pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
+                  pkgs.darwin.libiconv
+                  darwin.Libsystem
+                  darwin.cctools
+                ]
             ++ (with pkgs.ocamlPackages; [
               ocaml-lsp
               utop
             ]);
+
+            shellHook = pkgs.lib.optionalString pkgs.stdenv.isDarwin ''
+              export LIBRARY_PATH=${pkgs.darwin.Libsystem}/lib:$LIBRARY_PATH
+              export CPATH=${pkgs.darwin.Libsystem}/include:$CPATH
+              export SDKROOT=$(xcrun --show-sdk-path)
+              export MACOSX_DEPLOYMENT_TARGET=10.15
+            '';
         };
       }
     );
