@@ -94,6 +94,7 @@
             [
               reuse
               just
+              glibc
               ocamlformat_0_27_0
             ]
             ++ (with pkgs.ocamlPackages; [
