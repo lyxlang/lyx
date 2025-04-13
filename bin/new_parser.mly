@@ -86,17 +86,20 @@ let parameter :=
   | ~ = LID; < ALid >
   | LPAREN; p = parameter; COMMA; ps = separated_list(COMMA, parameter); RPAREN; { ATuple (p :: ps) }
 
-let typing :=
+let typing_atom :=
   | KWINT; { TInt }
   | KWFLOAT; { TFloat }
   | KWBOOL; { TBool }
   | KWSTRING; { TString }
   | KWUNIT; { TUnit }
-  | ~ = UID; < TUid >
+  | id = UID; typing = option(typing_atom); { TConstructor {id; typing} }
   | ~ = LID; < TPolymorphic >
   | LPAREN; t = typing; COMMA; ts = separated_list(COMMA, typing); RPAREN; { TTuple (t :: ts) }
   | LBRACKET; t = typing; RBRACKET; < TList >
-  | l = typing; ARROW; r = typing; { TFunction {l; r} }
+
+let typing :=
+  | typing_atom
+  | l = typing; ARROW; r = typing_atom; { TFunction {l; r} }
 
 let expression_atom :=
   | ~ = INT; < Int >
