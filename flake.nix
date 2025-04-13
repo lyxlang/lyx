@@ -120,7 +120,7 @@
             export LIBRARY_PATH=${pkgs.darwin.Libsystem}/lib:$LIBRARY_PATH
             export CPATH=${pkgs.darwin.Libsystem}/include:$CPATH
             export SDKROOT=$(xcrun --show-sdk-path)
-            export MACOSX_DEPLOYMENT_TARGET=10.15
+            export MACOSX_DEPLOYMENT_TARGET=11.3
           '';
         };
       });

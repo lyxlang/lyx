@@ -131,27 +131,56 @@ let rec analyze_type typing =
   | TPolymorphic _ | TInt | TFloat | TString | TBool | TUnit ->
       ()
 
-let rec analyze_case scope case =
-  (* TODO: Check that polymorphic types appear in every predicate *)
-  (*
-  let scope' =
-    List.fold_left
-      (fun acc predicate ->
-        let scope' = Scope (new_map (), acc) in
-        analyze_pattern scope' predicate.value ;
-        scope' )
-      (Scope (new_map (), Root))
-      predicates
-  in
-  *)
+let rec check_poly_pattern pattern =
+  match pattern with
+  | PInt _ | PFloat _ | PBool _ | PString _ | PLid _ ->
+      None
+  | PConstructor {id; pattern= p} -> (
+      let current =
+        match Hashtbl.find_opt output.types id.value with
+        | Some (_, arity) when arity > 0 ->
+            Some (id.value, id.loc)
+        | _ ->
+            None
+      in
+      match (current, p) with
+      | (Some _ as result), _ ->
+          result
+      | None, Some sub_pattern ->
+          check_poly_pattern sub_pattern
+      | None, None ->
+          None )
+  | PTuple lst | PList lst | PListSpread lst ->
+      let rec check_list = function
+        | [] ->
+            None
+        | x :: xs -> (
+          match check_poly_pattern x with
+          | Some _ as result ->
+              result
+          | None ->
+              check_list xs )
+      in
+      check_list lst
+  | POr {l; r} -> (
+    match check_poly_pattern l with
+    | Some _ as result ->
+        result
+    | None ->
+        check_poly_pattern r )
+
+(* Check if the pattern has a guard to avoid undertermined behavior in the type
+   checking *)
+and analyze_case scope case =
   let scope' = Scope (new_map (), scope) in
+  let poly = check_poly_pattern case.pattern in
   analyze_pattern scope' case.pattern ;
-  ( match case.guard with
-  | Some guard ->
-      analyze_expression scope' guard
-  | None ->
-      () ) ;
-  analyze_expression scope' case.body
+  Option.iter
+    (fun (p, loc) ->
+      if Option.is_none case.guard then
+        output.errors <-
+          ArityMismatch {name= p; expected= 1; span= loc} :: output.errors )
+    poly
 
 and analyze_binding scope ({id; signature; body} : binding) =
   (match signature with Some sign -> analyze_type sign | None -> ()) ;
