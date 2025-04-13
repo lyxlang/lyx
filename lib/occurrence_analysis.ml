@@ -50,7 +50,7 @@ let counter = ref 0
 
 let next_int () = incr counter ; !counter
 
-(** [index_map] maps each node's id to its discovery index. *)
+(** [index_map] maps each node’s id to its discovery index. *)
 let index_map : (id, int) Hashtbl.t = Hashtbl.create 100
 
 (** [lowlink_map] maps each node's id to the smallest index reachable from that
@@ -241,7 +241,7 @@ let rec process_expression (scope : scope) (expr : expression) =
   | Unit | Int _ | Float _ | Bool _ | String _ ->
       ([], expr)
   | Uid _ ->
-      ([], expr) (* Constructors don't contribute to variable references *)
+      ([], expr) (* Constructors don’t contribute to variable references *)
   | Lid lid -> (
     match find_identifier scope lid.value with
     | Some id ->
@@ -314,7 +314,7 @@ let rec process_expression (scope : scope) (expr : expression) =
       let all_fvs =
         List.sort_uniq compare (filtered_fvs @ List.concat binding_fvs)
       in
-      (* Rebuild the let expression using Tarjan's algorithm *)
+      (* Rebuild the let expression using Tarjan’s algorithm *)
       let rebuilt_expr = rebuild_let_binds (tarjans_algorithm binds) body' in
       (all_fvs, rebuilt_expr)
   | BinaryOperation {l; operator; r} ->
