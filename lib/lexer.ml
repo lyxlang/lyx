@@ -56,26 +56,6 @@ let comment buf =
 
 let rec tokenizer buf =
   match%sedlex buf with
-  | white_space ->
-      tokenizer buf
-  | eof ->
-      EOF
-  | '`' ->
-      comment buf
-  | integer ->
-      INT (lexeme buf |> int_of_string)
-  | floating ->
-      FLOAT (lexeme buf |> float_of_string)
-  | "True" ->
-      BOOL true
-  | "False" ->
-      BOOL false
-  | '"' ->
-      string buf
-  | uid ->
-      UID (lexeme buf)
-  | lid ->
-      LID (lexeme buf)
   | "def" ->
       KWDEF
   | "let" ->
@@ -166,6 +146,26 @@ let rec tokenizer buf =
       STARSTAR
   | '!' ->
       BANG
+  | white_space ->
+      tokenizer buf
+  | eof ->
+      EOF
+  | '`' ->
+      comment buf
+  | integer ->
+      INT (lexeme buf |> int_of_string)
+  | floating ->
+      FLOAT (lexeme buf |> float_of_string)
+  | "True" ->
+      BOOL true
+  | "False" ->
+      BOOL false
+  | '"' ->
+      string buf
+  | uid ->
+      UID (lexeme buf)
+  | lid ->
+      LID (lexeme buf)
   | _ ->
       let start, fin = Sedlexing.lexing_positions buf in
       raise @@ Lexing_error (start, fin)

@@ -3,16 +3,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-only
 
-%token EOF
-
-%token <string> COMMENT
-%token <int> INT
-%token <float> FLOAT
-%token <bool> BOOL
-%token <string> STRING
-%token <Ast.uid> UID
-%token <Ast.lid> LID
-
 %token KWDEF
 %token KWLET
 %token KWIN
@@ -60,6 +50,16 @@
 %token PERCENT
 %token STARSTAR
 %token BANG
+
+%token <string> COMMENT
+%token <int> INT
+%token <float> FLOAT
+%token <bool> BOOL
+%token <string> STRING
+%token <Ast.uid> UID
+%token <Ast.lid> LID
+
+%token EOF
 
 %start <Ast.program> program
 
