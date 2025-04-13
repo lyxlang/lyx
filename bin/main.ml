@@ -29,6 +29,16 @@ let transpile_stdin () =
   |> parse ~json:true |> Transpiler.build_program |> print_string ;
   flush stdout
 
+let format_file file =
+  Sedlexing.Utf8.from_channel (open_in_bin file)
+  |> parse ~json:true |> Formatter.format
+  |> Printf.fprintf (open_out_bin file) "%s%!"
+
+let format_stdin () =
+  Sedlexing.Utf8.from_channel stdin
+  |> parse ~json:true |> Formatter.format |> print_string ;
+  flush stdout
+
 let parse_file file =
   let buf = Sedlexing.Utf8.from_channel (open_in_bin file) in
   Sedlexing.set_filename buf file ;
@@ -52,6 +62,10 @@ let print_usage () =
 ├──────────────────────┼───────────────────────────────────────────────────┤
 │ lys <file>           │ Parse a file and display the AST.                 │
 ├──────────────────────┼───────────────────────────────────────────────────┤
+│ lys fmt              │ Format standard input and output it.              │
+├──────────────────────┼───────────────────────────────────────────────────┤
+│ lys fmt <file>       │ Format a file and overwrite it.                   │
+├──────────────────────┼───────────────────────────────────────────────────┤
 │ lys transpile        │ Transpile standard input and output it.           │
 ├──────────────────────┼───────────────────────────────────────────────────┤
 │ lys transpile <file> │ Transpile a file and write its OCaml counterpart. │
@@ -64,6 +78,10 @@ let () =
       transpile_file file
   | [|_; "transpile"|] ->
       transpile_stdin ()
+  | [|_; "fmt"; file|] ->
+      format_file file
+  | [|_; "fmt"|] ->
+      format_stdin ()
   | [|_; file|] ->
       parse_file file
   | [|_|] ->
