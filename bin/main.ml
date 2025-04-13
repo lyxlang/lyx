@@ -21,12 +21,9 @@ let parse ?(json = false) buf =
 
 let analyze ast =
   let output = Semantic_analysis.analyze_program ast in
-  Semantic_analysis.debug_output output
-(*
- * if Semantic_analysis.get_errors output = [] then
- *   Occurrence_analysis.analyze ast
- *   |> Occurrence_analysis.show_program |> print_endline
- *)
+  Semantic_analysis.debug_output output ;
+  if Semantic_analysis.get_errors output = [] then
+    Occurrence_analysis.analyze ast |> Ast.show_program |> print_endline
 
 let transpile_file file =
   Sedlexing.Utf8.from_channel (open_in_bin file)

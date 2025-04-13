@@ -7,14 +7,12 @@
 
 open Ast
 
-type program = decl list [@@deriving show {with_path= false}]
-
-(** [varMap] maps each variables to its associated numerical ids. *)
-type varMap = (string, int) Hashtbl.t
+(** [variable_map] maps each variables to its associated numerical ids. *)
+type variable_map = (string, int) Hashtbl.t
 
 (** [scope] represents an environment of variables, where lhs represents those
     of the current scope and rhs the parent one. *)
-and scope = Scope of varMap * scope | Root
+and scope = Scope of variable_map * scope | Root
 
 (** [id_map] maps each numerical ids to its associated variables. *)
 let id_map : (int, string located) Hashtbl.t = Hashtbl.create 1000
@@ -27,14 +25,11 @@ type id = int [@@deriving show {with_path= false}]
 and ids = id list [@@deriving show {with_path= false}]
 
 (** [params] represents a list of parameters given to a function *)
-and params = Ast.param located list [@@deriving show {with_path= false}]
-
-(** [signature] represents the type signature of a function *)
-and signature = Ast.ann [@@deriving show {with_path= false}]
+and parameters = parameter list [@@deriving show {with_path= false}]
 
 (** [bind] corresponds to a binding. It has the form `(Var, Parameters,
     Signature, Expr, fv(Expr)) located` *)
-and bind = (id * params * signature * expr located * ids) located
+and bind = (id * parameters * signature * expression * ids) located
 [@@deriving show {with_path= false}]
 
 (** [scc] represents a strongly connected component (SCC) in a graph.
@@ -48,9 +43,6 @@ and bind = (id * params * signature * expr located * ids) located
     dead code. *)
 type scc = AcyclicSCC of bind | CyclicSCC of bind list
 [@@deriving show {with_path= false}]
-
-(** [sccs] is a list of all SCCs found in the program. *)
-(* let sccs : scc list ref = ref [] [@@deriving show {with_path= false}] *)
 
 let new_map () = Hashtbl.create 100
 
@@ -146,51 +138,47 @@ let tarjans_algorithm (binds : bind list) =
       contains bindings.
     @param ret The final expression to be wrapped by the let-bindings.
     @return An AST expression with nested let-bindings. *)
-let rec rebuild_let_binds (sccs : scc list) (ret : Ast.expr located) =
+let rec rebuild_let_binds (sccs : scc list) (ret : expression) =
   match sccs with
   | [] ->
-      ret.value
-  | AcyclicSCC {value= id, params, signature, body, _; loc} :: sccs' ->
+      ret
+  | AcyclicSCC {value= id, _, signature, body, _; _} :: sccs' ->
       let name = Hashtbl.find id_map id in
-      let bind : Ast.bind = {id= name; params; signature; body} in
-      ELet
-        { bind= {value= bind; loc}
-        ; body= {value= rebuild_let_binds sccs' ret; loc= ret.loc} }
+      let bind : binding = {id= name; signature; body} in
+      Let {bindings= [bind]; body= rebuild_let_binds sccs' ret}
   | CyclicSCC binds :: sccs' ->
-      let binds =
+      let bindings =
         List.map
-          (fun {value= id, params, signature, body, _; loc} : Ast.bind located
-             ->
+          (fun {value= id, _, signature, body, _; _} ->
             let name = Hashtbl.find id_map id in
-            {value= {id= name; params; signature; body}; loc} )
+            {id= name; signature; body} )
           binds
       in
-      ELets {binds; body= {value= rebuild_let_binds sccs' ret; loc= ret.loc}}
+      Let {bindings; body= rebuild_let_binds sccs' ret}
 
 (** [rebuild_decl_binds sccs] Rebuilds the declaration binds by analyzing the
     occurrences in the given sccs.
 
     @param sccs The list of strongly connected components.
-    @return The list of Ast.decl after rebuilding the declaration binds. *)
+    @return The list of declarations after rebuilding. *)
 let rec rebuild_decl_binds (sccs : scc list) =
-  let process_bind {value= id, params, signature, body, _; _} =
-    let id =
-      try
-        let name = Hashtbl.find id_map id in
-        L name.value
-      with Not_found -> Wildcard
+  let process_bind {value= id, _, signature, body, _; _} =
+    let name =
+      try Hashtbl.find id_map id
+      with Not_found -> {loc= {start= 0; fin= 0}; value= "_"}
     in
-    ( {id= {value= id; loc= {start= 0; fin= 0}}; params; signature; body}
-      : tlbind )
+    {id= name; signature; body}
   in
   match sccs with
   | [] ->
       []
   | AcyclicSCC bind :: sccs' ->
-      Decl (process_bind bind) :: rebuild_decl_binds sccs'
+      ValueBinding (process_bind bind) :: rebuild_decl_binds sccs'
   | CyclicSCC binds :: sccs' ->
-      let binds' = List.map process_bind binds in
-      Decls binds' :: rebuild_decl_binds sccs'
+      let decls =
+        List.map (fun bind -> ValueBinding (process_bind bind)) binds
+      in
+      decls @ rebuild_decl_binds sccs'
 
 let rec find_identifier scope name =
   match scope with
@@ -214,238 +202,174 @@ let rec analyze_pattern scope pattern =
   match pattern with
   | PInt _ | PFloat _ | PString _ | PBool _ ->
       ()
-  | POLID olid | PTail olid -> (
-    match olid.value with
-    | Wildcard ->
-        ()
-    | L name ->
+  | PLid lid ->
+      if not (String.starts_with lid.value ~prefix:"_") then (
         let id_int = next_int () in
-        add_identifier scope name id_int ;
-        Hashtbl.add id_map id_int {loc= olid.loc; value= name} )
-  | PConstructor {params; _} ->
-      List.iter (fun pattern -> analyze_pattern scope pattern.value) params
-  | PTuple lst | PList lst | PListSpd lst ->
-      List.iter (fun pattern -> analyze_pattern scope pattern.value) lst.value
+        add_identifier scope lid.value id_int ;
+        Hashtbl.add id_map id_int lid )
+  | PConstructor {id= _; pattern} ->
+      Option.iter (fun p -> analyze_pattern scope p) pattern
+  | PTuple lst | PList lst | PListSpread lst ->
+      List.iter (fun pattern -> analyze_pattern scope pattern) lst
   | POr {l; r} ->
-      analyze_pattern scope l.value ;
-      analyze_pattern scope r.value
-  | PParenthesized p ->
-      analyze_pattern scope p.value
+      analyze_pattern scope l ; analyze_pattern scope r
 
-let rec analyze_param scope param =
+let rec analyze_parameter scope param =
   match param with
-  | PRLID lid ->
-      let id_int = next_int () in
-      add_identifier scope lid.value id_int ;
-      Hashtbl.add id_map id_int lid
-  | PRTuple lst ->
-      List.iter (fun param -> analyze_param scope param.value) lst
+  | ALid lid ->
+      if not (String.starts_with lid.value ~prefix:"_") then (
+        let id_int = next_int () in
+        add_identifier scope lid.value id_int ;
+        Hashtbl.add id_map id_int lid )
+  | ATuple lst ->
+      List.iter (fun param -> analyze_parameter scope param) lst
 
-let rec process_expression (scope : scope) (expr : Ast.expr located) =
-  let {value; loc} = expr in
-  match value with
-  | EParenthesized e ->
-      process_expression scope e
-  | ETyped {body; _} ->
-      process_expression scope body
-  | EUID _
-  | ETuple _
-  | EList _
-  | EUnit
-  | EBool _
-  | EString _
-  | EFloat _
-  | EInt _ ->
+let rec process_expression (scope : scope) (expr : expression) =
+  match expr with
+  | Unit | Int _ | Float _ | Bool _ | String _ ->
       ([], expr)
-  | ELID {value; _} -> (
-    match find_identifier scope value with
+  | Uid _ ->
+      ([], expr) (* Constructors don't contribute to variable references *)
+  | Lid lid -> (
+    match find_identifier scope lid.value with
     | Some id ->
         ([id], expr)
     | None ->
-        assert false )
-  | ELambda {params; body} ->
-      (* Initiate a fresh new scope for parameters variables *)
+        ([], expr)
+        (* External reference or undefined - semantic analysis will catch
+           this *) )
+  | Tuple exprs | List exprs ->
+      let fvs, exprs' =
+        List.split (List.map (process_expression scope) exprs)
+      in
+      (List.concat fvs, if expr = Tuple exprs then Tuple exprs' else List exprs')
+  | Lambda {parameters; body} ->
+      (* Create a new scope for lambda parameters *)
       let scope' = Scope (new_map (), scope) in
-      (* Record all identifiers in the current scope and add the corresponding
-         reference in id_map *)
-      List.iter (fun param -> analyze_param scope' param.value) params ;
-      (* Process_expression the body of the lambda and get the free variables *)
-      let fv, body = process_expression scope' body
-      (* Get the variables of the current scope *)
-      and varMap =
+      List.iter (fun param -> analyze_parameter scope' param) parameters ;
+      (* Process the body and get free variables *)
+      let fv, body' = process_expression scope' body in
+      (* Get bound variables from the lambda parameters *)
+      let var_map =
         match scope' with Scope (map, _) -> map | Root -> assert false
       in
-      (* Collects the identifiers of lambda parameters (which are therefore
-         bind) *)
-      let ids = Hashtbl.fold (fun _ id acc -> id :: acc) varMap [] in
-      (* Remove the lambda parameters from the free variables *)
-      (List.filter (fun id -> not (List.mem id ids)) fv, body)
-  | EApp {fn; arg} ->
-      let fn_fv, fn = process_expression scope fn
-      and arg_fv, arg = process_expression scope arg in
-      (List.append fn_fv arg_fv, {value= EApp {fn; arg}; loc})
-  | ELets {binds; body} ->
+      let bound_ids = Hashtbl.fold (fun _ id acc -> id :: acc) var_map [] in
+      (* Remove bound variables from free variables *)
+      let free_vars = List.filter (fun id -> not (List.mem id bound_ids)) fv in
+      (free_vars, Lambda {parameters; body= body'})
+  | Application {body; argument} ->
+      let body_fvs, body' = process_expression scope body in
+      let arg_fvs, arg' = process_expression scope argument in
+      (List.append body_fvs arg_fvs, Application {body= body'; argument= arg'})
+  | Let {bindings; body} ->
       let scope' = Scope (new_map (), scope) in
-      (* Add the identifiers of the bindings to the current scope *)
+      (* Add binding IDs to current scope *)
       let ids =
-        List.fold_left
-          ( fun acc {value= {id; _}; _} ->
-              let id_int = next_int () in
-              add_identifier scope' id.value id_int ;
-              Hashtbl.add id_map id_int id ;
-              acc @ [id_int]
-            : int list -> Ast.bind located -> int list )
-          [] binds
-      in
-      (* Produce the list of binding : (VarId, e, fv(e)) *)
-      let binds : bind list =
-        List.fold_left
-          (fun acc (bind : Ast.bind located) ->
-            (* Initiate a fresh new scope for the bindings *)
-            let scope'' = Scope (new_map (), scope') in
-            List.iter
-              (fun param -> analyze_param scope'' param.value)
-              bind.value.params ;
-            let fv, bind_body = process_expression scope'' bind.value.body
-            and index = List.length acc in
-            { value=
-                ( List.nth ids index
-                , bind.value.params
-                , bind.value.signature
-                , bind_body
-                , fv )
-            ; loc= bind.loc }
-            :: acc )
-          [] binds
-      in
-      let bindings = rebuild_let_binds (tarjans_algorithm binds) body
-      and body_fv =
-        List.filter
-          (fun id -> not (List.mem id ids))
-          (fst (process_expression scope' body))
-      (* Remove binds variables from the free variables in the body of all
-         binds *)
-      and cleaned_binds =
         List.map
-          (fun {value= id, _, _, body, fv; _} ->
-            (id, body, List.filter (fun id -> not (List.mem id ids)) fv) )
+          (fun {id; signature= _; body= _} ->
+            let id_int = next_int () in
+            add_identifier scope' id.value id_int ;
+            Hashtbl.add id_map id_int id ;
+            id_int )
+          bindings
+      in
+      (* Process each binding *)
+      let binds : bind list =
+        List.mapi
+          (fun i {id= _; signature; body} ->
+            (* Create new scope for binding body *)
+            let scope'' = Scope (new_map (), scope') in
+            let fv, body' = process_expression scope'' body in
+            { value= (List.nth ids i, [], signature, body', fv)
+            ; loc= {start= 0; fin= 0} (* Location not used in this context *) } )
+          bindings
+      in
+      (* Process the body *)
+      let body_fvs, body' = process_expression scope' body in
+      (* Filter out IDs defined in the let bindings *)
+      let filtered_fvs =
+        List.filter (fun id -> not (List.mem id ids)) body_fvs
+      in
+      (* Get free variables from all bindings, removing any that are defined in
+         this let *)
+      let binding_fvs =
+        List.map
+          (fun {value= _, _, _, _, fvs; _} ->
+            List.filter (fun id -> not (List.mem id ids)) fvs )
           binds
       in
-      (* Get the free variables of the let-binding by removing duplicity *)
-      let fv =
-        List.sort_uniq compare
-          (List.concat (List.map (fun (_, _, fv) -> fv) cleaned_binds) @ body_fv)
+      (* Combine all free variables *)
+      let all_fvs =
+        List.sort_uniq compare (filtered_fvs @ List.concat binding_fvs)
       in
-      (fv, {value= bindings; loc= {start= 0; fin= 0}})
-  | ELet _ ->
-      assert false
-  | EBoolOp {l; r; _}
-  | ECompOp {l; r; _}
-  | EPipeOp {l; r}
-  | EConcatOp {l; r}
-  | EAddOp {l; r; _}
-  | EMulOp {l; r; _}
-  | EExpOp {l; r}
-  | EBitOp {l; r; _} ->
-      let l_fv, l = process_expression scope l in
-      let r_fv, r = process_expression scope r in
-      let new_bin_op =
-        match value with
-        | EBoolOp {op; _} ->
-            EBoolOp {l; r; op}
-        | ECompOp {op; _} ->
-            ECompOp {l; r; op}
-        | EPipeOp _ ->
-            EPipeOp {l; r}
-        | EConcatOp _ ->
-            EConcatOp {l; r}
-        | EAddOp {op; _} ->
-            EAddOp {l; r; op}
-        | EMulOp {op; _} ->
-            EMulOp {l; r; op}
-        | EExpOp _ ->
-            EExpOp {l; r}
-        | EBitOp {op; _} ->
-            EBitOp {l; r; op}
-        | EParenthesized _
-        | ETyped _
-        | EUnOp _
-        | EApp _
-        | ELambda _
-        | EMatch _
-        | ELets _
-        | ELet _
-        | EIf _
-        | EUID _
-        | ELID _
-        | ETuple _
-        | EList _
-        | EUnit
-        | EBool _
-        | EString _
-        | EFloat _
-        | EInt _ ->
-            assert false
+      (* Rebuild the let expression using Tarjan's algorithm *)
+      let rebuilt_expr = rebuild_let_binds (tarjans_algorithm binds) body' in
+      (all_fvs, rebuilt_expr)
+  | BinaryOperation {l; operator; r} ->
+      let l_fvs, l' = process_expression scope l in
+      let r_fvs, r' = process_expression scope r in
+      (l_fvs @ r_fvs, BinaryOperation {l= l'; operator; r= r'})
+  | UnaryOperation {operator; body} ->
+      let fvs, body' = process_expression scope body in
+      (fvs, UnaryOperation {operator; body= body'})
+  | If {predicate; truthy; falsy} ->
+      let pred_fvs, pred' = process_expression scope predicate in
+      let true_fvs, true' = process_expression scope truthy in
+      let false_fvs, false' = process_expression scope falsy in
+      ( pred_fvs @ true_fvs @ false_fvs
+      , If {predicate= pred'; truthy= true'; falsy= false'} )
+  | Match {body; cases} ->
+      let body_fvs, body' = process_expression scope body in
+      let case_results =
+        List.map
+          (fun case ->
+            let scope' = Scope (new_map (), scope) in
+            analyze_pattern scope' case.pattern ;
+            let guard_fvs, guard' =
+              match case.guard with
+              | Some guard ->
+                  let fvs, expr = process_expression scope' guard in
+                  (fvs, Some expr)
+              | None ->
+                  ([], None)
+            in
+            let body_fvs, body' = process_expression scope' case.body in
+            ( guard_fvs @ body_fvs
+            , {pattern= case.pattern; guard= guard'; body= body'} ) )
+          cases
       in
-      (List.append l_fv r_fv, {value= new_bin_op; loc})
-  | EUnOp {body; _} ->
-      process_expression scope body
-  | EMatch {ref; cases} ->
-      let ref_fv, ref_body = process_expression scope ref in
-      let cases_fv, cases' =
-        List.fold_left_map
-          (fun acc case ->
-            match case.value with
-            | Case {pat; body} ->
-                let scope' = Scope (new_map (), scope) in
-                analyze_pattern scope' pat.value ;
-                let bind_fv, bind_body = process_expression scope' body in
-                ( bind_fv @ acc
-                , {value= Case {pat; body= bind_body}; loc= case.loc} )
-            | CaseGuard {pat; guard; body} ->
-                let scope' = Scope (new_map (), scope) in
-                analyze_pattern scope' pat.value ;
-                let guard_fv, guard_body = process_expression scope' guard in
-                let bind_fv, bind_body = process_expression scope' body in
-                ( List.append guard_fv bind_fv @ acc
-                , { value= CaseGuard {pat; guard= guard_body; body= bind_body}
-                  ; loc= case.loc } ) )
-          [] cases
-      in
-      let fv = List.sort_uniq compare (ref_fv @ cases_fv) in
-      (fv, {value= EMatch {ref= ref_body; cases= cases'}; loc})
-  | EIf {predicate; truthy; falsy} ->
-      let pred_fv, pred = process_expression scope predicate in
-      let truthy_fv, truthy = process_expression scope truthy in
-      let falsy_fv, falsy = process_expression scope falsy in
-      ( List.append pred_fv (List.append truthy_fv falsy_fv)
-      , {value= EIf {predicate= pred; truthy; falsy}; loc= expr.loc} )
+      let case_fvs, cases' = List.split case_results in
+      (body_fvs @ List.concat case_fvs, Match {body= body'; cases= cases'})
+  | Expression {body; signature} ->
+      let fvs, body' = process_expression scope body in
+      (fvs, Expression {body= body'; signature})
 
-let process_program (program : Ast.program) =
+let process_program (program : program) =
   let scope = Scope (new_map (), Root) in
+  (* Collect function and value definitions *)
   let binds : bind list =
     List.fold_left
       (fun acc decl ->
-        match decl.value with
-        | Decl {id; body; params; signature} ->
+        match decl with
+        | FunctionDefinition {id; parameters; signature; body} ->
             let id_int = next_int () in
-            ( match id.value with
-            | Wildcard ->
-                ()
-            | L name ->
-                Hashtbl.add id_map id_int {loc= id.loc; value= name} ;
-                add_identifier scope name id_int ) ;
+            add_identifier scope id.value id_int ;
+            Hashtbl.add id_map id_int id ;
             let scope' = Scope (new_map (), scope) in
-            List.iter (fun param -> analyze_param scope' param.value) params ;
-            { value=
-                ( id_int
-                , params
-                , signature
-                , body
-                , fst (process_expression scope' body) )
-            ; loc= decl.loc }
+            List.iter (fun param -> analyze_parameter scope' param) parameters ;
+            let fvs, body' = process_expression scope' body in
+            { value= (id_int, parameters, signature, body', fvs)
+            ; loc= {start= 0; fin= 0} }
             :: acc
-        | Decls _ | DeclADT _ | DeclAlias _ | Comment _ ->
+        | ValueBinding binding ->
+            let id_int = next_int () in
+            add_identifier scope binding.id.value id_int ;
+            Hashtbl.add id_map id_int binding.id ;
+            let fvs, body' = process_expression scope binding.body in
+            { value= (id_int, [], binding.signature, body', fvs)
+            ; loc= {start= 0; fin= 0} }
+            :: acc
+        | AdtDefinition _ | TypeDefinition _ | Comment _ ->
             acc )
       [] program
   in

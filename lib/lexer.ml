@@ -22,10 +22,10 @@ let alnum = [%sedlex.regexp? lowercase | uppercase | digit]
 
 let uid = [%sedlex.regexp? uppercase, Star alnum, Star '\'']
 
-let lid = [%sedlex.regexp? lowercase, Star alnum, Star '\'']
+let lid = [%sedlex.regexp? (lowercase | '_'), Star alnum, Star '\'']
 
 let string buf =
-  let buffer = Buffer.create 8 in
+  let buffer = Buffer.create 16 in
   let rec aux buf =
     match%sedlex buf with
     | {|\"|} ->
@@ -41,7 +41,7 @@ let string buf =
   aux buf
 
 let comment buf =
-  let buffer = Buffer.create 16 in
+  let buffer = Buffer.create 160 in
   let rec aux buf =
     match%sedlex buf with
     | Compl '`' ->
@@ -56,72 +56,72 @@ let comment buf =
 
 let rec tokenizer buf =
   match%sedlex buf with
-  | white_space ->
-      tokenizer buf
   | "def" ->
       KWDEF
-  | "True" ->
-      BOOL true
-  | "False" ->
-      BOOL false
+  | "let" ->
+      KWLET
+  | "in" ->
+      KWIN
   | "if" ->
       KWIF
   | "then" ->
       KWTHEN
   | "else" ->
       KWELSE
-  | "let" ->
-      KWLET
-  | "in" ->
-      KWIN
-  | "match" ->
-      KWMATCH
   | "Int" ->
       KWINT
   | "Float" ->
       KWFLOAT
-  | "String" ->
-      KWSTRING
   | "Bool" ->
       KWBOOL
+  | "String" ->
+      KWSTRING
   | "Unit" ->
       KWUNIT
+  | "match" ->
+      KWMATCH
+  | "as" ->
+      KWAS
   | '=' ->
       EQUAL
-  | ':' ->
-      COLON
   | ":=" ->
       COLONEQUAL
-  | '_' ->
-      UNDERSCORE
-  | ',' ->
-      COMMA
-  | "..." ->
-      ELLIPSIS
-  | '[' ->
-      LBRACKET
-  | ']' ->
-      RBRACKET
-  | '(' ->
-      LPAREN
-  | ')' ->
-      RPAREN
+  | ':' ->
+      COLON
   | '{' ->
       LBRACE
   | '}' ->
       RBRACE
-  | "|>" ->
-      TRIANGLE
-  | "++" ->
-      PLUSPLUS
-  | "**" ->
-      STARSTAR
+  | '(' ->
+      LPAREN
+  | ')' ->
+      RPAREN
+  | '[' ->
+      LBRACKET
+  | ']' ->
+      RBRACKET
+  | ',' ->
+      COMMA
+  | "->" ->
+      ARROW
+  | ';' ->
+      SEMICOLON
   | "()" ->
       UNIT
-  | "&&" ->
-      ANDAND
+  | '\\' ->
+      BACKSLASH
+  | "..." ->
+      ELLIPSIS
+  | "|>" ->
+      TRIANGLE
   | "||" ->
       BARBAR
+  | "&&" ->
+      ANDAND
+  | "==" ->
+      EQUALEQUAL
+  | "!=" ->
+      BANGEQUAL
   | '>' ->
       GT
   | ">=" ->
@@ -130,14 +130,8 @@ let rec tokenizer buf =
       LT
   | "<=" ->
       LEQ
-  | "==" ->
-      EQUALEQUAL
-  | "~~" ->
-      TILDETILDE
-  | "!=" ->
-      BANGEQUAL
-  | "!~" ->
-      BANGTILDE
+  | "++" ->
+      PLUSPLUS
   | '+' ->
       PLUS
   | '-' ->
@@ -148,38 +142,30 @@ let rec tokenizer buf =
       SLASH
   | '%' ->
       PERCENT
+  | "**" ->
+      STARSTAR
   | '!' ->
       BANG
-  | "<<" ->
-      LEFT
-  | ">>" ->
-      RIGHT
-  | '&' ->
-      AMPERSAND
-  | '|' ->
-      BAR
-  | '^' ->
-      HAT
-  | "->" ->
-      ARROW
-  | ';' ->
-      SEMICOLON
-  | '\\' ->
-      BACKSLASH
-  | integer ->
-      INT (lexeme buf)
-  | floating ->
-      FLOAT (lexeme buf)
-  | '"' ->
-      string buf
+  | white_space ->
+      tokenizer buf
+  | eof ->
+      EOF
   | '`' ->
       comment buf
+  | integer ->
+      INT (lexeme buf |> int_of_string)
+  | floating ->
+      FLOAT (lexeme buf |> float_of_string)
+  | "True" ->
+      BOOL true
+  | "False" ->
+      BOOL false
+  | '"' ->
+      string buf
   | uid ->
       UID (lexeme buf)
   | lid ->
       LID (lexeme buf)
-  | eof ->
-      EOF
   | _ ->
       let start, fin = Sedlexing.lexing_positions buf in
       raise @@ Lexing_error (start, fin)

@@ -8,173 +8,173 @@ program: UNIT
 ##
 ##
 
-Expected a declaration starting with ‘def’ or a comment enclosed in backticks. Standalone expressions are not allowed at the top level.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF UNIT
 ##
 ## Ends in an error in state: 1.
 ##
-## decl -> KWDEF . olid list(located(param)) option(ann) EQUAL expr [ KWDEF EOF COMMENT ]
-## decl -> KWDEF . UID COLONEQUAL list(located(LID)) LBRACE nonempty_list(located(variant)) RBRACE [ KWDEF EOF COMMENT ]
-## decl -> KWDEF . UID COLONEQUAL typing [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF . LID option(preceded(COLON,typing)) EQUAL expression [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF . UID COLONEQUAL typing [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF . LID nonempty_list(parameter) option(preceded(COLON,typing)) EQUAL expression [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF . UID COLONEQUAL list(located(LID)) LBRACE nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
 ##
 ## The known suffix of the stack is as follows:
 ## KWDEF
 ##
 
-Expected an identifier after ‘def’. Use lowercase for functions/values or uppercase for types/ADTs.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF UID UNIT
 ##
-## Ends in an error in state: 3.
+## Ends in an error in state: 2.
 ##
-## decl -> KWDEF UID . COLONEQUAL list(located(LID)) LBRACE nonempty_list(located(variant)) RBRACE [ KWDEF EOF COMMENT ]
-## decl -> KWDEF UID . COLONEQUAL typing [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF UID . COLONEQUAL typing [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF UID . COLONEQUAL list(located(LID)) LBRACE nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
 ##
 ## The known suffix of the stack is as follows:
 ## KWDEF UID
 ##
 
-Expected ‘:=’ after type name for a type definition.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF UID COLONEQUAL UNIT
 ##
-## Ends in an error in state: 4.
+## Ends in an error in state: 3.
 ##
-## decl -> KWDEF UID COLONEQUAL . list(located(LID)) LBRACE nonempty_list(located(variant)) RBRACE [ KWDEF EOF COMMENT ]
-## decl -> KWDEF UID COLONEQUAL . typing [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF UID COLONEQUAL . typing [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF UID COLONEQUAL . list(located(LID)) LBRACE nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
 ##
 ## The known suffix of the stack is as follows:
 ## KWDEF UID COLONEQUAL
 ##
 
-Expected either a type definition or type parameters (lowercase identifiers) for an ADT definition.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF UID COLONEQUAL UID UNDERSCORE
+program: KWDEF LID COLON UID UNIT
 ##
-## Ends in an error in state: 5.
+## Ends in an error in state: 4.
 ##
-## typing1 -> UID . option(located(typing1)) [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing_atom -> UID . option(typing_atom) [ SEMICOLON RPAREN RBRACKET KWDEF EQUAL EOF COMMENT COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## UID
 ##
 
-Invalid type constructor application. Type arguments must be valid types.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF UID COLONEQUAL LPAREN UNIT
+program: KWDEF LID COLON LPAREN UNIT
 ##
-## Ends in an error in state: 6.
+## Ends in an error in state: 5.
 ##
-## typing1 -> LPAREN . separated_nonempty_list(COMMA,located(typing)) RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-## typing1 -> LPAREN . typing RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing_atom -> LPAREN . typing COMMA loption(separated_nonempty_list(COMMA,typing)) RPAREN [ SEMICOLON RPAREN RBRACKET KWDEF EQUAL EOF COMMENT COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## LPAREN
 ##
 
-Expected a type expression inside parentheses. For tuple types, specify at least one type.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF UID COLONEQUAL LBRACKET UNIT
+program: KWDEF LID COLON LBRACKET UNIT
 ##
-## Ends in an error in state: 8.
+## Ends in an error in state: 7.
 ##
-## typing1 -> LBRACKET . typing RBRACKET [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing_atom -> LBRACKET . typing RBRACKET [ SEMICOLON RPAREN RBRACKET KWDEF EQUAL EOF COMMENT COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## LBRACKET
 ##
 
-Expected a type expression inside brackets for a list type, e.g., [Int] or [String].
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF UID COLONEQUAL KWBOOL UNDERSCORE
+program: KWDEF LID COLON LBRACKET KWBOOL UNIT
 ##
 ## Ends in an error in state: 14.
 ##
-## typing -> typing1 . ARROW typing [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-## typing -> typing1 . [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-##
-## The known suffix of the stack is as follows:
-## typing1
-##
-
-Unexpected token after type. For function types, use the arrow ‘->’ syntax.
-
-program: KWDEF UID COLONEQUAL LID ARROW UNIT
-##
-## Ends in an error in state: 15.
-##
-## typing -> typing1 ARROW . typing [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-##
-## The known suffix of the stack is as follows:
-## typing1 ARROW
-##
-
-Expected return type after ‘->’ in function type definition.
-
-program: KWDEF UID COLONEQUAL LBRACKET UID UNIT
-##
-## Ends in an error in state: 17.
-##
-## typing1 -> LBRACKET typing . RBRACKET [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing -> typing . ARROW typing_atom [ RBRACKET ARROW ]
+## typing_atom -> LBRACKET typing . RBRACKET [ SEMICOLON RPAREN RBRACKET KWDEF EQUAL EOF COMMENT COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## LBRACKET typing
 ##
 
-Expected closing bracket ‘]’ after list type definition.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF UID COLONEQUAL LPAREN UID UNIT
+program: KWDEF LID COLON UID ARROW UNIT
 ##
-## Ends in an error in state: 19.
+## Ends in an error in state: 16.
 ##
-## separated_nonempty_list(COMMA,located(typing)) -> typing . [ RPAREN ]
-## separated_nonempty_list(COMMA,located(typing)) -> typing . COMMA separated_nonempty_list(COMMA,located(typing)) [ RPAREN ]
-## typing1 -> LPAREN typing . RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## typing -> typing ARROW . typing_atom [ SEMICOLON RPAREN RBRACKET KWDEF EQUAL EOF COMMENT COMMA ARROW ]
+##
+## The known suffix of the stack is as follows:
+## typing ARROW
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID COLON LPAREN KWBOOL UNIT
+##
+## Ends in an error in state: 18.
+##
+## typing -> typing . ARROW typing_atom [ COMMA ARROW ]
+## typing_atom -> LPAREN typing . COMMA loption(separated_nonempty_list(COMMA,typing)) RPAREN [ SEMICOLON RPAREN RBRACKET KWDEF EQUAL EOF COMMENT COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## LPAREN typing
 ##
 
-Expected either a comma ‘,’ for tuple types or closing parenthesis ‘)’ for grouped types.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF UID COLONEQUAL LPAREN UID COMMA UNIT
+program: KWDEF LID COLON LPAREN UID COMMA UNIT
 ##
-## Ends in an error in state: 21.
+## Ends in an error in state: 19.
 ##
-## separated_nonempty_list(COMMA,located(typing)) -> typing COMMA . separated_nonempty_list(COMMA,located(typing)) [ RPAREN ]
+## typing_atom -> LPAREN typing COMMA . loption(separated_nonempty_list(COMMA,typing)) RPAREN [ SEMICOLON RPAREN RBRACKET KWDEF EQUAL EOF COMMENT COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## typing COMMA
+## LPAREN typing COMMA
 ##
 
-Expected another type after comma in tuple type definition.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF UID COLONEQUAL LPAREN UID COMMA UID UNIT
+program: KWDEF LID COLON LPAREN UID COMMA KWBOOL UNIT
 ##
-## Ends in an error in state: 22.
+## Ends in an error in state: 20.
 ##
-## separated_nonempty_list(COMMA,located(typing)) -> typing . [ RPAREN ]
-## separated_nonempty_list(COMMA,located(typing)) -> typing . COMMA separated_nonempty_list(COMMA,located(typing)) [ RPAREN ]
+## separated_nonempty_list(COMMA,typing) -> typing . [ RPAREN ]
+## separated_nonempty_list(COMMA,typing) -> typing . COMMA separated_nonempty_list(COMMA,typing) [ RPAREN ]
+## typing -> typing . ARROW typing_atom [ RPAREN COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## typing
 ##
 
-Expected either a comma ‘,’ for more tuple elements or closing parenthesis ‘)’ to complete the tuple type.
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID COLON LPAREN UID COMMA UID COMMA UNIT
+##
+## Ends in an error in state: 21.
+##
+## separated_nonempty_list(COMMA,typing) -> typing COMMA . separated_nonempty_list(COMMA,typing) [ RPAREN ]
+##
+## The known suffix of the stack is as follows:
+## typing COMMA
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF UID COLONEQUAL LID UNIT
 ##
 ## Ends in an error in state: 28.
 ##
 ## list(located(LID)) -> LID . list(located(LID)) [ LBRACE ]
-## typing1 -> LID . [ KWDEF EOF COMMENT ARROW ]
+## typing_atom -> LID . [ KWDEF EOF COMMENT ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## LID
 ##
 
-Expected ‘{’ after type parameters for an ADT definition, or use a valid type expression for a type alias.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF UID COLONEQUAL LID LID UNIT
 ##
@@ -186,851 +186,1292 @@ program: KWDEF UID COLONEQUAL LID LID UNIT
 ## LID
 ##
 
-Expected ‘{’ after type parameters to begin ADT variant definitions.
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF UID COLONEQUAL KWBOOL UNIT
+##
+## Ends in an error in state: 31.
+##
+## declaration -> KWDEF UID COLONEQUAL typing . [ KWDEF EOF COMMENT ]
+## typing -> typing . ARROW typing_atom [ KWDEF EOF COMMENT ARROW ]
+##
+## The known suffix of the stack is as follows:
+## KWDEF UID COLONEQUAL typing
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF UID COLONEQUAL LBRACE UNIT
 ##
 ## Ends in an error in state: 33.
 ##
-## decl -> KWDEF UID COLONEQUAL list(located(LID)) LBRACE . nonempty_list(located(variant)) RBRACE [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF UID COLONEQUAL list(located(LID)) LBRACE . nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
 ##
 ## The known suffix of the stack is as follows:
 ## KWDEF UID COLONEQUAL list(located(LID)) LBRACE
 ##
 
-Expected at least one variant definition for an ADT. Each variant should start with an uppercase identifier.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF UID COLONEQUAL LBRACE UID UNIT
 ##
 ## Ends in an error in state: 34.
 ##
-## variant -> UID . option(located(typing)) SEMICOLON [ UID RBRACE ]
+## nonempty_list(variant) -> UID . option(preceded(KWAS,typing)) SEMICOLON [ RBRACE ]
+## nonempty_list(variant) -> UID . option(preceded(KWAS,typing)) SEMICOLON nonempty_list(variant) [ RBRACE ]
 ##
 ## The known suffix of the stack is as follows:
 ## UID
 ##
 
-Expected optional type information followed by a semicolon ‘;’ after variant name.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF UID COLONEQUAL LBRACE UID UID UNIT
+program: KWDEF UID COLONEQUAL LBRACE UID KWAS UNIT
+##
+## Ends in an error in state: 35.
+##
+## option(preceded(KWAS,typing)) -> KWAS . typing [ SEMICOLON ]
+##
+## The known suffix of the stack is as follows:
+## KWAS
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF UID COLONEQUAL LBRACE UID KWAS KWBOOL UNIT
 ##
 ## Ends in an error in state: 36.
 ##
-## variant -> UID option(located(typing)) . SEMICOLON [ UID RBRACE ]
+## option(preceded(KWAS,typing)) -> KWAS typing . [ SEMICOLON ]
+## typing -> typing . ARROW typing_atom [ SEMICOLON ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## UID option(located(typing))
+## KWAS typing
 ##
 
-Expected a semicolon ‘;’ after variant definition.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF UID COLONEQUAL LBRACE UID SEMICOLON UNIT
 ##
 ## Ends in an error in state: 38.
 ##
-## nonempty_list(located(variant)) -> variant . [ RBRACE ]
-## nonempty_list(located(variant)) -> variant . nonempty_list(located(variant)) [ RBRACE ]
+## nonempty_list(variant) -> UID option(preceded(KWAS,typing)) SEMICOLON . [ RBRACE ]
+## nonempty_list(variant) -> UID option(preceded(KWAS,typing)) SEMICOLON . nonempty_list(variant) [ RBRACE ]
 ##
 ## The known suffix of the stack is as follows:
-## variant
+## UID option(preceded(KWAS,typing)) SEMICOLON
 ##
 
-Expected either another variant definition (starting with an uppercase identifier) or ‘}’ to close the ADT definition.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID UNIT
 ##
-## Ends in an error in state: 43.
+## Ends in an error in state: 42.
 ##
-## decl -> KWDEF olid . list(located(param)) option(ann) EQUAL expr [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF LID . option(preceded(COLON,typing)) EQUAL expression [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF LID . nonempty_list(parameter) option(preceded(COLON,typing)) EQUAL expression [ KWDEF EOF COMMENT ]
 ##
 ## The known suffix of the stack is as follows:
-## KWDEF olid
+## KWDEF LID
 ##
 
-Expected parameters (if any) followed by ‘=’ and an expression body for the definition.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID LPAREN UNIT
 ##
-## Ends in an error in state: 44.
+## Ends in an error in state: 43.
 ##
-## tuple_param -> LPAREN . separated_nonempty_list(COMMA,located(param)) RPAREN [ RPAREN LPAREN LID EQUAL COMMA COLON ARROW ]
+## parameter -> LPAREN . parameter COMMA loption(separated_nonempty_list(COMMA,parameter)) RPAREN [ RPAREN LPAREN LID EQUAL COMMA COLON ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## LPAREN
 ##
 
-Expected parameter(s) inside parentheses for a tuple parameter.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID LPAREN LID UNIT
 ##
-## Ends in an error in state: 49.
+## Ends in an error in state: 45.
 ##
-## separated_nonempty_list(COMMA,located(param)) -> param . [ RPAREN ]
-## separated_nonempty_list(COMMA,located(param)) -> param . COMMA separated_nonempty_list(COMMA,located(param)) [ RPAREN ]
+## parameter -> LPAREN parameter . COMMA loption(separated_nonempty_list(COMMA,parameter)) RPAREN [ RPAREN LPAREN LID EQUAL COMMA COLON ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## param
+## LPAREN parameter
 ##
 
-Expected either a comma ‘,’ for more parameters or closing parenthesis ‘)’ to complete the tuple parameter.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID LPAREN LID COMMA UNIT
 ##
-## Ends in an error in state: 50.
+## Ends in an error in state: 46.
 ##
-## separated_nonempty_list(COMMA,located(param)) -> param COMMA . separated_nonempty_list(COMMA,located(param)) [ RPAREN ]
-##
-## The known suffix of the stack is as follows:
-## param COMMA
-##
-
-Expected another parameter after comma in tuple parameter.
-
-program: KWDEF LID LID UNIT
-##
-## Ends in an error in state: 52.
-##
-## list(located(param)) -> param . list(located(param)) [ EQUAL COLON ]
+## parameter -> LPAREN parameter COMMA . loption(separated_nonempty_list(COMMA,parameter)) RPAREN [ RPAREN LPAREN LID EQUAL COMMA COLON ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## param
+## LPAREN parameter COMMA
 ##
 
-Expected either a type annotation ‘:’ or ‘=’ followed by the function body.
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID LPAREN LID COMMA LID UNIT
+##
+## Ends in an error in state: 48.
+##
+## separated_nonempty_list(COMMA,parameter) -> parameter . [ RPAREN ]
+## separated_nonempty_list(COMMA,parameter) -> parameter . COMMA separated_nonempty_list(COMMA,parameter) [ RPAREN ]
+##
+## The known suffix of the stack is as follows:
+## parameter
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID LPAREN LID COMMA LID COMMA UNIT
+##
+## Ends in an error in state: 49.
+##
+## separated_nonempty_list(COMMA,parameter) -> parameter COMMA . separated_nonempty_list(COMMA,parameter) [ RPAREN ]
+##
+## The known suffix of the stack is as follows:
+## parameter COMMA
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID COLON UNIT
 ##
-## Ends in an error in state: 55.
+## Ends in an error in state: 53.
 ##
-## ann -> COLON . typing [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## option(preceded(COLON,typing)) -> COLON . typing [ RPAREN EQUAL ]
 ##
 ## The known suffix of the stack is as follows:
 ## COLON
 ##
 
-Expected type annotation after colon.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID COLON UID UNIT
+program: KWDEF LID COLON KWBOOL UNIT
+##
+## Ends in an error in state: 54.
+##
+## option(preceded(COLON,typing)) -> COLON typing . [ RPAREN EQUAL ]
+## typing -> typing . ARROW typing_atom [ RPAREN EQUAL ARROW ]
+##
+## The known suffix of the stack is as follows:
+## COLON typing
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID LID UNIT
+##
+## Ends in an error in state: 55.
+##
+## nonempty_list(parameter) -> parameter . [ EQUAL COLON ARROW ]
+## nonempty_list(parameter) -> parameter . nonempty_list(parameter) [ EQUAL COLON ARROW ]
+##
+## The known suffix of the stack is as follows:
+## parameter
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID COLON UID RPAREN
 ##
 ## Ends in an error in state: 57.
 ##
-## decl -> KWDEF olid list(located(param)) option(ann) . EQUAL expr [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF LID option(preceded(COLON,typing)) . EQUAL expression [ KWDEF EOF COMMENT ]
 ##
 ## The known suffix of the stack is as follows:
-## KWDEF olid list(located(param)) option(ann)
+## KWDEF LID option(preceded(COLON,typing))
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 4, spurious reduction of production option(typing_atom) ->
+## In state 27, spurious reduction of production typing_atom -> UID option(typing_atom)
+## In state 13, spurious reduction of production typing -> typing_atom
+## In state 54, spurious reduction of production option(preceded(COLON,typing)) -> COLON typing
 ##
 
-Expected ‘=’ after function declaration to define the body.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL UNDERSCORE
+program: KWDEF LID EQUAL TRIANGLE
 ##
 ## Ends in an error in state: 58.
 ##
-## decl -> KWDEF olid list(located(param)) option(ann) EQUAL . expr [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF LID option(preceded(COLON,typing)) EQUAL . expression [ KWDEF EOF COMMENT ]
 ##
 ## The known suffix of the stack is as follows:
-## KWDEF olid list(located(param)) option(ann) EQUAL
+## KWDEF LID option(preceded(COLON,typing)) EQUAL
 ##
 
-Expected an expression for the function body.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LPAREN UNDERSCORE
+program: KWDEF LID EQUAL PLUS TRIANGLE
+##
+## Ends in an error in state: 62.
+##
+## expression_unary -> PLUS . expression_unary [ TRIANGLE STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## PLUS
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL MINUS TRIANGLE
+##
+## Ends in an error in state: 63.
+##
+## expression_unary -> MINUS . expression_unary [ TRIANGLE STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## MINUS
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL LPAREN TRIANGLE
 ##
 ## Ends in an error in state: 64.
 ##
-## expr11 -> LPAREN . loption(separated_nonempty_list(COMMA,located(expr))) RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-## expr11 -> LPAREN . expr RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_atom -> LPAREN . expression COMMA loption(separated_nonempty_list(COMMA,expression)) RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## expression_atom -> LPAREN . expression option(preceded(COLON,typing)) RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LPAREN
 ##
 
-Expected an expression or a comma-separated list of expressions inside parentheses.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LBRACKET UNDERSCORE
+program: KWDEF LID EQUAL LBRACKET TRIANGLE
 ##
 ## Ends in an error in state: 66.
 ##
-## expr11 -> LBRACKET . loption(separated_nonempty_list(COMMA,located(expr))) RBRACKET [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_atom -> LBRACKET . loption(separated_nonempty_list(COMMA,expression)) RBRACKET [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LBRACKET
 ##
 
-Expected expressions separated by commas or closing bracket ‘]’ for an empty list.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH UNDERSCORE
+program: KWDEF LID EQUAL KWMATCH TRIANGLE
 ##
 ## Ends in an error in state: 67.
 ##
-## expr11 -> KWMATCH . expr LBRACE nonempty_list(located(case)) RBRACE [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression -> KWMATCH . expression LBRACE nonempty_list(case) RBRACE [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## KWMATCH
 ##
 
-Expected an expression to match against after ‘match’ keyword.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWLET UNIT
 ##
 ## Ends in an error in state: 68.
 ##
-## expr11 -> KWLET . separated_nonempty_list(SEMICOLON,located(bind)) KWIN expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression -> KWLET . separated_nonempty_list(SEMICOLON,binding) KWIN expression [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## KWLET
 ##
 
-Expected binding(s) after ‘let’ keyword. Bindings should be of form ‘name = expression’.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWLET LID UNIT
 ##
 ## Ends in an error in state: 69.
 ##
-## bind -> LID . list(located(param)) option(ann) EQUAL expr [ SEMICOLON KWIN ]
+## separated_nonempty_list(SEMICOLON,binding) -> LID . option(preceded(COLON,typing)) EQUAL expression [ KWIN ]
+## separated_nonempty_list(SEMICOLON,binding) -> LID . option(preceded(COLON,typing)) EQUAL expression SEMICOLON separated_nonempty_list(SEMICOLON,binding) [ KWIN ]
 ##
 ## The known suffix of the stack is as follows:
 ## LID
 ##
 
-Expected ‘=’ after name in let binding, or parameters if defining a local function.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWLET LID COLON UID UNIT
+program: KWDEF LID EQUAL KWLET LID COLON UID RPAREN
+##
+## Ends in an error in state: 70.
+##
+## separated_nonempty_list(SEMICOLON,binding) -> LID option(preceded(COLON,typing)) . EQUAL expression [ KWIN ]
+## separated_nonempty_list(SEMICOLON,binding) -> LID option(preceded(COLON,typing)) . EQUAL expression SEMICOLON separated_nonempty_list(SEMICOLON,binding) [ KWIN ]
+##
+## The known suffix of the stack is as follows:
+## LID option(preceded(COLON,typing))
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 4, spurious reduction of production option(typing_atom) ->
+## In state 27, spurious reduction of production typing_atom -> UID option(typing_atom)
+## In state 13, spurious reduction of production typing -> typing_atom
+## In state 54, spurious reduction of production option(preceded(COLON,typing)) -> COLON typing
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL KWLET LID EQUAL TRIANGLE
 ##
 ## Ends in an error in state: 71.
 ##
-## bind -> LID list(located(param)) option(ann) . EQUAL expr [ SEMICOLON KWIN ]
+## separated_nonempty_list(SEMICOLON,binding) -> LID option(preceded(COLON,typing)) EQUAL . expression [ KWIN ]
+## separated_nonempty_list(SEMICOLON,binding) -> LID option(preceded(COLON,typing)) EQUAL . expression SEMICOLON separated_nonempty_list(SEMICOLON,binding) [ KWIN ]
 ##
 ## The known suffix of the stack is as follows:
-## LID list(located(param)) option(ann)
+## LID option(preceded(COLON,typing)) EQUAL
 ##
 
-Expected ‘=’ after binding name and optional type annotation.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWLET LID EQUAL UNDERSCORE
+program: KWDEF LID EQUAL KWIF TRIANGLE
 ##
 ## Ends in an error in state: 72.
 ##
-## bind -> LID list(located(param)) option(ann) EQUAL . expr [ SEMICOLON KWIN ]
-##
-## The known suffix of the stack is as follows:
-## LID list(located(param)) option(ann) EQUAL
-##
-
-Expected an expression after ‘=’ in let binding.
-
-program: KWDEF LID EQUAL KWIF UNDERSCORE
-##
-## Ends in an error in state: 73.
-##
-## expr11 -> KWIF . expr KWTHEN expr KWELSE expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression -> KWIF . expression KWTHEN expression KWELSE expression [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## KWIF
 ##
 
-Expected a condition expression after ‘if’ keyword.
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL BANG TRIANGLE
+##
+## Ends in an error in state: 76.
+##
+## expression_unary -> BANG . expression_unary [ TRIANGLE STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## BANG
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL BOOL RBRACE
+##
+## Ends in an error in state: 79.
+##
+## application -> application . expression_atom [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## expression_unary -> application . [ TRIANGLE STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## application
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL BACKSLASH UNIT
 ##
-## Ends in an error in state: 78.
+## Ends in an error in state: 81.
 ##
-## expr11 -> BACKSLASH . nonempty_list(located(param)) ARROW expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression -> BACKSLASH . nonempty_list(parameter) ARROW expression [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## BACKSLASH
 ##
 
-Expected at least one parameter after ‘\’ for lambda expression.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BACKSLASH LID UNIT
-##
-## Ends in an error in state: 79.
-##
-## nonempty_list(located(param)) -> param . [ ARROW ]
-## nonempty_list(located(param)) -> param . nonempty_list(located(param)) [ ARROW ]
-##
-## The known suffix of the stack is as follows:
-## param
-##
-
-Expected ‘->’ after parameters in lambda expression.
-
-program: KWDEF LID EQUAL BACKSLASH LID ARROW UNDERSCORE
+program: KWDEF LID EQUAL BACKSLASH LID EQUAL
 ##
 ## Ends in an error in state: 82.
 ##
-## expr11 -> BACKSLASH nonempty_list(located(param)) ARROW . expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression -> BACKSLASH nonempty_list(parameter) . ARROW expression [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## BACKSLASH nonempty_list(located(param)) ARROW
+## BACKSLASH nonempty_list(parameter)
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 55, spurious reduction of production nonempty_list(parameter) -> parameter
 ##
 
-Expected body expression after ‘->’ in lambda expression.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BANG UNDERSCORE
+program: KWDEF LID EQUAL BACKSLASH LID ARROW TRIANGLE
 ##
 ## Ends in an error in state: 83.
 ##
-## expr7 -> un_op . expr8 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression -> BACKSLASH nonempty_list(parameter) ARROW . expression [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## un_op
+## BACKSLASH nonempty_list(parameter) ARROW
 ##
 
-Expected an expression after unary operator.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL AMPERSAND UNDERSCORE
+program: KWDEF LID EQUAL BOOL STARSTAR TRIANGLE
+##
+## Ends in an error in state: 85.
+##
+## expression_exponentiation -> expression_unary STARSTAR . expression_exponentiation [ TRIANGLE STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## expression_unary STARSTAR
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL BOOL TRIANGLE TRIANGLE
+##
+## Ends in an error in state: 88.
+##
+## expression_pipe -> expression_pipe TRIANGLE . expression_or [ TRIANGLE SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
+##
+## The known suffix of the stack is as follows:
+## expression_pipe TRIANGLE
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL BOOL BARBAR TRIANGLE
 ##
 ## Ends in an error in state: 90.
 ##
-## expr9 -> expr9 bit_op . expr10 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_or -> expression_or BARBAR . expression_and [ TRIANGLE SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON BARBAR ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## expr9 bit_op
+## expression_or BARBAR
 ##
 
-Expected right operand for bitwise operation.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL AMPERSAND BOOL UNDERSCORE
+program: KWDEF LID EQUAL BOOL STAR TRIANGLE
 ##
 ## Ends in an error in state: 92.
 ##
-## expr10 -> expr10 . expr11 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-## expr9 -> expr9 bit_op expr10 . [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_multiplication -> expression_multiplication STAR . expression_exponentiation [ TRIANGLE STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
-## expr9 bit_op expr10
+## expression_multiplication STAR
 ##
 
-Unexpected token after binary expression. Consider adding parentheses to clarify precedence.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL STARSTAR UNDERSCORE
+program: KWDEF LID EQUAL BOOL SLASH TRIANGLE
 ##
-## Ends in an error in state: 95.
+## Ends in an error in state: 94.
 ##
-## expr8 -> expr8 STARSTAR . expr9 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_multiplication -> expression_multiplication SLASH . expression_exponentiation [ TRIANGLE STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
-## expr8 STARSTAR
+## expression_multiplication SLASH
 ##
 
-Expected right operand for exponentiation operation.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL UNDERSCORE
+program: KWDEF LID EQUAL BOOL PERCENT TRIANGLE
 ##
-## Ends in an error in state: 97.
+## Ends in an error in state: 96.
 ##
-## expr10 -> expr10 . expr11 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-## expr9 -> expr10 . [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_multiplication -> expression_multiplication PERCENT . expression_exponentiation [ TRIANGLE STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
-## expr10
+## expression_multiplication PERCENT
 ##
 
-Unexpected token in expression. Function application must have arguments.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL PERCENT UNDERSCORE
+program: KWDEF LID EQUAL BOOL EQUALEQUAL TRIANGLE
+##
+## Ends in an error in state: 100.
+##
+## expression_equality -> expression_equality EQUALEQUAL . expression_compare [ TRIANGLE SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## expression_equality EQUALEQUAL
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL BOOL PLUSPLUS TRIANGLE
+##
+## Ends in an error in state: 102.
+##
+## expression_concatenate -> expression_concatenate PLUSPLUS . expression_addition [ TRIANGLE SEMICOLON RPAREN RBRACKET PLUSPLUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## expression_concatenate PLUSPLUS
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL BOOL PLUS TRIANGLE
 ##
 ## Ends in an error in state: 104.
 ##
-## expr6 -> expr6 mul_op . expr7 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_addition -> expression_addition PLUS . expression_multiplication [ TRIANGLE SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
-## expr6 mul_op
+## expression_addition PLUS
 ##
 
-Expected right operand for multiplication operator.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL PLUSPLUS UNDERSCORE
+program: KWDEF LID EQUAL BOOL MINUS TRIANGLE
 ##
-## Ends in an error in state: 107.
+## Ends in an error in state: 106.
 ##
-## expr4 -> expr5 PLUSPLUS . expr4 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_addition -> expression_addition MINUS . expression_multiplication [ TRIANGLE SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
-## expr5 PLUSPLUS
+## expression_addition MINUS
 ##
 
-Expected right operand for list concatenation operator ‘++’.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL MINUS UNDERSCORE
+program: KWDEF LID EQUAL BOOL LT TRIANGLE
 ##
-## Ends in an error in state: 111.
+## Ends in an error in state: 109.
 ##
-## expr5 -> expr5 add_op . expr6 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_compare -> expression_compare LT . expression_concatenate [ TRIANGLE SEMICOLON RPAREN RBRACKET LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
-## expr5 add_op
+## expression_compare LT
 ##
 
-Expected right operand for addition/subtraction operator.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL TRIANGLE UNDERSCORE
+program: KWDEF LID EQUAL BOOL LEQ TRIANGLE
 ##
-## Ends in an error in state: 115.
+## Ends in an error in state: 112.
 ##
-## expr3 -> expr3 TRIANGLE . expr4 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_compare -> expression_compare LEQ . expression_concatenate [ TRIANGLE SEMICOLON RPAREN RBRACKET LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
-## expr3 TRIANGLE
+## expression_compare LEQ
 ##
 
-Expected right operand for pipe operator ‘▷’.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL BANGEQUAL UNDERSCORE
+program: KWDEF LID EQUAL BOOL GT TRIANGLE
 ##
-## Ends in an error in state: 126.
+## Ends in an error in state: 114.
 ##
-## expr2 -> expr2 comp_op . expr3 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_compare -> expression_compare GT . expression_concatenate [ TRIANGLE SEMICOLON RPAREN RBRACKET LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
-## expr2 comp_op
+## expression_compare GT
 ##
 
-Expected right operand for comparison operator.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL ANDAND UNDERSCORE
+program: KWDEF LID EQUAL BOOL GEQ TRIANGLE
+##
+## Ends in an error in state: 116.
+##
+## expression_compare -> expression_compare GEQ . expression_concatenate [ TRIANGLE SEMICOLON RPAREN RBRACKET LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## expression_compare GEQ
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL BOOL BANGEQUAL TRIANGLE
+##
+## Ends in an error in state: 118.
+##
+## expression_equality -> expression_equality BANGEQUAL . expression_compare [ TRIANGLE SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## expression_equality BANGEQUAL
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL BOOL ANDAND TRIANGLE
+##
+## Ends in an error in state: 122.
+##
+## expression_and -> expression_and ANDAND . expression_equality [ TRIANGLE SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON BARBAR ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## expression_and ANDAND
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL KWIF BOOL SEMICOLON
+##
+## Ends in an error in state: 127.
+##
+## expression -> KWIF expression . KWTHEN expression KWELSE expression [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
+##
+## The known suffix of the stack is as follows:
+## KWIF expression
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 79, spurious reduction of production expression_unary -> application
+## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
+## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
+## In state 91, spurious reduction of production expression_addition -> expression_multiplication
+## In state 111, spurious reduction of production expression_concatenate -> expression_addition
+## In state 101, spurious reduction of production expression_compare -> expression_concatenate
+## In state 120, spurious reduction of production expression_equality -> expression_compare
+## In state 99, spurious reduction of production expression_and -> expression_equality
+## In state 124, spurious reduction of production expression_or -> expression_and
+## In state 125, spurious reduction of production expression_pipe -> expression_or
+## In state 87, spurious reduction of production expression -> expression_pipe
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL KWIF BOOL KWTHEN TRIANGLE
+##
+## Ends in an error in state: 128.
+##
+## expression -> KWIF expression KWTHEN . expression KWELSE expression [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
+##
+## The known suffix of the stack is as follows:
+## KWIF expression KWTHEN
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL SEMICOLON
+##
+## Ends in an error in state: 129.
+##
+## expression -> KWIF expression KWTHEN expression . KWELSE expression [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
+##
+## The known suffix of the stack is as follows:
+## KWIF expression KWTHEN expression
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 79, spurious reduction of production expression_unary -> application
+## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
+## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
+## In state 91, spurious reduction of production expression_addition -> expression_multiplication
+## In state 111, spurious reduction of production expression_concatenate -> expression_addition
+## In state 101, spurious reduction of production expression_compare -> expression_concatenate
+## In state 120, spurious reduction of production expression_equality -> expression_compare
+## In state 99, spurious reduction of production expression_and -> expression_equality
+## In state 124, spurious reduction of production expression_or -> expression_and
+## In state 125, spurious reduction of production expression_pipe -> expression_or
+## In state 87, spurious reduction of production expression -> expression_pipe
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL KWELSE TRIANGLE
+##
+## Ends in an error in state: 130.
+##
+## expression -> KWIF expression KWTHEN expression KWELSE . expression [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
+##
+## The known suffix of the stack is as follows:
+## KWIF expression KWTHEN expression KWELSE
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL KWLET LID EQUAL BOOL RPAREN
 ##
 ## Ends in an error in state: 132.
 ##
-## expr1 -> expr1 bool_op . expr2 [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## separated_nonempty_list(SEMICOLON,binding) -> LID option(preceded(COLON,typing)) EQUAL expression . [ KWIN ]
+## separated_nonempty_list(SEMICOLON,binding) -> LID option(preceded(COLON,typing)) EQUAL expression . SEMICOLON separated_nonempty_list(SEMICOLON,binding) [ KWIN ]
 ##
 ## The known suffix of the stack is as follows:
-## expr1 bool_op
+## LID option(preceded(COLON,typing)) EQUAL expression
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 79, spurious reduction of production expression_unary -> application
+## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
+## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
+## In state 91, spurious reduction of production expression_addition -> expression_multiplication
+## In state 111, spurious reduction of production expression_concatenate -> expression_addition
+## In state 101, spurious reduction of production expression_compare -> expression_concatenate
+## In state 120, spurious reduction of production expression_equality -> expression_compare
+## In state 99, spurious reduction of production expression_and -> expression_equality
+## In state 124, spurious reduction of production expression_or -> expression_and
+## In state 125, spurious reduction of production expression_pipe -> expression_or
+## In state 87, spurious reduction of production expression -> expression_pipe
 ##
 
-Expected right operand for logical operator.
-
-program: KWDEF LID EQUAL KWIF BOOL ARROW
-##
-## Ends in an error in state: 136.
-##
-## expr11 -> KWIF expr . KWTHEN expr KWELSE expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-##
-## The known suffix of the stack is as follows:
-## KWIF expr
-##
-
-Expected ‘then’ after the condition in an if expression.
-
-program: KWDEF LID EQUAL KWIF BOOL KWTHEN UNDERSCORE
-##
-## Ends in an error in state: 137.
-##
-## expr11 -> KWIF expr KWTHEN . expr KWELSE expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-##
-## The known suffix of the stack is as follows:
-## KWIF expr KWTHEN
-##
-
-Expected an expression for the ‘then’ branch of an if expression.
-
-program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL ARROW
-##
-## Ends in an error in state: 138.
-##
-## expr11 -> KWIF expr KWTHEN expr . KWELSE expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-##
-## The known suffix of the stack is as follows:
-## KWIF expr KWTHEN expr
-##
-
-Expected ‘else’ after the ‘then’ branch of an if expression.
-
-program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL KWELSE UNDERSCORE
-##
-## Ends in an error in state: 139.
-##
-## expr11 -> KWIF expr KWTHEN expr KWELSE . expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-##
-## The known suffix of the stack is as follows:
-## KWIF expr KWTHEN expr KWELSE
-##
-
-Expected an expression for the ‘else’ branch of an if expression.
-
-program: KWDEF LID EQUAL KWLET LID EQUAL BOOL KWIN UNDERSCORE
-##
-## Ends in an error in state: 143.
-##
-## expr11 -> KWLET separated_nonempty_list(SEMICOLON,located(bind)) KWIN . expr [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-##
-## The known suffix of the stack is as follows:
-## KWLET separated_nonempty_list(SEMICOLON,located(bind)) KWIN
-##
-
-Expected an expression after ‘in’ in a let expression.
-
-program: KWDEF LID EQUAL KWLET LID EQUAL BOOL ARROW
-##
-## Ends in an error in state: 145.
-##
-## separated_nonempty_list(SEMICOLON,located(bind)) -> bind . [ KWIN ]
-## separated_nonempty_list(SEMICOLON,located(bind)) -> bind . SEMICOLON separated_nonempty_list(SEMICOLON,located(bind)) [ KWIN ]
-##
-## The known suffix of the stack is as follows:
-## bind
-##
-
-Expected ‘in’ after binding(s), or ‘;’ to add more bindings.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWLET LID EQUAL BOOL SEMICOLON UNIT
 ##
-## Ends in an error in state: 146.
+## Ends in an error in state: 133.
 ##
-## separated_nonempty_list(SEMICOLON,located(bind)) -> bind SEMICOLON . separated_nonempty_list(SEMICOLON,located(bind)) [ KWIN ]
-##
-## The known suffix of the stack is as follows:
-## bind SEMICOLON
-##
-
-Expected another binding after ‘;’ in let expression.
-
-program: KWDEF LID EQUAL KWMATCH BOOL ARROW
-##
-## Ends in an error in state: 148.
-##
-## expr11 -> KWMATCH expr . LBRACE nonempty_list(located(case)) RBRACE [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## separated_nonempty_list(SEMICOLON,binding) -> LID option(preceded(COLON,typing)) EQUAL expression SEMICOLON . separated_nonempty_list(SEMICOLON,binding) [ KWIN ]
 ##
 ## The known suffix of the stack is as follows:
-## KWMATCH expr
+## LID option(preceded(COLON,typing)) EQUAL expression SEMICOLON
 ##
 
-Expected ‘{’ after expression in match statement.
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL KWLET LID EQUAL BOOL KWIN TRIANGLE
+##
+## Ends in an error in state: 136.
+##
+## expression -> KWLET separated_nonempty_list(SEMICOLON,binding) KWIN . expression [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
+##
+## The known suffix of the stack is as follows:
+## KWLET separated_nonempty_list(SEMICOLON,binding) KWIN
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL KWMATCH BOOL SEMICOLON
+##
+## Ends in an error in state: 138.
+##
+## expression -> KWMATCH expression . LBRACE nonempty_list(case) RBRACE [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
+##
+## The known suffix of the stack is as follows:
+## KWMATCH expression
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 79, spurious reduction of production expression_unary -> application
+## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
+## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
+## In state 91, spurious reduction of production expression_addition -> expression_multiplication
+## In state 111, spurious reduction of production expression_concatenate -> expression_addition
+## In state 101, spurious reduction of production expression_compare -> expression_concatenate
+## In state 120, spurious reduction of production expression_equality -> expression_compare
+## In state 99, spurious reduction of production expression_and -> expression_equality
+## In state 124, spurious reduction of production expression_or -> expression_and
+## In state 125, spurious reduction of production expression_pipe -> expression_or
+## In state 87, spurious reduction of production expression -> expression_pipe
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UNIT
 ##
-## Ends in an error in state: 149.
+## Ends in an error in state: 139.
 ##
-## expr11 -> KWMATCH expr LBRACE . nonempty_list(located(case)) RBRACE [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression -> KWMATCH expression LBRACE . nonempty_list(case) RBRACE [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## KWMATCH expr LBRACE
+## KWMATCH expression LBRACE
 ##
 
-Expected at least one case pattern in match expression.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID UNIT
 ##
-## Ends in an error in state: 150.
+## Ends in an error in state: 140.
 ##
-## pattern1 -> UID . list(located(pattern1)) [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
+## pattern_atom -> UID . option(pattern_atom) [ SEMICOLON RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## UID
 ##
 
-Expected ‘->’, ‘if’, or pattern parameters after constructor in pattern.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UNIT
 ##
-## Ends in an error in state: 152.
+## Ends in an error in state: 142.
 ##
-## pattern1 -> LPAREN . pattern RPAREN [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
-## tuple_pat -> LPAREN . separated_nonempty_list(COMMA,located(pattern)) RPAREN [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
+## pattern_atom -> LPAREN . pattern_atom COMMA loption(separated_nonempty_list(COMMA,pattern_atom)) RPAREN [ SEMICOLON RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## LPAREN
 ##
 
-Expected pattern inside parentheses.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UNIT
 ##
-## Ends in an error in state: 153.
+## Ends in an error in state: 144.
 ##
-## list_pat -> LBRACKET . loption(separated_nonempty_list(COMMA,located(pattern))) RBRACKET [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
-## list_spd_pat -> LBRACKET . separated_nonempty_list(COMMA,located(pattern)) ELLIPSIS RBRACKET [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
+## pattern_atom -> LBRACKET . loption(separated_nonempty_list(COMMA,pattern_atom)) RBRACKET [ SEMICOLON RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
+## pattern_atom -> LBRACKET . separated_nonempty_list(COMMA,pattern_atom) ELLIPSIS LID RBRACKET [ SEMICOLON RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## LBRACKET
 ##
 
-Expected patterns or ‘]’ for an empty list pattern.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID RPAREN
 ##
-## Ends in an error in state: 158.
+## Ends in an error in state: 148.
 ##
-## list_spd_pat -> LBRACKET separated_nonempty_list(COMMA,located(pattern)) . ELLIPSIS RBRACKET [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
-## loption(separated_nonempty_list(COMMA,located(pattern))) -> separated_nonempty_list(COMMA,located(pattern)) . [ RBRACKET ]
+## loption(separated_nonempty_list(COMMA,pattern_atom)) -> separated_nonempty_list(COMMA,pattern_atom) . [ RBRACKET ]
+## pattern_atom -> LBRACKET separated_nonempty_list(COMMA,pattern_atom) . ELLIPSIS LID RBRACKET [ SEMICOLON RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## LBRACKET separated_nonempty_list(COMMA,located(pattern))
+## LBRACKET separated_nonempty_list(COMMA,pattern_atom)
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 140, spurious reduction of production option(pattern_atom) ->
+## In state 163, spurious reduction of production pattern_atom -> UID option(pattern_atom)
+## In state 152, spurious reduction of production separated_nonempty_list(COMMA,pattern_atom) -> pattern_atom
 ##
 
-Expected either ‘]’ to close list pattern or ‘...’ for matching rest of list.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID ELLIPSIS UNIT
 ##
-## Ends in an error in state: 159.
+## Ends in an error in state: 149.
 ##
-## list_spd_pat -> LBRACKET separated_nonempty_list(COMMA,located(pattern)) ELLIPSIS . RBRACKET [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
-##
-## The known suffix of the stack is as follows:
-## LBRACKET separated_nonempty_list(COMMA,located(pattern)) ELLIPSIS
-##
-
-Expected closing bracket ‘]’ after list spread pattern.
-
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LID UNIT
-##
-## Ends in an error in state: 161.
-##
-## pattern -> pattern1 . SEMICOLON pattern [ RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
-## pattern -> pattern1 . [ RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
+## pattern_atom -> LBRACKET separated_nonempty_list(COMMA,pattern_atom) ELLIPSIS . LID RBRACKET [ SEMICOLON RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## pattern1
+## LBRACKET separated_nonempty_list(COMMA,pattern_atom) ELLIPSIS
 ##
 
-Expected ‘->’ after pattern or ‘;’ to start alternative pattern.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID SEMICOLON UNIT
+program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID ELLIPSIS LID UNIT
 ##
-## Ends in an error in state: 162.
+## Ends in an error in state: 150.
 ##
-## pattern -> pattern1 SEMICOLON . pattern [ RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
+## pattern_atom -> LBRACKET separated_nonempty_list(COMMA,pattern_atom) ELLIPSIS LID . RBRACKET [ SEMICOLON RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## pattern1 SEMICOLON
+## LBRACKET separated_nonempty_list(COMMA,pattern_atom) ELLIPSIS LID
 ##
 
-Expected another pattern after ‘;’ in pattern alternative.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID KWIF
+program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET BOOL UNIT
 ##
-## Ends in an error in state: 167.
+## Ends in an error in state: 152.
 ##
-## separated_nonempty_list(COMMA,located(pattern)) -> pattern . [ RPAREN RBRACKET ELLIPSIS ]
-## separated_nonempty_list(COMMA,located(pattern)) -> pattern . COMMA separated_nonempty_list(COMMA,located(pattern)) [ RPAREN RBRACKET ELLIPSIS ]
+## separated_nonempty_list(COMMA,pattern_atom) -> pattern_atom . [ RPAREN RBRACKET ELLIPSIS ]
+## separated_nonempty_list(COMMA,pattern_atom) -> pattern_atom . COMMA separated_nonempty_list(COMMA,pattern_atom) [ RPAREN RBRACKET ELLIPSIS ]
 ##
 ## The known suffix of the stack is as follows:
-## pattern
+## pattern_atom
 ##
 
-Expected ‘,’ for more pattern items or closing delimiter for pattern list.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID COMMA UNIT
 ##
-## Ends in an error in state: 168.
+## Ends in an error in state: 153.
 ##
-## separated_nonempty_list(COMMA,located(pattern)) -> pattern COMMA . separated_nonempty_list(COMMA,located(pattern)) [ RPAREN RBRACKET ELLIPSIS ]
+## separated_nonempty_list(COMMA,pattern_atom) -> pattern_atom COMMA . separated_nonempty_list(COMMA,pattern_atom) [ RPAREN RBRACKET ELLIPSIS ]
 ##
 ## The known suffix of the stack is as follows:
-## pattern COMMA
+## pattern_atom COMMA
 ##
 
-Expected another pattern after comma in pattern list.
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN BOOL UNIT
+##
+## Ends in an error in state: 157.
+##
+## pattern_atom -> LPAREN pattern_atom . COMMA loption(separated_nonempty_list(COMMA,pattern_atom)) RPAREN [ SEMICOLON RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN pattern_atom
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID COMMA UNIT
+##
+## Ends in an error in state: 158.
+##
+## pattern_atom -> LPAREN pattern_atom COMMA . loption(separated_nonempty_list(COMMA,pattern_atom)) RPAREN [ SEMICOLON RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN pattern_atom COMMA
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID COMMA UID RBRACKET
 ##
-## Ends in an error in state: 172.
+## Ends in an error in state: 160.
 ##
-## tuple_pat -> LPAREN separated_nonempty_list(COMMA,located(pattern)) . RPAREN [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
-##
-## The known suffix of the stack is as follows:
-## LPAREN separated_nonempty_list(COMMA,located(pattern))
-##
-
-Expected closing parenthesis ‘)’ after tuple pattern.
-
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID RBRACKET
-##
-## Ends in an error in state: 174.
-##
-## pattern1 -> LPAREN pattern . RPAREN [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
-## separated_nonempty_list(COMMA,located(pattern)) -> pattern . [ RPAREN ]
-## separated_nonempty_list(COMMA,located(pattern)) -> pattern . COMMA separated_nonempty_list(COMMA,located(pattern)) [ RPAREN ]
+## pattern_atom -> LPAREN pattern_atom COMMA loption(separated_nonempty_list(COMMA,pattern_atom)) . RPAREN [ SEMICOLON RPAREN RBRACKET KWIF ELLIPSIS COMMA ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## LPAREN pattern
+## LPAREN pattern_atom COMMA loption(separated_nonempty_list(COMMA,pattern_atom))
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 140, spurious reduction of production option(pattern_atom) ->
+## In state 163, spurious reduction of production pattern_atom -> UID option(pattern_atom)
+## In state 152, spurious reduction of production separated_nonempty_list(COMMA,pattern_atom) -> pattern_atom
+## In state 159, spurious reduction of production loption(separated_nonempty_list(COMMA,pattern_atom)) -> separated_nonempty_list(COMMA,pattern_atom)
 ##
 
-Expected closing parenthesis ‘)’ after pattern or comma for tuple pattern.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID LID UNIT
+program: KWDEF LID EQUAL KWMATCH BOOL LBRACE BOOL UNIT
 ##
-## Ends in an error in state: 176.
+## Ends in an error in state: 165.
 ##
-## list(located(pattern1)) -> pattern1 . list(located(pattern1)) [ UNDERSCORE UID STRING SEMICOLON RPAREN RBRACKET LPAREN LID LBRACKET KWIF INT FLOAT ELLIPSIS COMMA BOOL ARROW ]
-##
-## The known suffix of the stack is as follows:
-## pattern1
-##
-
-Expected ‘->’ or more pattern parameters for constructor pattern.
-
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID RPAREN
-##
-## Ends in an error in state: 179.
-##
-## case -> pattern . ARROW expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
-## case -> pattern . KWIF expr ARROW expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
+## nonempty_list(case) -> pattern . option(preceded(KWIF,expression)) ARROW expression SEMICOLON [ RBRACE ]
+## nonempty_list(case) -> pattern . option(preceded(KWIF,expression)) ARROW expression SEMICOLON nonempty_list(case) [ RBRACE ]
+## pattern -> pattern . SEMICOLON pattern_atom [ SEMICOLON KWIF ARROW ]
 ##
 ## The known suffix of the stack is as follows:
 ## pattern
 ##
 
-Expected ‘->’ or ‘if’ after pattern in match case.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF UNDERSCORE
+program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID SEMICOLON UNIT
 ##
-## Ends in an error in state: 180.
+## Ends in an error in state: 166.
 ##
-## case -> pattern KWIF . expr ARROW expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
+## pattern -> pattern SEMICOLON . pattern_atom [ SEMICOLON KWIF ARROW ]
 ##
 ## The known suffix of the stack is as follows:
-## pattern KWIF
+## pattern SEMICOLON
 ##
 
-Expected a guard expression after ‘if’ in match case. This expression must evaluate to a boolean.
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF TRIANGLE
+##
+## Ends in an error in state: 168.
+##
+## option(preceded(KWIF,expression)) -> KWIF . expression [ ARROW ]
+##
+## The known suffix of the stack is as follows:
+## KWIF
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL SEMICOLON
 ##
-## Ends in an error in state: 181.
+## Ends in an error in state: 170.
 ##
-## case -> pattern KWIF expr . ARROW expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
-##
-## The known suffix of the stack is as follows:
-## pattern KWIF expr
-##
-
-Expected ‘->’ after guard condition in match case.
-
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL ARROW UNDERSCORE
-##
-## Ends in an error in state: 182.
-##
-## case -> pattern KWIF expr ARROW . expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
+## nonempty_list(case) -> pattern option(preceded(KWIF,expression)) . ARROW expression SEMICOLON [ RBRACE ]
+## nonempty_list(case) -> pattern option(preceded(KWIF,expression)) . ARROW expression SEMICOLON nonempty_list(case) [ RBRACE ]
 ##
 ## The known suffix of the stack is as follows:
-## pattern KWIF expr ARROW
+## pattern option(preceded(KWIF,expression))
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 79, spurious reduction of production expression_unary -> application
+## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
+## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
+## In state 91, spurious reduction of production expression_addition -> expression_multiplication
+## In state 111, spurious reduction of production expression_concatenate -> expression_addition
+## In state 101, spurious reduction of production expression_compare -> expression_concatenate
+## In state 120, spurious reduction of production expression_equality -> expression_compare
+## In state 99, spurious reduction of production expression_and -> expression_equality
+## In state 124, spurious reduction of production expression_or -> expression_and
+## In state 125, spurious reduction of production expression_pipe -> expression_or
+## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 169, spurious reduction of production option(preceded(KWIF,expression)) -> KWIF expression
 ##
 
-Expected an expression for the match case body after ‘->’.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL ARROW BOOL ARROW
+program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW TRIANGLE
 ##
-## Ends in an error in state: 183.
+## Ends in an error in state: 171.
 ##
-## case -> pattern KWIF expr ARROW expr . SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
+## nonempty_list(case) -> pattern option(preceded(KWIF,expression)) ARROW . expression SEMICOLON [ RBRACE ]
+## nonempty_list(case) -> pattern option(preceded(KWIF,expression)) ARROW . expression SEMICOLON nonempty_list(case) [ RBRACE ]
 ##
 ## The known suffix of the stack is as follows:
-## pattern KWIF expr ARROW expr
+## pattern option(preceded(KWIF,expression)) ARROW
 ##
 
-Expected a semicolon ‘;’ after match case body.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW UNDERSCORE
+program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL RPAREN
 ##
-## Ends in an error in state: 185.
+## Ends in an error in state: 172.
 ##
-## case -> pattern ARROW . expr SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
+## nonempty_list(case) -> pattern option(preceded(KWIF,expression)) ARROW expression . SEMICOLON [ RBRACE ]
+## nonempty_list(case) -> pattern option(preceded(KWIF,expression)) ARROW expression . SEMICOLON nonempty_list(case) [ RBRACE ]
 ##
 ## The known suffix of the stack is as follows:
-## pattern ARROW
+## pattern option(preceded(KWIF,expression)) ARROW expression
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 79, spurious reduction of production expression_unary -> application
+## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
+## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
+## In state 91, spurious reduction of production expression_addition -> expression_multiplication
+## In state 111, spurious reduction of production expression_concatenate -> expression_addition
+## In state 101, spurious reduction of production expression_compare -> expression_concatenate
+## In state 120, spurious reduction of production expression_equality -> expression_compare
+## In state 99, spurious reduction of production expression_and -> expression_equality
+## In state 124, spurious reduction of production expression_or -> expression_and
+## In state 125, spurious reduction of production expression_pipe -> expression_or
+## In state 87, spurious reduction of production expression -> expression_pipe
 ##
 
-Expected an expression for the match case body after ‘->’.
-
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL ARROW
-##
-## Ends in an error in state: 186.
-##
-## case -> pattern ARROW expr . SEMICOLON [ UNDERSCORE UID STRING RBRACE LPAREN LID LBRACKET INT FLOAT BOOL ]
-##
-## The known suffix of the stack is as follows:
-## pattern ARROW expr
-##
-
-Expected a semicolon ‘;’ after match case body.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL SEMICOLON UNIT
 ##
-## Ends in an error in state: 190.
+## Ends in an error in state: 173.
 ##
-## nonempty_list(located(case)) -> case . [ RBRACE ]
-## nonempty_list(located(case)) -> case . nonempty_list(located(case)) [ RBRACE ]
+## nonempty_list(case) -> pattern option(preceded(KWIF,expression)) ARROW expression SEMICOLON . [ RBRACE ]
+## nonempty_list(case) -> pattern option(preceded(KWIF,expression)) ARROW expression SEMICOLON . nonempty_list(case) [ RBRACE ]
 ##
 ## The known suffix of the stack is as follows:
-## case
+## pattern option(preceded(KWIF,expression)) ARROW expression SEMICOLON
 ##
 
-Expected either another pattern case or closing brace ‘}’ to end the match expression.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL LBRACKET BOOL RPAREN
 ##
-## Ends in an error in state: 193.
+## Ends in an error in state: 178.
 ##
-## expr11 -> LBRACKET loption(separated_nonempty_list(COMMA,located(expr))) . RBRACKET [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-##
-## The known suffix of the stack is as follows:
-## LBRACKET loption(separated_nonempty_list(COMMA,located(expr)))
-##
-
-Expected closing bracket ‘]’ to end the list literal. Found ‘)’ instead.
-
-program: KWDEF LID EQUAL LBRACKET BOOL ARROW
-##
-## Ends in an error in state: 195.
-##
-## separated_nonempty_list(COMMA,located(expr)) -> expr . [ RPAREN RBRACKET ]
-## separated_nonempty_list(COMMA,located(expr)) -> expr . COMMA separated_nonempty_list(COMMA,located(expr)) [ RPAREN RBRACKET ]
+## expression_atom -> LBRACKET loption(separated_nonempty_list(COMMA,expression)) . RBRACKET [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
-## expr
+## LBRACKET loption(separated_nonempty_list(COMMA,expression))
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 79, spurious reduction of production expression_unary -> application
+## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
+## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
+## In state 91, spurious reduction of production expression_addition -> expression_multiplication
+## In state 111, spurious reduction of production expression_concatenate -> expression_addition
+## In state 101, spurious reduction of production expression_compare -> expression_concatenate
+## In state 120, spurious reduction of production expression_equality -> expression_compare
+## In state 99, spurious reduction of production expression_and -> expression_equality
+## In state 124, spurious reduction of production expression_or -> expression_and
+## In state 125, spurious reduction of production expression_pipe -> expression_or
+## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 180, spurious reduction of production separated_nonempty_list(COMMA,expression) -> expression
+## In state 177, spurious reduction of production loption(separated_nonempty_list(COMMA,expression)) -> separated_nonempty_list(COMMA,expression)
 ##
 
-Expected either a comma ‘,’ for more list items or closing bracket ‘]’ to complete the list.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LBRACKET BOOL COMMA UNDERSCORE
+program: KWDEF LID EQUAL LBRACKET BOOL SEMICOLON
 ##
-## Ends in an error in state: 196.
+## Ends in an error in state: 180.
 ##
-## separated_nonempty_list(COMMA,located(expr)) -> expr COMMA . separated_nonempty_list(COMMA,located(expr)) [ RPAREN RBRACKET ]
+## separated_nonempty_list(COMMA,expression) -> expression . [ RPAREN RBRACKET ]
+## separated_nonempty_list(COMMA,expression) -> expression . COMMA separated_nonempty_list(COMMA,expression) [ RPAREN RBRACKET ]
 ##
 ## The known suffix of the stack is as follows:
-## expr COMMA
+## expression
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 79, spurious reduction of production expression_unary -> application
+## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
+## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
+## In state 91, spurious reduction of production expression_addition -> expression_multiplication
+## In state 111, spurious reduction of production expression_concatenate -> expression_addition
+## In state 101, spurious reduction of production expression_compare -> expression_concatenate
+## In state 120, spurious reduction of production expression_equality -> expression_compare
+## In state 99, spurious reduction of production expression_and -> expression_equality
+## In state 124, spurious reduction of production expression_or -> expression_and
+## In state 125, spurious reduction of production expression_pipe -> expression_or
+## In state 87, spurious reduction of production expression -> expression_pipe
 ##
 
-Expected another expression after comma in list literal.
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL LBRACKET BOOL COMMA TRIANGLE
+##
+## Ends in an error in state: 181.
+##
+## separated_nonempty_list(COMMA,expression) -> expression COMMA . separated_nonempty_list(COMMA,expression) [ RPAREN RBRACKET ]
+##
+## The known suffix of the stack is as follows:
+## expression COMMA
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL LPAREN BOOL SEMICOLON
+##
+## Ends in an error in state: 183.
+##
+## expression_atom -> LPAREN expression . COMMA loption(separated_nonempty_list(COMMA,expression)) RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## expression_atom -> LPAREN expression . option(preceded(COLON,typing)) RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN expression
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 79, spurious reduction of production expression_unary -> application
+## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
+## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
+## In state 91, spurious reduction of production expression_addition -> expression_multiplication
+## In state 111, spurious reduction of production expression_concatenate -> expression_addition
+## In state 101, spurious reduction of production expression_compare -> expression_concatenate
+## In state 120, spurious reduction of production expression_equality -> expression_compare
+## In state 99, spurious reduction of production expression_and -> expression_equality
+## In state 124, spurious reduction of production expression_or -> expression_and
+## In state 125, spurious reduction of production expression_pipe -> expression_or
+## In state 87, spurious reduction of production expression -> expression_pipe
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL LPAREN BOOL COMMA TRIANGLE
+##
+## Ends in an error in state: 184.
+##
+## expression_atom -> LPAREN expression COMMA . loption(separated_nonempty_list(COMMA,expression)) RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN expression COMMA
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
 program: KWDEF LID EQUAL LPAREN BOOL COMMA BOOL RBRACKET
 ##
-## Ends in an error in state: 198.
+## Ends in an error in state: 185.
 ##
-## expr11 -> LPAREN loption(separated_nonempty_list(COMMA,located(expr))) . RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
+## expression_atom -> LPAREN expression COMMA loption(separated_nonempty_list(COMMA,expression)) . RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
-## LPAREN loption(separated_nonempty_list(COMMA,located(expr)))
+## LPAREN expression COMMA loption(separated_nonempty_list(COMMA,expression))
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 79, spurious reduction of production expression_unary -> application
+## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
+## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
+## In state 91, spurious reduction of production expression_addition -> expression_multiplication
+## In state 111, spurious reduction of production expression_concatenate -> expression_addition
+## In state 101, spurious reduction of production expression_compare -> expression_concatenate
+## In state 120, spurious reduction of production expression_equality -> expression_compare
+## In state 99, spurious reduction of production expression_and -> expression_equality
+## In state 124, spurious reduction of production expression_or -> expression_and
+## In state 125, spurious reduction of production expression_pipe -> expression_or
+## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 180, spurious reduction of production separated_nonempty_list(COMMA,expression) -> expression
+## In state 177, spurious reduction of production loption(separated_nonempty_list(COMMA,expression)) -> separated_nonempty_list(COMMA,expression)
 ##
 
-Expected closing parenthesis ‘)’ to end the tuple or grouped expression. Found ‘]’ instead.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LPAREN BOOL ARROW
+program: KWDEF LID EQUAL LPAREN BOOL COLON UID EQUAL
+##
+## Ends in an error in state: 187.
+##
+## expression_atom -> LPAREN expression option(preceded(COLON,typing)) . RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN expression option(preceded(COLON,typing))
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 4, spurious reduction of production option(typing_atom) ->
+## In state 27, spurious reduction of production typing_atom -> UID option(typing_atom)
+## In state 13, spurious reduction of production typing -> typing_atom
+## In state 54, spurious reduction of production option(preceded(COLON,typing)) -> COLON typing
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID LID ARROW
+##
+## Ends in an error in state: 192.
+##
+## declaration -> KWDEF LID nonempty_list(parameter) . option(preceded(COLON,typing)) EQUAL expression [ KWDEF EOF COMMENT ]
+##
+## The known suffix of the stack is as follows:
+## KWDEF LID nonempty_list(parameter)
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 55, spurious reduction of production nonempty_list(parameter) -> parameter
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID LID COLON UID RPAREN
+##
+## Ends in an error in state: 193.
+##
+## declaration -> KWDEF LID nonempty_list(parameter) option(preceded(COLON,typing)) . EQUAL expression [ KWDEF EOF COMMENT ]
+##
+## The known suffix of the stack is as follows:
+## KWDEF LID nonempty_list(parameter) option(preceded(COLON,typing))
+##
+## WARNING: This example involves spurious reductions.
+## This implies that, although the LR(1) items shown above provide an
+## accurate view of the past (what has been recognized so far), they
+## may provide an INCOMPLETE view of the future (what was expected next).
+## In state 4, spurious reduction of production option(typing_atom) ->
+## In state 27, spurious reduction of production typing_atom -> UID option(typing_atom)
+## In state 13, spurious reduction of production typing -> typing_atom
+## In state 54, spurious reduction of production option(preceded(COLON,typing)) -> COLON typing
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID LID EQUAL TRIANGLE
+##
+## Ends in an error in state: 194.
+##
+## declaration -> KWDEF LID nonempty_list(parameter) option(preceded(COLON,typing)) EQUAL . expression [ KWDEF EOF COMMENT ]
+##
+## The known suffix of the stack is as follows:
+## KWDEF LID nonempty_list(parameter) option(preceded(COLON,typing)) EQUAL
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: COMMENT UNIT
 ##
 ## Ends in an error in state: 200.
 ##
-## expr11 -> LPAREN expr . RPAREN [ UNIT UID TRIANGLE TILDETILDE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RIGHT RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LEFT LBRACKET LBRACE KWTHEN KWMATCH KWLET KWIN KWIF KWELSE KWDEF INT HAT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BAR BANGTILDE BANGEQUAL BACKSLASH ARROW ANDAND AMPERSAND ]
-## separated_nonempty_list(COMMA,located(expr)) -> expr . [ RPAREN ]
-## separated_nonempty_list(COMMA,located(expr)) -> expr . COMMA separated_nonempty_list(COMMA,located(expr)) [ RPAREN ]
+## list(declaration) -> declaration . list(declaration) [ EOF ]
 ##
 ## The known suffix of the stack is as follows:
-## LPAREN expr
+## declaration
 ##
 
-Expected either a comma ‘,’ for tuple elements or closing parenthesis ‘)’ to complete the expression.
+<YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: COMMENT RIGHT
-##
-## Ends in an error in state: 207.
-##
-## list(located(decl)) -> decl . list(located(decl)) [ EOF ]
-##
-## The known suffix of the stack is as follows:
-## decl
-##
-
-Unexpected token after declaration. Expected another declaration or end of file.

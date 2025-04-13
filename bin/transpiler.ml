@@ -55,17 +55,17 @@ let encode_uid str = "U" ^ string_of_int (String.hash str)
 let scoped content = add "(" ; content () ; add ")"
 
 let is_type_decl decl =
-  match decl.value with
-  | Decl _ | Decls _ | Comment _ ->
+  match decl with
+  | Comment _ | ValueBinding _ | FunctionDefinition _ ->
       false
-  | DeclADT _ | DeclAlias _ ->
+  | TypeDefinition _ | AdtDefinition _ ->
       true
 
 let is_entry_point decl =
-  match decl.value with
-  | Decl {id; params= _; signature= _; body= _} ->
-      id.value = Wildcard
-  | Decls _ | Comment _ | DeclADT _ | DeclAlias _ ->
+  match decl with
+  | ValueBinding {id; signature= _; body= _} ->
+      id.value = "_"
+  | Comment _ | FunctionDefinition _ | TypeDefinition _ | AdtDefinition _ ->
       false
 
 let rec build_program decls =
@@ -77,27 +77,50 @@ let rec build_program decls =
     List.partition is_entry_point non_type_decls
   in
   let ordered = type_decls @ other_decls @ entry_point_decls in
-  List.iter (fun d -> build_decl d ; add_newline ()) ordered ;
+  List.iter (fun d -> build_declaration d ; add_newline ()) ordered ;
   Buffer.contents buffer
 
-and build_decl decl =
-  match decl.value with
-  | Decl {id; params; signature= _; body} ->
-      if id.value = Wildcard then add "let"
+and build_declaration declaration =
+  match declaration with
+  | Comment _ ->
+      ()
+  | ValueBinding {id; signature= _; body} ->
+      if id.value = "_" then add "let"
       else if !first_bind then (
         add "let rec" ;
         first_bind := false )
       else add "and" ;
       add_space () ;
-      build_olid id ;
+      add @@ encode_lid id.value ;
       add_space () ;
-      List.iter (fun p -> build_param p ; add_space ()) params ;
       add "=" ;
       add_space () ;
-      build_expr body
-  | Decls _ ->
-      ()
-  | DeclADT {id; polys; variants} ->
+      build_expression body
+  | TypeDefinition {id; body} ->
+      if !first_type then (
+        add "type" ;
+        first_type := false )
+      else add "and" ;
+      add_space () ;
+      add @@ encode_lid id.value ;
+      add_space () ;
+      add "=" ;
+      add_space () ;
+      build_typing body
+  | FunctionDefinition {id; parameters; signature= _; body} ->
+      if id.value = "_" then add "let"
+      else if !first_bind then (
+        add "let rec" ;
+        first_bind := false )
+      else add "and" ;
+      add_space () ;
+      add @@ encode_lid id.value ;
+      add_space () ;
+      List.iter (fun p -> build_parameter p ; add_space ()) parameters ;
+      add "=" ;
+      add_space () ;
+      build_expression body
+  | AdtDefinition {id; polymorphics; variants} ->
       if !first_type then (
         add "type" ;
         first_type := false )
@@ -106,307 +129,24 @@ and build_decl decl =
       List.iter
         (fun p ->
           add "'" ;
-          add (encode_lid p.value) ;
+          add @@ encode_lid p.value ;
           add_space () )
-        polys ;
-      add (encode_lid id.value) ;
+        polymorphics ;
+      add @@ encode_lid id.value ;
       add_space () ;
       add "=" ;
       add_space () ;
-      List.iter build_variant variants
-  | DeclAlias {id; typing} ->
-      if !first_type then (
-        add "type" ;
-        first_type := false )
-      else add "and" ;
-      add_space () ;
-      add (encode_lid id.value) ;
-      add_space () ;
-      add "=" ;
-      add_space () ;
-      build_typing typing
-  | Comment _ ->
-      ()
+      add_list " " build_variant variants
 
-and build_olid olid =
-  match olid.value with Wildcard -> add "_" | L str -> add (encode_lid str)
+and build_parameter parameter =
+  match parameter with
+  | ALid str ->
+      add @@ encode_lid str.value
+  | ATuple tuple_param ->
+      scoped (fun () -> add_list "," build_parameter tuple_param)
 
-and build_param param =
-  match param.value with
-  | PRLID str ->
-      add (encode_lid str.value)
-  | PRTuple tuple_param ->
-      scoped (fun () -> add_list "," build_param tuple_param)
-
-and build_expr expr =
-  match expr.value with
-  | EParenthesized e ->
-      scoped (fun () -> build_expr e)
-  | ETyped {body; signature= _} ->
-      build_expr body
-  | EBoolOp {l; op; r} ->
-      build_expr l ;
-      add_space () ;
-      build_bool_op op ;
-      add_space () ;
-      build_expr r
-  | ECompOp {l; op; r} -> (
-    match op.value with
-    | OpFeq ->
-        scoped (fun () ->
-            add "Float.equal" ;
-            add_space () ;
-            build_expr l ;
-            add_space () ;
-            build_expr r )
-    | OpNFeq ->
-        scoped (fun () ->
-            add "not (Float.equal" ;
-            add_space () ;
-            build_expr l ;
-            add_space () ;
-            build_expr r ;
-            add ")" )
-    | OpGt | OpGeq | OpLt | OpLeq | OpEq | OpNeq ->
-        build_expr l ;
-        add_space () ;
-        build_comp_op op ;
-        add_space () ;
-        build_expr r )
-  | EPipeOp {l; r} ->
-      build_expr l ; add_space () ; add "|>" ; add_space () ; build_expr r
-  | EConcatOp {l; r} ->
-      print_endline
-        "\027[31mERROR: The transpiler do not support the concatenation \
-         operator.\027[0m" ;
-      add "(* TODO: Waiting on type checker. *)" ;
-      add_space () ;
-      build_expr l ;
-      add_space () ;
-      build_expr r
-  | EAddOp {l; op; r} ->
-      build_expr l ;
-      add_space () ;
-      build_add_op op ;
-      add_space () ;
-      build_expr r
-  | EMulOp {l; op; r} ->
-      build_expr l ;
-      add_space () ;
-      build_mul_op op ;
-      add_space () ;
-      build_expr r
-  | EUnOp {op; body} ->
-      build_un_op op ; add_space () ; build_expr body
-  | EExpOp {l; r} ->
-      scoped (fun () ->
-          add "Float.pow" ;
-          add_space () ;
-          build_expr l ;
-          add_space () ;
-          build_expr r )
-  | EBitOp {l; op; r} ->
-      scoped (fun () ->
-          build_bit_op op ;
-          add_space () ;
-          build_expr l ;
-          add_space () ;
-          build_expr r )
-  | EApp {fn; arg} ->
-      build_expr fn ; add_space () ; build_expr arg
-  | ELambda {params; body} ->
-      add "fun" ;
-      add_space () ;
-      List.iter (fun p -> build_param p ; add_space ()) params ;
-      add_space () ;
-      add "->" ;
-      add_space () ;
-      build_expr body
-  | EMatch {ref; cases} ->
-      add "match" ;
-      add_space () ;
-      build_expr ref ;
-      add_space () ;
-      add "with" ;
-      List.iter build_case cases
-  | ELets {binds; body} ->
-      List.iter (fun b -> build_bind b) binds ;
-      build_expr body
-  | ELet _ ->
-      ()
-  | EIf {predicate; truthy; falsy} ->
-      add "if" ;
-      add_space () ;
-      build_expr predicate ;
-      add_space () ;
-      add "then" ;
-      add_space () ;
-      build_expr truthy ;
-      add_space () ;
-      add "else" ;
-      add_space () ;
-      build_expr falsy
-  | EUID str ->
-      add (encode_uid str.value)
-  | ELID str ->
-      add (encode_lid str.value)
-  | ETuple exprs ->
-      scoped (fun () -> add_list "," build_expr exprs)
-  | EList exprs ->
-      add "[" ;
-      add_list ";" build_expr exprs ;
-      add "]"
-  | EUnit ->
-      add "()"
-  | EBool b ->
-      add (string_of_bool b.value)
-  | EString s ->
-      add "\"" ;
-      add (String.escaped s.value) ;
-      add "\""
-  | EFloat f | EInt f ->
-      add (string_of_float (float_of_string f.value))
-
-and build_bool_op op =
-  match op.value with OpBoolAnd -> add "&&" | OpBoolOr -> add "||"
-
-and build_comp_op op =
-  match op.value with
-  | OpGt ->
-      add ">"
-  | OpGeq ->
-      add ">="
-  | OpLt ->
-      add "<"
-  | OpLeq ->
-      add "<="
-  | OpEq ->
-      add "="
-  | OpFeq | OpNFeq ->
-      ()
-  | OpNeq ->
-      add "<>"
-
-and build_add_op op =
-  match op.value with OpAdd -> add "+." | OpSub -> add "-."
-
-and build_mul_op op =
-  match op.value with
-  | OpMul ->
-      add "*."
-  | OpDiv ->
-      add "/."
-  | OpMod ->
-      add "mod"
-
-and build_un_op op =
-  match op.value with
-  | UnPlus ->
-      add "+."
-  | UnNeg ->
-      add "-."
-  | UnBoolNot ->
-      add "not"
-
-and build_bit_op op =
-  match op.value with
-  | OpBitLShift ->
-      add
-        {|(fun l r -> int_of_float l |> Int.shift_left (int_of_float r) |> float_of_int)|}
-  | OpBitRShift ->
-      add
-        {|(fun l r -> int_of_float l |> Int.shift_right_logical (int_of_float r) |> float_of_int)|}
-  | OpBitAnd ->
-      add
-        {|(fun l r -> int_of_float l |> Int.logand (int_of_float r) |> float_of_int)|}
-  | OpBitOr ->
-      add
-        {|(fun l r -> int_of_float l |> Int.logor (int_of_float r) |> float_of_int)|}
-  | OpBitXor ->
-      add
-        {|(fun l r -> int_of_float l |> Int.logxor (int_of_float r) |> float_of_int)|}
-
-and build_bind bind =
-  add "let" ;
-  add_space () ;
-  add (encode_lid bind.value.id.value) ;
-  add_space () ;
-  List.iter (fun p -> build_param p ; add_space ()) bind.value.params ;
-  add_space () ;
-  add "=" ;
-  add_space () ;
-  build_expr bind.value.body ;
-  add_space () ;
-  add "in" ;
-  add_space ()
-
-and build_case case =
-  match case.value with
-  | Case {pat; body} ->
-      add_space () ;
-      add "|" ;
-      add_space () ;
-      build_pat pat ;
-      add_space () ;
-      add "->" ;
-      add_space () ;
-      build_expr body
-  | CaseGuard {pat; guard; body} ->
-      add_space () ;
-      add "|" ;
-      add_space () ;
-      build_pat pat ;
-      add_space () ;
-      add "when" ;
-      add_space () ;
-      build_expr guard ;
-      add_space () ;
-      add "->" ;
-      add_space () ;
-      build_expr body
-
-and build_pat pat =
-  match pat.value with
-  | PInt str | PFloat str ->
-      add (string_of_float (float_of_string str.value))
-  | PString s ->
-      add "\"" ;
-      add (String.escaped s.value) ;
-      add "\""
-  | PBool b ->
-      add (string_of_bool b.value)
-  | POLID str | PTail str ->
-      build_olid str
-  | PConstructor {id; params} ->
-      add (encode_uid id.value) ;
-      add_space () ;
-      List.iter (fun p -> build_pat p ; add_space ()) params
-  | PList list_pat ->
-      add "[" ;
-      add_list ";" build_pat list_pat.value ;
-      add "]"
-  | PListSpd list_spd_pat ->
-      add_list "::" build_pat list_spd_pat.value
-  | PTuple tuple_pat ->
-      scoped (fun () -> add_list "," build_pat tuple_pat.value)
-  | POr {l; r} ->
-      build_pat l ; add_space () ; add "|" ; add_space () ; build_pat r
-  | PParenthesized p ->
-      build_pat p
-
-and build_variant variant =
-  add "|" ;
-  add_space () ;
-  add (encode_uid variant.value.id.value) ;
-  ( match variant.value.typing with
-  | Some t ->
-      add_space () ; add "of" ; add_space () ; build_typing t
-  | None ->
-      () ) ;
-  add_space ()
-
-and build_typing t =
-  match t.value with
+and build_typing typing =
+  match typing with
   | TInt ->
       add "float"
   | TFloat ->
@@ -417,21 +157,190 @@ and build_typing t =
       add "bool"
   | TUnit ->
       add "unit"
-  | TList typing ->
-      build_typing typing ; add_space () ; add "list"
+  | TList t ->
+      build_typing t ; add_space () ; add "list"
   | TTuple ts ->
       add_list "*" build_typing ts
-  | TFunc {l; r} ->
+  | TFunction {l; r} ->
       build_typing l ; add_space () ; add "->" ; add_space () ; build_typing r
-  | TPoly p ->
+  | TPolymorphic p ->
       add "'" ;
-      add (encode_lid p.value)
+      add @@ encode_lid p.value
   | TConstructor {id; typing} -> (
-      add (encode_uid id.value) ;
+      add @@ encode_lid id.value ;
       match typing with
       | Some t ->
           add_space () ; add "of" ; add_space () ; build_typing t
       | None ->
           () )
-  | TTyping t' ->
-      scoped (fun () -> build_typing t')
+
+and build_expression expr =
+  match expr with
+  | Expression {body; signature= _} ->
+      scoped (fun () -> build_expression body)
+  | Int i ->
+      float_of_int i |> string_of_float |> add
+  | Float f ->
+      add @@ string_of_float f
+  | Bool b ->
+      add @@ string_of_bool b
+  | String s ->
+      add "\"" ;
+      add @@ String.escaped s ;
+      add "\""
+  | Unit ->
+      add "()"
+  | Uid id ->
+      add @@ encode_uid id.value
+  | Lid id ->
+      add @@ encode_lid id.value
+  | Tuple exprs ->
+      scoped (fun () -> add_list "," build_expression exprs)
+  | List exprs ->
+      add "[" ;
+      add_list ";" build_expression exprs ;
+      add "]"
+  | BinaryOperation {l; operator; r} ->
+      build_expression l ;
+      add_space () ;
+      build_binary_operator operator ;
+      add_space () ;
+      build_expression r
+  | UnaryOperation {operator; body} ->
+      build_unary_operator operator ;
+      add_space () ;
+      build_expression body
+  | Let {bindings; body} ->
+      List.iter build_binding bindings ;
+      build_expression body
+  | If {predicate; truthy; falsy} ->
+      add "if" ;
+      add_space () ;
+      build_expression predicate ;
+      add_space () ;
+      add "then" ;
+      add_space () ;
+      build_expression truthy ;
+      add_space () ;
+      add "else" ;
+      add_space () ;
+      build_expression falsy
+  | Match {body; cases} ->
+      add "match" ;
+      add_space () ;
+      build_expression body ;
+      add_space () ;
+      add "with" ;
+      add_space () ;
+      add_list " " build_case cases
+  | Lambda {parameters; body} ->
+      add "fun" ;
+      add_space () ;
+      List.iter (fun p -> build_parameter p ; add_space ()) parameters ;
+      add "->" ;
+      add_space () ;
+      build_expression body
+  | Application {body; argument} ->
+      build_expression body ; add_space () ; build_expression argument
+
+and build_binary_operator op =
+  match op with
+  | BPipe ->
+      add "|>"
+  | BOr ->
+      add "||"
+  | BAnd ->
+      add "&&"
+  | BEqual ->
+      add "="
+  | BNotEqual ->
+      add "<>"
+  | BGreaterThan ->
+      add ">"
+  | BGreaterOrEqual ->
+      add ">="
+  | BLessThan ->
+      add "<"
+  | BLessOrEqual ->
+      add "<="
+  | BConcatenate ->
+      print_endline
+        "\027[31mERROR: The transpiler does not yet support the concatenation \
+         operator.\027[0m" ;
+      add "(* TODO: Waiting on type checker. *)"
+  | BAdd ->
+      add "+."
+  | BSubstract ->
+      add "-."
+  | BMultiply ->
+      add "*."
+  | BDivide ->
+      add "/."
+  | BModulo ->
+      add "mod"
+  | BExponentiate ->
+      add "**"
+
+and build_unary_operator op =
+  match op with UPlus -> add "+." | UMinus -> add "-." | UNot -> add "not"
+
+and build_binding binding =
+  add "let" ;
+  add_space () ;
+  add @@ encode_lid binding.id.value ;
+  add_space () ;
+  add "=" ;
+  add_space () ;
+  build_expression binding.body ;
+  add_space () ;
+  add "in" ;
+  add_space ()
+
+and build_case case =
+  add "|" ;
+  add_space () ;
+  build_pattern case.pattern ;
+  ( match case.guard with
+  | Some guard ->
+      add_space () ; add "when" ; add_space () ; build_expression guard
+  | None ->
+      () ) ;
+  add_space () ; add "->" ; add_space () ; build_expression case.body
+
+and build_pattern pat =
+  match pat with
+  | PInt i ->
+      float_of_int i |> string_of_float |> add
+  | PFloat f ->
+      add @@ string_of_float f
+  | PBool b ->
+      add @@ string_of_bool b
+  | PString s ->
+      add "\"" ;
+      add @@ String.escaped s ;
+      add "\""
+  | PLid lid ->
+      add @@ encode_lid lid.value
+  | PTuple pats ->
+      scoped (fun () -> add_list "," build_pattern pats)
+  | PList pats ->
+      add "[" ;
+      add_list ";" build_pattern pats ;
+      add "]"
+  | PListSpread pats ->
+      add_list "::" build_pattern pats
+  | PConstructor {id; pattern} -> (
+      add @@ encode_uid id.value ;
+      match pattern with Some p -> add_space () ; build_pattern p | None -> () )
+  | POr {l; r} ->
+      build_pattern l ; add_space () ; add "|" ; add_space () ; build_pattern r
+
+and build_variant variant =
+  add "|" ;
+  add_space () ;
+  add @@ encode_uid variant.id.value ;
+  match variant.typing with
+  | Some t ->
+      add_space () ; add "of" ; add_space () ; build_typing t
+  | None ->
+      ()

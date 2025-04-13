@@ -5,10 +5,4 @@
  * SPDX-License-Identifier: GPL-3.0-only
  *)
 
-type program = Ast.decl list
-
-val pp_program : Format.formatter -> program -> unit
-
-val show_program : program -> string
-
-val analyze : Ast.program -> Ast.decl list
+val analyze : Ast.program -> Ast.program
