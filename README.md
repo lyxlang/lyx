@@ -28,7 +28,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 - Purely functional
   - No side effects
   - Pattern matching
-  - Parametric polymorphism
+  - Polymorphism
 - Practical syntax
   - Concise
   - Elegant

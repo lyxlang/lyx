@@ -39,6 +39,7 @@
             menhir
             menhirLib
             ppx_deriving
+            ppx_inline_test
             uuseg
             yojson
           ];
