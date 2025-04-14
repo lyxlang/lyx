@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: GPL-3.0-only
  *)
 
-(* TODO : Donner l'ast attendu *)
+(* TODO: Give expected AST. *)
 
 open Utils
 

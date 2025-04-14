@@ -52,8 +52,8 @@ let%test_module "Lexer" =
 
     let%test "Strings" =
       run_test
-        (make_test "\"zob\" \"zib\" \"zab \\\"zub\\\"\""
-           ~tokens:[STRING "zob"; STRING "zib"; STRING "zab \"zub\""; EOF]
+        (make_test "\"a\" \"b\" \"c \\\"d\\\"\""
+           ~tokens:[STRING "a"; STRING "b"; STRING "c \"d\""; EOF]
            () )
 
     let%test "Unicode" =
