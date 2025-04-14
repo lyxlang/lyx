@@ -32,6 +32,7 @@
   menhirLib
   ppx_deriving
   uuseg
-  yojson)
+  yojson
+  ppx_inline_test)
  (tags
   (ml fp pl)))

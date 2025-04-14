@@ -24,6 +24,7 @@ depends: [
   "ppx_deriving"
   "uuseg"
   "yojson"
+  "ppx_inline_test"
   "odoc" {with-doc}
 ]
 build: [

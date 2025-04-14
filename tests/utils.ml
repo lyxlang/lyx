@@ -33,7 +33,7 @@ let lex_all src =
   let buf = Sedlexing.Utf8.from_string src in
   let lexer = Lys.Lexer.lexer buf in
   let rec aux acc =
-    match lexer () with
+    match[@warning "-4"] lexer () with
     | Lys.Menhir_parser.EOF, _, _ ->
         (* Because of the way we were accumulating the tokens, we need to
            reverse the order *)
