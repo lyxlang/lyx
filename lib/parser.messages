@@ -17,7 +17,7 @@ program: KWDEF UNIT
 ## declaration -> KWDEF . LID option(preceded(COLON,typing)) EQUAL expression [ KWDEF EOF COMMENT ]
 ## declaration -> KWDEF . UID COLONEQUAL typing [ KWDEF EOF COMMENT ]
 ## declaration -> KWDEF . LID nonempty_list(parameter) option(preceded(COLON,typing)) EQUAL expression [ KWDEF EOF COMMENT ]
-## declaration -> KWDEF . UID COLONEQUAL list(located(LID)) LBRACE nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF . UID COLONEQUAL list(LID) LBRACE nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
 ##
 ## The known suffix of the stack is as follows:
 ## KWDEF
@@ -30,7 +30,7 @@ program: KWDEF UID UNIT
 ## Ends in an error in state: 2.
 ##
 ## declaration -> KWDEF UID . COLONEQUAL typing [ KWDEF EOF COMMENT ]
-## declaration -> KWDEF UID . COLONEQUAL list(located(LID)) LBRACE nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF UID . COLONEQUAL list(LID) LBRACE nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
 ##
 ## The known suffix of the stack is as follows:
 ## KWDEF UID
@@ -43,7 +43,7 @@ program: KWDEF UID COLONEQUAL UNIT
 ## Ends in an error in state: 3.
 ##
 ## declaration -> KWDEF UID COLONEQUAL . typing [ KWDEF EOF COMMENT ]
-## declaration -> KWDEF UID COLONEQUAL . list(located(LID)) LBRACE nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF UID COLONEQUAL . list(LID) LBRACE nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
 ##
 ## The known suffix of the stack is as follows:
 ## KWDEF UID COLONEQUAL
@@ -167,7 +167,7 @@ program: KWDEF UID COLONEQUAL LID UNIT
 ##
 ## Ends in an error in state: 28.
 ##
-## list(located(LID)) -> LID . list(located(LID)) [ LBRACE ]
+## list(LID) -> LID . list(LID) [ LBRACE ]
 ## typing_atom -> LID . [ KWDEF EOF COMMENT ARROW ]
 ##
 ## The known suffix of the stack is as follows:
@@ -180,7 +180,7 @@ program: KWDEF UID COLONEQUAL LID LID UNIT
 ##
 ## Ends in an error in state: 29.
 ##
-## list(located(LID)) -> LID . list(located(LID)) [ LBRACE ]
+## list(LID) -> LID . list(LID) [ LBRACE ]
 ##
 ## The known suffix of the stack is as follows:
 ## LID
@@ -205,10 +205,10 @@ program: KWDEF UID COLONEQUAL LBRACE UNIT
 ##
 ## Ends in an error in state: 33.
 ##
-## declaration -> KWDEF UID COLONEQUAL list(located(LID)) LBRACE . nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
+## declaration -> KWDEF UID COLONEQUAL list(LID) LBRACE . nonempty_list(variant) RBRACE [ KWDEF EOF COMMENT ]
 ##
 ## The known suffix of the stack is as follows:
-## KWDEF UID COLONEQUAL list(located(LID)) LBRACE
+## KWDEF UID COLONEQUAL list(LID) LBRACE
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
