@@ -1,0 +1,112 @@
+⟨program⟩ ⩴ ⟨statement⟩*
+
+⟨statement⟩ ⩴ ⟨definition⟩ | ⟨union⟩
+
+⟨expr⟩ ⩴ ⟨expression⟩ ⟨assign⟩?
+        | '(' ⟨expr⟩ ')'
+
+⟨expression⟩ ⩴ ⟨pcidentifier⟩
+              | ⟨identifier⟩
+              | ⟨condition⟩
+              | ⟨abstraction⟩
+              | ⟨application⟩
+              | ⟨let⟩
+              | ⟨match⟩
+              | ⟨binapp⟩
+              | ⟨list⟩
+              | ⟨tuple⟩
+              | ⟨boolean⟩
+              | ⟨int⟩
+              | ⟨float⟩
+              | ⟨string⟩
+              | ⟨unit⟩
+
+⟨assign⟩ ⩴ ':' ⟨type⟩
+
+⟨pattern⟩ ⩴ ⟨expression⟩
+           | ⟨pcidentifier⟩ ⟨pattern⟩*
+           | ⟨pattern-list⟩
+           | ⟨pattern-tuple⟩
+           | '_'
+	   | ⟨pattern⟩ ('|' ⟨pattern⟩)+
+           | ⟨pattern⟩ '::' ⟨pattern⟩
+
+⟨pattern-list⟩ ⩴ '[' (⟨pattern⟩ (';' ⟨pattern⟩)*)? ']'
+⟨pattern-tuple⟩ ⩴ '(' (⟨pattern⟩ (',' ⟨pattern⟩)*)? ')'
+
+⟨type⟩ ⩴ 'String'
+        | 'Int'
+        | 'Float'
+        | 'Unit'
+        | 'Bool'
+        | ⟨lowercase⟩
+        | ⟨pcidentifier⟩ ⟨type⟩*
+        | '[' ⟨type⟩ ']'
+        | '(' ⟨type⟩ (',' ⟨type⟩)* ')'
+        | ⟨type⟩ '->' ⟨type⟩
+        | '(' ⟨type⟩ ')'
+
+⟨definition⟩ ⩴ 'def' ⟨identifier⟩ ⟨assign⟩? '=' ⟨expr⟩
+⟨condition⟩ ⩴ 'if' ⟨expr⟩ 'then' ⟨expr⟩ 'else' ⟨expr⟩
+⟨abstraction⟩ ⩴ '\\' ⟨identifier⟩+ '\\' ⟨expr⟩
+⟨application⟩ ⩴ ⟨expr⟩ ⟨expr⟩
+⟨list⟩ ⩴ '[' (⟨expr⟩ (',' ⟨expr⟩)*)? ']'
+⟨tuple⟩ ⩴ '(' (⟨expr⟩ (',' ⟨expr⟩)*)? ')'
+⟨boolean⟩ ⩴ 'True' | 'False'
+⟨unit⟩ ⩴ '()'
+
+⟨union⟩ ⩴ 'union' ⟨pcidentifier⟩ ⟨lowercase⟩* '=' ('|')? ⟨pcidentifier⟩ ⟨type⟩* ⟨variant⟩*
+⟨variant⟩ ⩴ '|' ⟨pcidentifier⟩ ⟨type⟩*
+
+⟨match⟩ ⩴ 'match' ⟨expr⟩ 'with' ('|')? ⟨pattern⟩ ⟨case-condition⟩? '->' ⟨expr⟩ ⟨case⟩*
+⟨case⟩ ⩴ '|' ⟨pattern⟩ ⟨case-condition⟩? '->' ⟨expr⟩
+⟨case-condition⟩ ⩴ 'if' ⟨expr⟩
+
+⟨pcidentifier⟩ ⩴ ⟨uppercase⟩ ⟨alphanumeric⟩* "'"*
+⟨identifier⟩ ⩴ ⟨lowercase⟩ ⟨alphanumeric⟩* "'"*
+
+⟨alphanumeric⟩ ⩴ ⟨alphabetic⟩ | ⟨digit⟩
+⟨alphabetic⟩ ⩴ ⟨uppercase⟩ | ⟨lowercase⟩
+⟨uppercase⟩ ⩴ 'A'...'Z'
+⟨lowercase⟩ ⩴ 'a'...'z'
+
+⟨let⟩ ⩴ 'let' ⟨bind⟩+ 'in' ⟨expr⟩
+⟨bind⟩ ⩴ ⟨identifier⟩ ⟨assign⟩? '=' ⟨expr⟩ ';'
+
+⟨number⟩ ⩴ ⟨float⟩ | ⟨int⟩
+
+⟨float⟩ ⩴ ⟨decimal⟩
+         | ⟨decimal⟩ 'e' ⟨decimal⟩
+⟨decimal⟩ ⩴ ⟨signed⟩ '.' ⟨signed⟩
+
+⟨int⟩ ⩴ ⟨signed⟩ [('e' | 'E') ⟨signed⟩]
+
+⟨signed⟩ ⩴ ['-' | '+'] ⟨digit⟩+
+⟨digit⟩ ⩴  '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+
+⟨string⟩ ⩴ '"' ⟨utf8-char⟩* '"'
+⟨utf8-char⟩ ⩴ [\x{0000}-\x{10FFFF}]
+
+⟨binapp⟩ ⩴ ⟨expr⟩ ⟨binop⟩ ⟨expr⟩
+
+⟨binop⟩ ⩴ '+'
+         | '-'
+         | '*'
+         | '/'
+         | '>'
+         | '>='
+         | '<'
+         | '<='
+         | '>>'
+         | '<<'
+         | '&'
+         | '^'
+         | '|'
+         | '%'
+         | '&&'
+         | '||'
+         | '!='
+         | '='
+         | '|>'
+         | '++'
+         | '::'
