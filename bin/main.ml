@@ -9,8 +9,7 @@ open Lys
 let parse ?(json = false) buf =
   try Parser.parse buf with
   | Lexer.Lexing_error (start, fin) ->
-      let code = 1 in
-      let msg = "Unexpected character." in
+      let code = 1 and msg = "Unexpected character." in
       Reporter.create_report Reporter.Error code msg (start, fin) ~json ;
       exit 1
   | Parser.Syntax_error (code, msg, start, fin) ->

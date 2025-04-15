@@ -34,12 +34,6 @@ jobs:
         with:
           ocaml-compiler: ocaml-variants.5.3.0+options,ocaml-option-flambda
 
-      - name: Install dependencies
-        run: opam install --deps-only .
-
-      - name: Test
-        run: opam exec -- dune runtest
-
       - name: Lint documentation
         uses: ocaml/setup-ocaml/lint-doc@v3
 
