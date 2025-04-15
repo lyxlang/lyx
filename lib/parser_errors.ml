@@ -6,21 +6,21 @@
 let message =
   fun s ->
     match s with
-    | 200 ->
+    | 202 ->
+        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+    | 196 ->
+        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+    | 195 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 194 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 193 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 192 ->
+    | 189 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 187 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+    | 186 ->
+        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 185 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 184 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
-    | 183 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 181 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
@@ -143,6 +143,8 @@ let message =
     | 63 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 62 ->
+        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+    | 60 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
     | 58 ->
         "<YOUR SYNTAX ERROR MESSAGE HERE>\n"

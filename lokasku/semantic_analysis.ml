@@ -1,5 +1,4 @@
 (*
- * SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.com>
  * SPDX-FileCopyrightText: 2025 Łukasz Bartkiewicz <lukasku@proton.me>
  *
  * SPDX-License-Identifier: GPL-3.0-only
@@ -78,49 +77,46 @@ let add_identifier scope name info =
 
 let rec analyze_parameter scope param =
   match param with
-  | ALid lid ->
-      if not (String.starts_with lid.value ~prefix:"_") then (
-        add_identifier scope lid.value (lid.loc, 0) ;
-        Hashtbl.add output.warnings lid.value
-          (Unused {name= lid.value; span= lid.loc}) )
-  | ATuple lst ->
+  | ALID (span, lid) ->
+      if not (String.starts_with lid ~prefix:"_") then (
+        add_identifier scope lid (span, 0) ;
+        Hashtbl.add output.warnings lid (Unused {name= lid; span}) )
+  | ATuple (_, lst) ->
       List.iter (fun param -> analyze_parameter scope param) lst
 
 let rec analyze_pattern scope pattern =
   match pattern with
   | PInt _ | PFloat _ | PBool _ | PString _ ->
       ()
-  | PLid lid ->
-      if not (String.starts_with lid.value ~prefix:"_") then (
-        add_identifier scope lid.value (lid.loc, 0) ;
-        Hashtbl.add output.warnings lid.value
-          (Unused {name= lid.value; span= lid.loc}) )
-  | PConstructor {id; pattern} -> (
-      ( match Hashtbl.find_opt output.variants id.value with
+  | PLID (span, lid) ->
+      if not (String.starts_with lid ~prefix:"_") then (
+        add_identifier scope lid (span, 0) ;
+        Hashtbl.add output.warnings lid (Unused {name= lid; span}) )
+  | PConstructor (span, {id; pattern}) -> (
+      ( match Hashtbl.find_opt output.variants id with
       | Some _ ->
           ()
       | None ->
-          output.errors <-
-            Undefined {name= id.value; span= id.loc} :: output.errors ) ;
+          output.errors <- Undefined {name= id; span} :: output.errors ) ;
       match pattern with Some p -> analyze_pattern scope p | None -> () )
-  | PTuple lst | PList lst | PListSpread lst ->
+  | PTuple (_, lst) | PList (_, lst) | PListSpread (_, lst) ->
       List.iter (fun pattern -> analyze_pattern scope pattern) lst
-  | POr {l; r} ->
+  | POr (_, {l; r}) ->
       analyze_pattern scope l ;
       analyze_pattern scope r ;
       let rec vars_collected pattern =
         match pattern with
         | PInt _ | PFloat _ | PString _ | PBool _ ->
             []
-        | PLid lid ->
-            [lid.value]
-        | PTuple lst | PList lst | PListSpread lst ->
+        | PLID (_, lid) ->
+            [lid]
+        | PTuple (_, lst) | PList (_, lst) | PListSpread (_, lst) ->
             List.concat_map vars_collected lst
-        | PConstructor {pattern= Some p; _} ->
+        | PConstructor (_, {pattern= Some p; _}) ->
             vars_collected p
-        | PConstructor {pattern= None; _} ->
+        | PConstructor (_, {pattern= None; _}) ->
             []
-        | POr {l; r} ->
+        | POr (_, {l; r}) ->
             vars_collected l @ vars_collected r
       in
       List.iter
@@ -129,40 +125,38 @@ let rec analyze_pattern scope pattern =
 
 let rec analyze_type typing =
   match typing with
-  | TList t ->
+  | TList (_, t) ->
       analyze_type t
-  | TTuple lst ->
+  | TTuple (_, lst) ->
       List.iter (fun typing -> analyze_type typing) lst
-  | TFunction {l; r} ->
+  | TFunction (_, {l; r}) ->
       analyze_type l ; analyze_type r
-  | TConstructor {id; typing} -> (
-    match Hashtbl.find_opt output.types id.value with
-    | Some (_, arity) ->
+  | TConstructor (span, {id; typing}) -> (
+    match Hashtbl.find_opt output.types id with
+    | Some (span, arity) ->
         let expected_arity = if Option.is_some typing then 1 else 0 in
         if expected_arity <> arity then
           output.errors <-
-            ArityMismatch {name= id.value; expected= arity; span= id.loc}
-            :: output.errors ;
-        Hashtbl.remove output.warnings id.value
+            ArityMismatch {name= id; expected= arity; span} :: output.errors ;
+        Hashtbl.remove output.warnings id
     | None ->
-        output.errors <-
-          Undefined {name= id.value; span= id.loc} :: output.errors )
-  | TPolymorphic _ | TInt | TFloat | TString | TBool | TUnit ->
+        output.errors <- Undefined {name= id; span} :: output.errors )
+  | TPolymorphic _ | TInt _ | TFloat _ | TString _ | TBool _ | TUnit _ ->
       ()
 
 let rec check_poly_pattern pattern =
   match pattern with
-  | PInt _ | PFloat _ | PBool _ | PString _ | PLid _ ->
+  | PInt _ | PFloat _ | PBool _ | PString _ | PLID _ ->
       None
-  | PConstructor {id; pattern= p} -> (
-    match Hashtbl.find_opt output.types id.value with
-    | Some (_, arity) when arity > 0 ->
-        Some (id.value, id.loc)
+  | PConstructor (_, {id; pattern= p}) -> (
+    match Hashtbl.find_opt output.types id with
+    | Some (span, arity) when arity > 0 ->
+        Some (id, span)
     | _ ->
         Option.bind p check_poly_pattern )
-  | PTuple lst | PList lst | PListSpread lst ->
+  | PTuple (_, lst) | PList (_, lst) | PListSpread (_, lst) ->
       List.find_map check_poly_pattern lst
-  | POr {l; r} -> (
+  | POr (_, {l; r}) -> (
     match check_poly_pattern l with
     | Some res ->
         Some res
@@ -171,7 +165,7 @@ let rec check_poly_pattern pattern =
 
 (* Check if the pattern has a guard to avoid undertermined behavior in the type
    checking *)
-let rec analyze_case scope case =
+let rec analyze_case scope (case : case) =
   let scope' = Scope (new_map (), scope) in
   analyze_pattern scope' case.pattern ;
   (* si polymorphique ... *)
@@ -185,57 +179,56 @@ let rec analyze_case scope case =
   Option.iter (analyze_expression scope') case.guard ;
   analyze_expression scope' case.body
 
-and analyze_binding scope ({id; signature; body} : binding) =
+and analyze_binding scope ({span; id; signature; body} : binding) =
   (match signature with Some sign -> analyze_type sign | None -> ()) ;
-  if not (String.starts_with id.value ~prefix:"_") then
-    Hashtbl.add output.warnings id.value (Unused {name= id.value; span= id.loc}) ;
+  if not (String.starts_with id ~prefix:"_") then
+    Hashtbl.add output.warnings id (Unused {name= id; span}) ;
   analyze_expression scope body
 
 and analyze_expression scope expr =
   match expr with
-  | Int _ | Float _ | Bool _ | String _ | Unit ->
+  | EInt _ | EFloat _ | EBool _ | EString _ | EUnit _ ->
       ()
-  | Uid uid -> (
-    match Hashtbl.find_opt output.variants uid.value with
+  | EConstructor (span, {id; body}) -> (
+      ( match Hashtbl.find_opt output.variants id with
+      | Some _ ->
+          Hashtbl.remove output.warnings id
+      | None ->
+          output.errors <- Undefined {name= id; span} :: output.errors ) ;
+      match body with None -> () | Some b -> analyze_expression scope b )
+  | ELID (span, lid) -> (
+    match find_identifier scope lid with
     | Some _ ->
-        Hashtbl.remove output.warnings uid.value
+        Hashtbl.remove output.warnings lid
     | None ->
-        output.errors <-
-          Undefined {name= uid.value; span= uid.loc} :: output.errors )
-  | Lid lid -> (
-    match find_identifier scope lid.value with
-    | Some _ ->
-        Hashtbl.remove output.warnings lid.value
-    | None ->
-        output.errors <-
-          Undefined {name= lid.value; span= lid.loc} :: output.errors )
-  | Tuple lst | List lst ->
+        output.errors <- Undefined {name= lid; span} :: output.errors )
+  | ETuple (_, lst) | EList (_, lst) ->
       List.iter (fun expr -> analyze_expression scope expr) lst
-  | BinaryOperation {l; r; _} ->
+  | EBinaryOperation (_, {l; r; _}) ->
       analyze_expression scope l ; analyze_expression scope r
-  | UnaryOperation {body; _} ->
+  | EUnaryOperation (_, {body; _}) ->
       analyze_expression scope body
-  | Application {body; argument} ->
+  | EApplication (_, {body; argument}) ->
       analyze_expression scope body ;
       analyze_expression scope argument
-  | Lambda {parameters; body} ->
+  | ELambda (_, {parameters; body}) ->
       let scope' = Scope (new_map (), scope) in
       List.iter (fun param -> analyze_parameter scope' param) parameters ;
       analyze_expression scope' body
-  | Match {body; cases} ->
+  | EMatch (_, {body; cases}) ->
       analyze_expression scope body ;
       List.iter (fun case -> analyze_case scope case) cases
-  | Let {bindings; body} ->
+  | ELet (_, {bindings; body}) ->
       let scope' = Scope (new_map (), scope) in
       List.iter
-        (fun {id; signature= _; body= _} ->
-          match find_identifier scope id.value with
-          | Some (span, _) ->
+        (fun ({span; id; _} : binding) ->
+          match find_identifier scope id with
+          | Some (span', _) ->
               output.errors <-
-                AlreadyDefined {prev= span; new'= id.value; newest_span= id.loc}
+                AlreadyDefined {prev= span'; new'= id; newest_span= span}
                 :: output.errors
           | None ->
-              add_identifier scope id.value (id.loc, 0) )
+              add_identifier scope id (span, 0) )
         bindings ;
       List.iter
         (fun binding ->
@@ -243,53 +236,48 @@ and analyze_expression scope expr =
           analyze_binding scope'' binding )
         bindings ;
       analyze_expression scope' body
-  | If {predicate; truthy; falsy} ->
+  | EIf (_, {predicate; truthy; falsy}) ->
       analyze_expression scope predicate ;
       analyze_expression scope truthy ;
       analyze_expression scope falsy
-  | Expression {body; signature} -> (
+  | EExpression (_, {body; signature}) -> (
       analyze_expression scope body ;
       match signature with Some typ -> analyze_type typ | None -> () )
 
 let rec analyze_variant_type scope typing =
   match typing with
-  | TPolymorphic lid -> (
-    match find_identifier scope lid.value with
+  | TPolymorphic (span, lid) -> (
+    match find_identifier scope lid with
     | Some _ ->
-        Hashtbl.remove output.warnings lid.value
+        Hashtbl.remove output.warnings lid
     | None ->
-        output.errors <-
-          Undefined {name= lid.value; span= lid.loc} :: output.errors )
-  | TList t ->
+        output.errors <- Undefined {name= lid; span} :: output.errors )
+  | TList (_, t) ->
       analyze_variant_type scope t
-  | TTuple lst ->
+  | TTuple (_, lst) ->
       List.iter (fun typing -> analyze_variant_type scope typing) lst
-  | TFunction {l; r} ->
+  | TFunction (_, {l; r}) ->
       analyze_variant_type scope l ;
       analyze_variant_type scope r
-  | TConstructor {id; typing} -> (
-    match Hashtbl.find_opt output.types id.value with
-    | Some (_, arity) ->
+  | TConstructor (span, {id; typing}) -> (
+    match Hashtbl.find_opt output.types id with
+    | Some (span, arity) ->
         let expected_arity = if Option.is_some typing then 1 else 0 in
         if expected_arity <> arity then
           output.errors <-
-            ArityMismatch {name= id.value; expected= arity; span= id.loc}
-            :: output.errors ;
-        Hashtbl.remove output.warnings id.value
+            ArityMismatch {name= id; expected= arity; span} :: output.errors ;
+        Hashtbl.remove output.warnings id
     | None ->
-        output.errors <-
-          Undefined {name= id.value; span= id.loc} :: output.errors )
-  | TInt | TFloat | TString | TBool | TUnit ->
+        output.errors <- Undefined {name= id; span} :: output.errors )
+  | TInt _ | TFloat _ | TString _ | TBool _ | TUnit _ ->
       ()
 
 and analyze_variant scope (variant : variant) =
-  match Hashtbl.find_opt output.variants variant.id.value with
+  match Hashtbl.find_opt output.variants variant.id with
   | Some (variant_span, _) ->
       output.errors <-
         AlreadyDefined
-          { prev= variant_span
-          ; new'= variant.id.value
-          ; newest_span= variant.id.loc }
+          {prev= variant_span; new'= variant.id; newest_span= variant.span}
         :: output.errors
   | None ->
       ( match variant.typing with
@@ -297,85 +285,79 @@ and analyze_variant scope (variant : variant) =
           analyze_variant_type scope typing
       | None ->
           () ) ;
-      Hashtbl.add output.variants variant.id.value
-        (variant.id.loc, if Option.is_some variant.typing then 1 else 0) ;
-      Hashtbl.add output.warnings variant.id.value
-        (Unused {name= variant.id.value; span= variant.id.loc})
+      Hashtbl.add output.variants variant.id
+        (variant.span, if Option.is_some variant.typing then 1 else 0) ;
+      Hashtbl.add output.warnings variant.id
+        (Unused {name= variant.id; span= variant.span})
 
 let analyze_declaration scope decl =
   match decl with
-  | FunctionDefinition {id; parameters; signature; body} ->
+  | DFunctionDefinition (span, {id; parameters; signature; body}) ->
       (match signature with Some sign -> analyze_type sign | None -> ()) ;
-      ( match find_identifier scope id.value with
-      | Some (span, _) ->
+      ( match find_identifier scope id with
+      | Some (span', _) ->
           output.errors <-
-            AlreadyDefined {prev= span; new'= id.value; newest_span= id.loc}
+            AlreadyDefined {prev= span'; new'= id; newest_span= span}
             :: output.errors
       | None ->
-          if not (String.starts_with id.value ~prefix:"_") then (
-            add_identifier scope id.value (id.loc, List.length parameters) ;
-            Hashtbl.add output.warnings id.value
-              (Unused {name= id.value; span= id.loc}) ) ) ;
+          if not (String.starts_with id ~prefix:"_") then (
+            add_identifier scope id (span, List.length parameters) ;
+            Hashtbl.add output.warnings id (Unused {name= id; span}) ) ) ;
       let scope' = Scope (new_map (), scope) in
       List.iter (fun param -> analyze_parameter scope' param) parameters ;
       analyze_expression scope' body
-  | ValueBinding binding ->
+  | DValueBinding (span, binding) ->
       let id = binding.id in
-      ( match find_identifier scope id.value with
-      | Some (span, _) ->
+      ( match find_identifier scope id with
+      | Some (span', _) ->
           output.errors <-
-            AlreadyDefined {prev= span; new'= id.value; newest_span= id.loc}
+            AlreadyDefined {prev= span'; new'= id; newest_span= binding.span}
             :: output.errors
       | None ->
-          if not (String.starts_with id.value ~prefix:"_") then (
-            add_identifier scope id.value (id.loc, 0) ;
-            Hashtbl.add output.warnings id.value
-              (Unused {name= id.value; span= id.loc}) ) ) ;
+          if not (String.starts_with id ~prefix:"_") then (
+            add_identifier scope id (span, 0) ;
+            Hashtbl.add output.warnings id (Unused {name= id; span}) ) ) ;
       (match binding.signature with Some typ -> analyze_type typ | None -> ()) ;
       analyze_expression scope binding.body
-  | AdtDefinition {id; polymorphics; variants} ->
+  | DADTDefinition (span, {id; polymorphics; variants}) ->
       (* Name *)
-      ( match Hashtbl.find_opt output.types id.value with
+      ( match Hashtbl.find_opt output.types id with
       (* Was not already defined *)
-      | Some (span, _) ->
+      | Some (span', _) ->
           output.errors <-
-            AlreadyDefined {prev= span; new'= id.value; newest_span= id.loc}
+            AlreadyDefined {prev= span'; new'= id; newest_span= span}
             :: output.errors
       | None -> (
-        match List.exists (fun builtin -> builtin = id.value) builtins with
+        match List.exists (fun builtin -> builtin = id) builtins with
         (* Is not a reserved name *)
         | true ->
-            output.errors <-
-              ReservedName {name= id.value; span= id.loc} :: output.errors
+            output.errors <- ReservedName {name= id; span} :: output.errors
         | false ->
-            Hashtbl.add output.types id.value (id.loc, List.length polymorphics)
-        ) ) ;
+            Hashtbl.add output.types id (span, List.length polymorphics) ) ) ;
       (* Polymorphic variables *)
       let scope' = Scope (new_map (), Root) in
       List.iter
         (fun poly ->
-          match find_identifier scope' poly.value with
-          | Some (span, _) ->
+          match find_identifier scope' poly with
+          | Some (span', _) ->
               output.errors <-
-                AlreadyDefined
-                  {prev= span; new'= poly.value; newest_span= poly.loc}
+                AlreadyDefined {prev= span'; new'= poly; newest_span= span}
                 :: output.errors
           | None ->
-              add_identifier scope' poly.value
-                (poly.loc, List.length polymorphics) )
+              add_identifier scope' poly (span, List.length polymorphics) )
         polymorphics ;
       (* Variants *)
       List.iter (fun variant -> analyze_variant scope' variant) variants
-  | TypeDefinition {id; body} -> (
+  | DTypeDefinition (span, {id; body}) -> (
       analyze_type body ;
-      match Hashtbl.find_opt output.types id.value with
-      | Some (span, _) ->
+      match Hashtbl.find_opt output.types id with
+      | Some (span', _) ->
           output.errors <-
-            AlreadyDefined {prev= span; new'= id.value; newest_span= id.loc}
+            AlreadyDefined {prev= span'; new'= id; newest_span= span}
             :: output.errors
       | None ->
-          Hashtbl.add output.types id.value (id.loc, 0) )
-  | Comment _ ->
+          Hashtbl.add output.types id (span, 0) )
+  | DComment _ ->
       ()
 
 let analyze_program (program : Ast.program) =

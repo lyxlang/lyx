@@ -9,13 +9,9 @@
 (source
  (github lyslang/lys))
 
-(maintainers
- "Aljebriq <143266740+aljebriq@users.noreply.github.com>"
- "Łukasz Bartkiewicz <lukasku@proton.me>")
+(maintainers "Aljebriq <143266740+aljebriq@users.noreply.github.com>")
 
-(authors
- "Aljebriq <143266740+aljebriq@users.noreply.github.com>"
- "Łukasz Bartkiewicz <lukasku@proton.me>")
+(authors "Aljebriq <143266740+aljebriq@users.noreply.github.com>")
 
 (license GPL-3.0-only)
 
@@ -23,7 +19,7 @@
  (name lys)
  (synopsis "The Lys purely functional programming language")
  (description
-  "Lys is a purely functional language with an elegant and practical syntax, with a robust Hindley-Milner type system for strong static type inference and seamless currying support.")
+  "Lys is a purely functional language with an elegant and practical syntax.")
  (depends
   (ocaml
    (>= 5))
@@ -32,7 +28,6 @@
   menhirLib
   ppx_deriving
   uuseg
-  yojson
-  ppx_inline_test)
+  yojson)
  (tags
   (ml fp pl)))

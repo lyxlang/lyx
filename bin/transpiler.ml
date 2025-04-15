@@ -1,6 +1,5 @@
 (*
  * SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.com>
- * SPDX-FileCopyrightText: 2025 Łukasz Bartkiewicz <lukasku@proton.me>
  *
  * SPDX-License-Identifier: GPL-3.0-only
  *)
@@ -56,16 +55,16 @@ let scoped content = add "(" ; content () ; add ")"
 
 let is_type_decl decl =
   match decl with
-  | Comment _ | ValueBinding _ | FunctionDefinition _ ->
+  | DComment _ | DValueBinding _ | DFunctionDefinition _ ->
       false
-  | TypeDefinition _ | AdtDefinition _ ->
+  | DTypeDefinition _ | DADTDefinition _ ->
       true
 
 let is_entry_point decl =
   match decl with
-  | ValueBinding {id; signature= _; body= _} ->
-      id.value = "_"
-  | Comment _ | FunctionDefinition _ | TypeDefinition _ | AdtDefinition _ ->
+  | DValueBinding (_, {id; _}) ->
+      id = "_"
+  | DComment _ | DFunctionDefinition _ | DTypeDefinition _ | DADTDefinition _ ->
       false
 
 let rec build_program decls =
@@ -82,45 +81,45 @@ let rec build_program decls =
 
 and build_declaration declaration =
   match declaration with
-  | Comment _ ->
+  | DComment _ ->
       ()
-  | ValueBinding {id; signature= _; body} ->
-      if id.value = "_" then add "let"
+  | DValueBinding (_, {id; body; _}) ->
+      if id = "_" then add "let"
       else if !first_bind then (
         add "let rec" ;
         first_bind := false )
       else add "and" ;
       add_space () ;
-      add @@ encode_lid id.value ;
+      add @@ encode_lid id ;
       add_space () ;
       add "=" ;
       add_space () ;
       build_expression body
-  | TypeDefinition {id; body} ->
+  | DTypeDefinition (_, {id; body}) ->
       if !first_type then (
         add "type" ;
         first_type := false )
       else add "and" ;
       add_space () ;
-      add @@ encode_lid id.value ;
+      add @@ encode_lid id ;
       add_space () ;
       add "=" ;
       add_space () ;
       build_typing body
-  | FunctionDefinition {id; parameters; signature= _; body} ->
-      if id.value = "_" then add "let"
+  | DFunctionDefinition (_, {id; parameters; body; _}) ->
+      if id = "_" then add "let"
       else if !first_bind then (
         add "let rec" ;
         first_bind := false )
       else add "and" ;
       add_space () ;
-      add @@ encode_lid id.value ;
+      add @@ encode_lid id ;
       add_space () ;
       List.iter (fun p -> build_parameter p ; add_space ()) parameters ;
       add "=" ;
       add_space () ;
       build_expression body
-  | AdtDefinition {id; polymorphics; variants} ->
+  | DADTDefinition (_, {id; polymorphics; variants}) ->
       if !first_type then (
         add "type" ;
         first_type := false )
@@ -129,10 +128,10 @@ and build_declaration declaration =
       List.iter
         (fun p ->
           add "'" ;
-          add @@ encode_lid p.value ;
+          add @@ encode_lid p ;
           add_space () )
         polymorphics ;
-      add @@ encode_lid id.value ;
+      add @@ encode_lid id ;
       add_space () ;
       add "=" ;
       add_space () ;
@@ -140,34 +139,34 @@ and build_declaration declaration =
 
 and build_parameter parameter =
   match parameter with
-  | ALid str ->
-      add @@ encode_lid str.value
-  | ATuple tuple_param ->
+  | ALID (_, str) ->
+      add @@ encode_lid str
+  | ATuple (_, tuple_param) ->
       scoped (fun () -> add_list "," build_parameter tuple_param)
 
 and build_typing typing =
   match typing with
-  | TInt ->
+  | TInt _ ->
       add "float"
-  | TFloat ->
+  | TFloat _ ->
       add "float"
-  | TString ->
+  | TString _ ->
       add "string"
-  | TBool ->
+  | TBool _ ->
       add "bool"
-  | TUnit ->
+  | TUnit _ ->
       add "unit"
-  | TList t ->
+  | TList (_, t) ->
       build_typing t ; add_space () ; add "list"
-  | TTuple ts ->
+  | TTuple (_, ts) ->
       add_list "*" build_typing ts
-  | TFunction {l; r} ->
+  | TFunction (_, {l; r}) ->
       build_typing l ; add_space () ; add "->" ; add_space () ; build_typing r
-  | TPolymorphic p ->
+  | TPolymorphic (_, p) ->
       add "'" ;
-      add @@ encode_lid p.value
-  | TConstructor {id; typing} -> (
-      add @@ encode_lid id.value ;
+      add @@ encode_lid p
+  | TConstructor (_, {id; typing}) -> (
+      add @@ encode_lid id ;
       match typing with
       | Some t ->
           add_space () ; add "of" ; add_space () ; build_typing t
@@ -176,44 +175,45 @@ and build_typing typing =
 
 and build_expression expr =
   match expr with
-  | Expression {body; signature= _} ->
+  | EExpression (_, {body; signature= _}) ->
       scoped (fun () -> build_expression body)
-  | Int i ->
+  | EInt (_, i) ->
       float_of_int i |> string_of_float |> add
-  | Float f ->
+  | EFloat (_, f) ->
       add @@ string_of_float f
-  | Bool b ->
+  | EBool (_, b) ->
       add @@ string_of_bool b
-  | String s ->
+  | EString (_, s) ->
       add "\"" ;
       add @@ String.escaped s ;
       add "\""
-  | Unit ->
+  | EUnit _ ->
       add "()"
-  | Uid id ->
-      add @@ encode_uid id.value
-  | Lid id ->
-      add @@ encode_lid id.value
-  | Tuple exprs ->
+  | EConstructor (_, {id; body}) -> (
+      add @@ encode_uid id ;
+      match body with None -> () | Some b -> add_space () ; build_expression b )
+  | ELID (_, id) ->
+      add @@ encode_lid id
+  | ETuple (_, exprs) ->
       scoped (fun () -> add_list "," build_expression exprs)
-  | List exprs ->
+  | EList (_, exprs) ->
       add "[" ;
       add_list ";" build_expression exprs ;
       add "]"
-  | BinaryOperation {l; operator; r} ->
+  | EBinaryOperation (_, {l; operator; r}) ->
       build_expression l ;
       add_space () ;
       build_binary_operator operator ;
       add_space () ;
       build_expression r
-  | UnaryOperation {operator; body} ->
+  | EUnaryOperation (_, {operator; body}) ->
       build_unary_operator operator ;
       add_space () ;
       build_expression body
-  | Let {bindings; body} ->
+  | ELet (_, {bindings; body}) ->
       List.iter build_binding bindings ;
       build_expression body
-  | If {predicate; truthy; falsy} ->
+  | EIf (_, {predicate; truthy; falsy}) ->
       add "if" ;
       add_space () ;
       build_expression predicate ;
@@ -225,7 +225,7 @@ and build_expression expr =
       add "else" ;
       add_space () ;
       build_expression falsy
-  | Match {body; cases} ->
+  | EMatch (_, {body; cases}) ->
       add "match" ;
       add_space () ;
       build_expression body ;
@@ -233,14 +233,14 @@ and build_expression expr =
       add "with" ;
       add_space () ;
       add_list " " build_case cases
-  | Lambda {parameters; body} ->
+  | ELambda (_, {parameters; body}) ->
       add "fun" ;
       add_space () ;
       List.iter (fun p -> build_parameter p ; add_space ()) parameters ;
       add "->" ;
       add_space () ;
       build_expression body
-  | Application {body; argument} ->
+  | EApplication (_, {body; argument}) ->
       build_expression body ; add_space () ; build_expression argument
 
 and build_binary_operator op =
@@ -287,7 +287,7 @@ and build_unary_operator op =
 and build_binding binding =
   add "let" ;
   add_space () ;
-  add @@ encode_lid binding.id.value ;
+  add @@ encode_lid binding.id ;
   add_space () ;
   add "=" ;
   add_space () ;
@@ -309,36 +309,36 @@ and build_case case =
 
 and build_pattern pat =
   match pat with
-  | PInt i ->
+  | PInt (_, i) ->
       float_of_int i |> string_of_float |> add
-  | PFloat f ->
+  | PFloat (_, f) ->
       add @@ string_of_float f
-  | PBool b ->
+  | PBool (_, b) ->
       add @@ string_of_bool b
-  | PString s ->
+  | PString (_, s) ->
       add "\"" ;
       add @@ String.escaped s ;
       add "\""
-  | PLid lid ->
-      add @@ encode_lid lid.value
-  | PTuple pats ->
+  | PLID (_, lid) ->
+      add @@ encode_lid lid
+  | PTuple (_, pats) ->
       scoped (fun () -> add_list "," build_pattern pats)
-  | PList pats ->
+  | PList (_, pats) ->
       add "[" ;
       add_list ";" build_pattern pats ;
       add "]"
-  | PListSpread pats ->
+  | PListSpread (_, pats) ->
       add_list "::" build_pattern pats
-  | PConstructor {id; pattern} -> (
-      add @@ encode_uid id.value ;
+  | PConstructor (_, {id; pattern}) -> (
+      add @@ encode_uid id ;
       match pattern with Some p -> add_space () ; build_pattern p | None -> () )
-  | POr {l; r} ->
+  | POr (_, {l; r}) ->
       build_pattern l ; add_space () ; add "|" ; add_space () ; build_pattern r
 
 and build_variant variant =
   add "|" ;
   add_space () ;
-  add @@ encode_uid variant.id.value ;
+  add @@ encode_uid variant.id ;
   match variant.typing with
   | Some t ->
       add_space () ; add "of" ; add_space () ; build_typing t

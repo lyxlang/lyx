@@ -1,6 +1,5 @@
 (*
  * SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.com>
- * SPDX-FileCopyrightText: 2025 Łukasz Bartkiewicz <lukasku@proton.me>
  *
  * SPDX-License-Identifier: GPL-3.0-only
  *)
@@ -18,12 +17,6 @@ let parse ?(json = false) buf =
       let code = code + 2 in
       Reporter.create_report Reporter.Error code msg (start, fin) ~json ;
       exit code
-
-let analyze ast =
-  let output = Semantic_analysis.analyze_program ast in
-  Semantic_analysis.debug_output output ;
-  if Semantic_analysis.get_errors output = [] then
-    Occurrence_analysis.analyze ast |> Ast.show_program |> print_endline
 
 let transpile_file file =
   Sedlexing.Utf8.from_channel (open_in_bin file)
@@ -49,13 +42,11 @@ let parse_file file =
   let buf = Sedlexing.Utf8.from_channel (open_in_bin file) in
   Sedlexing.set_filename buf file ;
   let ast = parse buf in
-  Ast.show_program ast |> print_endline ;
-  analyze ast
+  Ast.show_program ast |> print_endline
 
 let parse_stdin () =
   let ast = Sedlexing.Utf8.from_channel stdin |> parse in
-  Ast.show_program ast |> print_endline ;
-  analyze ast
+  Ast.show_program ast |> print_endline
 
 let print_usage () =
   print_endline

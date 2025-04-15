@@ -409,9 +409,34 @@ program: KWDEF LID EQUAL TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL PLUS TRIANGLE
+program: KWDEF LID EQUAL UID UID
+##
+## Ends in an error in state: 60.
+##
+## expression -> UID . option(expression_atom) [ SEMICOLON RPAREN RBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF EOF COMMENT COMMA COLON ARROW ]
+##
+## The known suffix of the stack is as follows:
+## UID
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL LPAREN TRIANGLE
 ##
 ## Ends in an error in state: 62.
+##
+## expression_atom -> LPAREN . expression COMMA loption(separated_nonempty_list(COMMA,expression)) RPAREN [ UNIT TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## expression_atom -> LPAREN . expression option(preceded(COLON,typing)) RPAREN [ UNIT TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+##
+## The known suffix of the stack is as follows:
+## LPAREN
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+program: KWDEF LID EQUAL PLUS UID
+##
+## Ends in an error in state: 63.
 ##
 ## expression_unary -> PLUS . expression_unary [ TRIANGLE STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
 ##
@@ -421,9 +446,9 @@ program: KWDEF LID EQUAL PLUS TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL MINUS TRIANGLE
+program: KWDEF LID EQUAL MINUS UID
 ##
-## Ends in an error in state: 63.
+## Ends in an error in state: 64.
 ##
 ## expression_unary -> MINUS . expression_unary [ TRIANGLE STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
 ##
@@ -433,24 +458,11 @@ program: KWDEF LID EQUAL MINUS TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LPAREN TRIANGLE
-##
-## Ends in an error in state: 64.
-##
-## expression_atom -> LPAREN . expression COMMA loption(separated_nonempty_list(COMMA,expression)) RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
-## expression_atom -> LPAREN . expression option(preceded(COLON,typing)) RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
-##
-## The known suffix of the stack is as follows:
-## LPAREN
-##
-
-<YOUR SYNTAX ERROR MESSAGE HERE>
-
 program: KWDEF LID EQUAL LBRACKET TRIANGLE
 ##
 ## Ends in an error in state: 66.
 ##
-## expression_atom -> LBRACKET . loption(separated_nonempty_list(COMMA,expression)) RBRACKET [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## expression_atom -> LBRACKET . loption(separated_nonempty_list(COMMA,expression)) RBRACKET [ UNIT TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LBRACKET
@@ -542,7 +554,7 @@ program: KWDEF LID EQUAL KWIF TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BANG TRIANGLE
+program: KWDEF LID EQUAL BANG UID
 ##
 ## Ends in an error in state: 76.
 ##
@@ -554,11 +566,11 @@ program: KWDEF LID EQUAL BANG TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL RBRACE
+program: KWDEF LID EQUAL BOOL UID
 ##
 ## Ends in an error in state: 79.
 ##
-## application -> application . expression_atom [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## application -> application . expression_atom [ UNIT TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
 ## expression_unary -> application . [ TRIANGLE STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LEQ LBRACE KWTHEN KWIN KWELSE KWDEF GT GEQ EQUALEQUAL EOF COMMENT COMMA COLON BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
@@ -609,7 +621,7 @@ program: KWDEF LID EQUAL BACKSLASH LID ARROW TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL STARSTAR TRIANGLE
+program: KWDEF LID EQUAL BOOL STARSTAR UID
 ##
 ## Ends in an error in state: 85.
 ##
@@ -621,7 +633,7 @@ program: KWDEF LID EQUAL BOOL STARSTAR TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL TRIANGLE TRIANGLE
+program: KWDEF LID EQUAL BOOL TRIANGLE UID
 ##
 ## Ends in an error in state: 88.
 ##
@@ -633,7 +645,7 @@ program: KWDEF LID EQUAL BOOL TRIANGLE TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL BARBAR TRIANGLE
+program: KWDEF LID EQUAL BOOL BARBAR UID
 ##
 ## Ends in an error in state: 90.
 ##
@@ -645,7 +657,7 @@ program: KWDEF LID EQUAL BOOL BARBAR TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL STAR TRIANGLE
+program: KWDEF LID EQUAL BOOL STAR UID
 ##
 ## Ends in an error in state: 92.
 ##
@@ -657,7 +669,7 @@ program: KWDEF LID EQUAL BOOL STAR TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL SLASH TRIANGLE
+program: KWDEF LID EQUAL BOOL SLASH UID
 ##
 ## Ends in an error in state: 94.
 ##
@@ -669,7 +681,7 @@ program: KWDEF LID EQUAL BOOL SLASH TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL PERCENT TRIANGLE
+program: KWDEF LID EQUAL BOOL PERCENT UID
 ##
 ## Ends in an error in state: 96.
 ##
@@ -681,7 +693,7 @@ program: KWDEF LID EQUAL BOOL PERCENT TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL EQUALEQUAL TRIANGLE
+program: KWDEF LID EQUAL BOOL EQUALEQUAL UID
 ##
 ## Ends in an error in state: 100.
 ##
@@ -693,7 +705,7 @@ program: KWDEF LID EQUAL BOOL EQUALEQUAL TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL PLUSPLUS TRIANGLE
+program: KWDEF LID EQUAL BOOL PLUSPLUS UID
 ##
 ## Ends in an error in state: 102.
 ##
@@ -705,7 +717,7 @@ program: KWDEF LID EQUAL BOOL PLUSPLUS TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL PLUS TRIANGLE
+program: KWDEF LID EQUAL BOOL PLUS UID
 ##
 ## Ends in an error in state: 104.
 ##
@@ -717,7 +729,7 @@ program: KWDEF LID EQUAL BOOL PLUS TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL MINUS TRIANGLE
+program: KWDEF LID EQUAL BOOL MINUS UID
 ##
 ## Ends in an error in state: 106.
 ##
@@ -729,7 +741,7 @@ program: KWDEF LID EQUAL BOOL MINUS TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL LT TRIANGLE
+program: KWDEF LID EQUAL BOOL LT UID
 ##
 ## Ends in an error in state: 109.
 ##
@@ -741,7 +753,7 @@ program: KWDEF LID EQUAL BOOL LT TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL LEQ TRIANGLE
+program: KWDEF LID EQUAL BOOL LEQ UID
 ##
 ## Ends in an error in state: 112.
 ##
@@ -753,7 +765,7 @@ program: KWDEF LID EQUAL BOOL LEQ TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL GT TRIANGLE
+program: KWDEF LID EQUAL BOOL GT UID
 ##
 ## Ends in an error in state: 114.
 ##
@@ -765,7 +777,7 @@ program: KWDEF LID EQUAL BOOL GT TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL GEQ TRIANGLE
+program: KWDEF LID EQUAL BOOL GEQ UID
 ##
 ## Ends in an error in state: 116.
 ##
@@ -777,7 +789,7 @@ program: KWDEF LID EQUAL BOOL GEQ TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL BANGEQUAL TRIANGLE
+program: KWDEF LID EQUAL BOOL BANGEQUAL UID
 ##
 ## Ends in an error in state: 118.
 ##
@@ -789,7 +801,7 @@ program: KWDEF LID EQUAL BOOL BANGEQUAL TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL BOOL ANDAND TRIANGLE
+program: KWDEF LID EQUAL BOOL ANDAND UID
 ##
 ## Ends in an error in state: 122.
 ##
@@ -801,7 +813,7 @@ program: KWDEF LID EQUAL BOOL ANDAND TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWIF BOOL SEMICOLON
+program: KWDEF LID EQUAL KWIF UID SEMICOLON
 ##
 ## Ends in an error in state: 127.
 ##
@@ -814,22 +826,13 @@ program: KWDEF LID EQUAL KWIF BOOL SEMICOLON
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 79, spurious reduction of production expression_unary -> application
-## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
-## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
-## In state 91, spurious reduction of production expression_addition -> expression_multiplication
-## In state 111, spurious reduction of production expression_concatenate -> expression_addition
-## In state 101, spurious reduction of production expression_compare -> expression_concatenate
-## In state 120, spurious reduction of production expression_equality -> expression_compare
-## In state 99, spurious reduction of production expression_and -> expression_equality
-## In state 124, spurious reduction of production expression_or -> expression_and
-## In state 125, spurious reduction of production expression_pipe -> expression_or
-## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 60, spurious reduction of production option(expression_atom) ->
+## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWIF BOOL KWTHEN TRIANGLE
+program: KWDEF LID EQUAL KWIF UID KWTHEN TRIANGLE
 ##
 ## Ends in an error in state: 128.
 ##
@@ -841,7 +844,7 @@ program: KWDEF LID EQUAL KWIF BOOL KWTHEN TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL SEMICOLON
+program: KWDEF LID EQUAL KWIF UID KWTHEN UID SEMICOLON
 ##
 ## Ends in an error in state: 129.
 ##
@@ -854,22 +857,13 @@ program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL SEMICOLON
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 79, spurious reduction of production expression_unary -> application
-## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
-## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
-## In state 91, spurious reduction of production expression_addition -> expression_multiplication
-## In state 111, spurious reduction of production expression_concatenate -> expression_addition
-## In state 101, spurious reduction of production expression_compare -> expression_concatenate
-## In state 120, spurious reduction of production expression_equality -> expression_compare
-## In state 99, spurious reduction of production expression_and -> expression_equality
-## In state 124, spurious reduction of production expression_or -> expression_and
-## In state 125, spurious reduction of production expression_pipe -> expression_or
-## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 60, spurious reduction of production option(expression_atom) ->
+## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL KWELSE TRIANGLE
+program: KWDEF LID EQUAL KWIF UID KWTHEN UID KWELSE TRIANGLE
 ##
 ## Ends in an error in state: 130.
 ##
@@ -881,7 +875,7 @@ program: KWDEF LID EQUAL KWIF BOOL KWTHEN BOOL KWELSE TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWLET LID EQUAL BOOL RPAREN
+program: KWDEF LID EQUAL KWLET LID EQUAL UID RPAREN
 ##
 ## Ends in an error in state: 132.
 ##
@@ -895,22 +889,13 @@ program: KWDEF LID EQUAL KWLET LID EQUAL BOOL RPAREN
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 79, spurious reduction of production expression_unary -> application
-## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
-## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
-## In state 91, spurious reduction of production expression_addition -> expression_multiplication
-## In state 111, spurious reduction of production expression_concatenate -> expression_addition
-## In state 101, spurious reduction of production expression_compare -> expression_concatenate
-## In state 120, spurious reduction of production expression_equality -> expression_compare
-## In state 99, spurious reduction of production expression_and -> expression_equality
-## In state 124, spurious reduction of production expression_or -> expression_and
-## In state 125, spurious reduction of production expression_pipe -> expression_or
-## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 60, spurious reduction of production option(expression_atom) ->
+## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWLET LID EQUAL BOOL SEMICOLON UNIT
+program: KWDEF LID EQUAL KWLET LID EQUAL UID SEMICOLON UNIT
 ##
 ## Ends in an error in state: 133.
 ##
@@ -922,7 +907,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL BOOL SEMICOLON UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWLET LID EQUAL BOOL KWIN TRIANGLE
+program: KWDEF LID EQUAL KWLET LID EQUAL UID KWIN TRIANGLE
 ##
 ## Ends in an error in state: 136.
 ##
@@ -934,7 +919,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL BOOL KWIN TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL SEMICOLON
+program: KWDEF LID EQUAL KWMATCH UID SEMICOLON
 ##
 ## Ends in an error in state: 138.
 ##
@@ -947,22 +932,13 @@ program: KWDEF LID EQUAL KWMATCH BOOL SEMICOLON
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 79, spurious reduction of production expression_unary -> application
-## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
-## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
-## In state 91, spurious reduction of production expression_addition -> expression_multiplication
-## In state 111, spurious reduction of production expression_concatenate -> expression_addition
-## In state 101, spurious reduction of production expression_compare -> expression_concatenate
-## In state 120, spurious reduction of production expression_equality -> expression_compare
-## In state 99, spurious reduction of production expression_and -> expression_equality
-## In state 124, spurious reduction of production expression_or -> expression_and
-## In state 125, spurious reduction of production expression_pipe -> expression_or
-## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 60, spurious reduction of production option(expression_atom) ->
+## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE UNIT
 ##
 ## Ends in an error in state: 139.
 ##
@@ -974,7 +950,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE UID UNIT
 ##
 ## Ends in an error in state: 140.
 ##
@@ -986,7 +962,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN UNIT
 ##
 ## Ends in an error in state: 142.
 ##
@@ -998,7 +974,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UNIT
 ##
 ## Ends in an error in state: 144.
 ##
@@ -1011,7 +987,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID RPAREN
+program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID RPAREN
 ##
 ## Ends in an error in state: 148.
 ##
@@ -1032,7 +1008,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID RPAREN
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID ELLIPSIS UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID ELLIPSIS UNIT
 ##
 ## Ends in an error in state: 149.
 ##
@@ -1044,7 +1020,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID ELLIPSIS UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID ELLIPSIS LID UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID ELLIPSIS LID UNIT
 ##
 ## Ends in an error in state: 150.
 ##
@@ -1056,7 +1032,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID ELLIPSIS LID UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET BOOL UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET BOOL UNIT
 ##
 ## Ends in an error in state: 152.
 ##
@@ -1069,7 +1045,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET BOOL UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID COMMA UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID COMMA UNIT
 ##
 ## Ends in an error in state: 153.
 ##
@@ -1081,7 +1057,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LBRACKET UID COMMA UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN BOOL UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN BOOL UNIT
 ##
 ## Ends in an error in state: 157.
 ##
@@ -1093,7 +1069,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN BOOL UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID COMMA UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN UID COMMA UNIT
 ##
 ## Ends in an error in state: 158.
 ##
@@ -1105,7 +1081,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID COMMA UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID COMMA UID RBRACKET
+program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN UID COMMA UID RBRACKET
 ##
 ## Ends in an error in state: 160.
 ##
@@ -1126,7 +1102,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE LPAREN UID COMMA UID RBRACKET
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE BOOL UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE BOOL UNIT
 ##
 ## Ends in an error in state: 165.
 ##
@@ -1140,7 +1116,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE BOOL UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID SEMICOLON UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE UID SEMICOLON UNIT
 ##
 ## Ends in an error in state: 166.
 ##
@@ -1152,7 +1128,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID SEMICOLON UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF TRIANGLE
+program: KWDEF LID EQUAL KWMATCH UID LBRACE UID KWIF TRIANGLE
 ##
 ## Ends in an error in state: 168.
 ##
@@ -1164,7 +1140,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL SEMICOLON
+program: KWDEF LID EQUAL KWMATCH UID LBRACE UID KWIF UID SEMICOLON
 ##
 ## Ends in an error in state: 170.
 ##
@@ -1178,23 +1154,14 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID KWIF BOOL SEMICOLON
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 79, spurious reduction of production expression_unary -> application
-## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
-## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
-## In state 91, spurious reduction of production expression_addition -> expression_multiplication
-## In state 111, spurious reduction of production expression_concatenate -> expression_addition
-## In state 101, spurious reduction of production expression_compare -> expression_concatenate
-## In state 120, spurious reduction of production expression_equality -> expression_compare
-## In state 99, spurious reduction of production expression_and -> expression_equality
-## In state 124, spurious reduction of production expression_or -> expression_and
-## In state 125, spurious reduction of production expression_pipe -> expression_or
-## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 60, spurious reduction of production option(expression_atom) ->
+## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ## In state 169, spurious reduction of production option(preceded(KWIF,expression)) -> KWIF expression
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW TRIANGLE
+program: KWDEF LID EQUAL KWMATCH UID LBRACE UID ARROW TRIANGLE
 ##
 ## Ends in an error in state: 171.
 ##
@@ -1207,7 +1174,7 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL RPAREN
+program: KWDEF LID EQUAL KWMATCH UID LBRACE UID ARROW UID RPAREN
 ##
 ## Ends in an error in state: 172.
 ##
@@ -1221,22 +1188,13 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL RPAREN
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 79, spurious reduction of production expression_unary -> application
-## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
-## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
-## In state 91, spurious reduction of production expression_addition -> expression_multiplication
-## In state 111, spurious reduction of production expression_concatenate -> expression_addition
-## In state 101, spurious reduction of production expression_compare -> expression_concatenate
-## In state 120, spurious reduction of production expression_equality -> expression_compare
-## In state 99, spurious reduction of production expression_and -> expression_equality
-## In state 124, spurious reduction of production expression_or -> expression_and
-## In state 125, spurious reduction of production expression_pipe -> expression_or
-## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 60, spurious reduction of production option(expression_atom) ->
+## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL SEMICOLON UNIT
+program: KWDEF LID EQUAL KWMATCH UID LBRACE UID ARROW UID SEMICOLON UNIT
 ##
 ## Ends in an error in state: 173.
 ##
@@ -1249,11 +1207,11 @@ program: KWDEF LID EQUAL KWMATCH BOOL LBRACE UID ARROW BOOL SEMICOLON UNIT
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LBRACKET BOOL RPAREN
+program: KWDEF LID EQUAL LBRACKET UID RPAREN
 ##
 ## Ends in an error in state: 178.
 ##
-## expression_atom -> LBRACKET loption(separated_nonempty_list(COMMA,expression)) . RBRACKET [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## expression_atom -> LBRACKET loption(separated_nonempty_list(COMMA,expression)) . RBRACKET [ UNIT TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LBRACKET loption(separated_nonempty_list(COMMA,expression))
@@ -1262,24 +1220,15 @@ program: KWDEF LID EQUAL LBRACKET BOOL RPAREN
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 79, spurious reduction of production expression_unary -> application
-## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
-## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
-## In state 91, spurious reduction of production expression_addition -> expression_multiplication
-## In state 111, spurious reduction of production expression_concatenate -> expression_addition
-## In state 101, spurious reduction of production expression_compare -> expression_concatenate
-## In state 120, spurious reduction of production expression_equality -> expression_compare
-## In state 99, spurious reduction of production expression_and -> expression_equality
-## In state 124, spurious reduction of production expression_or -> expression_and
-## In state 125, spurious reduction of production expression_pipe -> expression_or
-## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 60, spurious reduction of production option(expression_atom) ->
+## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ## In state 180, spurious reduction of production separated_nonempty_list(COMMA,expression) -> expression
 ## In state 177, spurious reduction of production loption(separated_nonempty_list(COMMA,expression)) -> separated_nonempty_list(COMMA,expression)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LBRACKET BOOL SEMICOLON
+program: KWDEF LID EQUAL LBRACKET UID SEMICOLON
 ##
 ## Ends in an error in state: 180.
 ##
@@ -1293,22 +1242,13 @@ program: KWDEF LID EQUAL LBRACKET BOOL SEMICOLON
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 79, spurious reduction of production expression_unary -> application
-## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
-## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
-## In state 91, spurious reduction of production expression_addition -> expression_multiplication
-## In state 111, spurious reduction of production expression_concatenate -> expression_addition
-## In state 101, spurious reduction of production expression_compare -> expression_concatenate
-## In state 120, spurious reduction of production expression_equality -> expression_compare
-## In state 99, spurious reduction of production expression_and -> expression_equality
-## In state 124, spurious reduction of production expression_or -> expression_and
-## In state 125, spurious reduction of production expression_pipe -> expression_or
-## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 60, spurious reduction of production option(expression_atom) ->
+## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LBRACKET BOOL COMMA TRIANGLE
+program: KWDEF LID EQUAL LBRACKET UID COMMA TRIANGLE
 ##
 ## Ends in an error in state: 181.
 ##
@@ -1320,12 +1260,12 @@ program: KWDEF LID EQUAL LBRACKET BOOL COMMA TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LPAREN BOOL SEMICOLON
+program: KWDEF LID EQUAL LPAREN UID SEMICOLON
 ##
-## Ends in an error in state: 183.
+## Ends in an error in state: 185.
 ##
-## expression_atom -> LPAREN expression . COMMA loption(separated_nonempty_list(COMMA,expression)) RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
-## expression_atom -> LPAREN expression . option(preceded(COLON,typing)) RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## expression_atom -> LPAREN expression . COMMA loption(separated_nonempty_list(COMMA,expression)) RPAREN [ UNIT TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## expression_atom -> LPAREN expression . option(preceded(COLON,typing)) RPAREN [ UNIT TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LPAREN expression
@@ -1334,26 +1274,17 @@ program: KWDEF LID EQUAL LPAREN BOOL SEMICOLON
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 79, spurious reduction of production expression_unary -> application
-## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
-## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
-## In state 91, spurious reduction of production expression_addition -> expression_multiplication
-## In state 111, spurious reduction of production expression_concatenate -> expression_addition
-## In state 101, spurious reduction of production expression_compare -> expression_concatenate
-## In state 120, spurious reduction of production expression_equality -> expression_compare
-## In state 99, spurious reduction of production expression_and -> expression_equality
-## In state 124, spurious reduction of production expression_or -> expression_and
-## In state 125, spurious reduction of production expression_pipe -> expression_or
-## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 60, spurious reduction of production option(expression_atom) ->
+## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LPAREN BOOL COMMA TRIANGLE
+program: KWDEF LID EQUAL LPAREN UID COMMA TRIANGLE
 ##
-## Ends in an error in state: 184.
+## Ends in an error in state: 186.
 ##
-## expression_atom -> LPAREN expression COMMA . loption(separated_nonempty_list(COMMA,expression)) RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## expression_atom -> LPAREN expression COMMA . loption(separated_nonempty_list(COMMA,expression)) RPAREN [ UNIT TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LPAREN expression COMMA
@@ -1361,11 +1292,11 @@ program: KWDEF LID EQUAL LPAREN BOOL COMMA TRIANGLE
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LPAREN BOOL COMMA BOOL RBRACKET
+program: KWDEF LID EQUAL LPAREN UID COMMA UID RBRACKET
 ##
-## Ends in an error in state: 185.
+## Ends in an error in state: 187.
 ##
-## expression_atom -> LPAREN expression COMMA loption(separated_nonempty_list(COMMA,expression)) . RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## expression_atom -> LPAREN expression COMMA loption(separated_nonempty_list(COMMA,expression)) . RPAREN [ UNIT TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LPAREN expression COMMA loption(separated_nonempty_list(COMMA,expression))
@@ -1374,28 +1305,19 @@ program: KWDEF LID EQUAL LPAREN BOOL COMMA BOOL RBRACKET
 ## This implies that, although the LR(1) items shown above provide an
 ## accurate view of the past (what has been recognized so far), they
 ## may provide an INCOMPLETE view of the future (what was expected next).
-## In state 79, spurious reduction of production expression_unary -> application
-## In state 84, spurious reduction of production expression_exponentiation -> expression_unary
-## In state 98, spurious reduction of production expression_multiplication -> expression_exponentiation
-## In state 91, spurious reduction of production expression_addition -> expression_multiplication
-## In state 111, spurious reduction of production expression_concatenate -> expression_addition
-## In state 101, spurious reduction of production expression_compare -> expression_concatenate
-## In state 120, spurious reduction of production expression_equality -> expression_compare
-## In state 99, spurious reduction of production expression_and -> expression_equality
-## In state 124, spurious reduction of production expression_or -> expression_and
-## In state 125, spurious reduction of production expression_pipe -> expression_or
-## In state 87, spurious reduction of production expression -> expression_pipe
+## In state 60, spurious reduction of production option(expression_atom) ->
+## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ## In state 180, spurious reduction of production separated_nonempty_list(COMMA,expression) -> expression
 ## In state 177, spurious reduction of production loption(separated_nonempty_list(COMMA,expression)) -> separated_nonempty_list(COMMA,expression)
 ##
 
 <YOUR SYNTAX ERROR MESSAGE HERE>
 
-program: KWDEF LID EQUAL LPAREN BOOL COLON UID EQUAL
+program: KWDEF LID EQUAL LPAREN UID COLON UID EQUAL
 ##
-## Ends in an error in state: 187.
+## Ends in an error in state: 189.
 ##
-## expression_atom -> LPAREN expression option(preceded(COLON,typing)) . RPAREN [ UNIT UID TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
+## expression_atom -> LPAREN expression option(preceded(COLON,typing)) . RPAREN [ UNIT TRIANGLE STRING STARSTAR STAR SLASH SEMICOLON RPAREN RBRACKET PLUSPLUS PLUS PERCENT MINUS LT LPAREN LID LEQ LBRACKET LBRACE KWTHEN KWIN KWELSE KWDEF INT GT GEQ FLOAT EQUALEQUAL EOF COMMENT COMMA COLON BOOL BARBAR BANGEQUAL ARROW ANDAND ]
 ##
 ## The known suffix of the stack is as follows:
 ## LPAREN expression option(preceded(COLON,typing))
@@ -1414,7 +1336,7 @@ program: KWDEF LID EQUAL LPAREN BOOL COLON UID EQUAL
 
 program: KWDEF LID LID ARROW
 ##
-## Ends in an error in state: 192.
+## Ends in an error in state: 194.
 ##
 ## declaration -> KWDEF LID nonempty_list(parameter) . option(preceded(COLON,typing)) EQUAL expression [ KWDEF EOF COMMENT ]
 ##
@@ -1432,7 +1354,7 @@ program: KWDEF LID LID ARROW
 
 program: KWDEF LID LID COLON UID RPAREN
 ##
-## Ends in an error in state: 193.
+## Ends in an error in state: 195.
 ##
 ## declaration -> KWDEF LID nonempty_list(parameter) option(preceded(COLON,typing)) . EQUAL expression [ KWDEF EOF COMMENT ]
 ##
@@ -1453,7 +1375,7 @@ program: KWDEF LID LID COLON UID RPAREN
 
 program: KWDEF LID LID EQUAL TRIANGLE
 ##
-## Ends in an error in state: 194.
+## Ends in an error in state: 196.
 ##
 ## declaration -> KWDEF LID nonempty_list(parameter) option(preceded(COLON,typing)) EQUAL . expression [ KWDEF EOF COMMENT ]
 ##
@@ -1465,7 +1387,7 @@ program: KWDEF LID LID EQUAL TRIANGLE
 
 program: COMMENT UNIT
 ##
-## Ends in an error in state: 200.
+## Ends in an error in state: 202.
 ##
 ## list(declaration) -> declaration . list(declaration) [ EOF ]
 ##

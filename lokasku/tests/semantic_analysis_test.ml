@@ -1,5 +1,4 @@
 (*
- * SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.com>
  * SPDX-FileCopyrightText: 2025 Łukasz Bartkiewicz <lukasku@proton.me>
  *
  * SPDX-License-Identifier: GPL-3.0-only
@@ -21,14 +20,14 @@ let%test_module "Semantic Analysis" =
         (make_test "def x = 1\ndef x = 2"
            ~errors:
              [ AlreadyDefined
-                 {prev= make_span 4 5; new'= "x"; newest_span= make_span 14 15}
+                 {prev= make_span 0 9; new'= "x"; newest_span= make_span 14 19}
              ]
            () )
 
     let%test "Unused variable warning" =
       run_test
         (make_test "def x = 42"
-           ~warnings:[("x", Unused {name= "x"; span= make_span 4 5})]
+           ~warnings:[("x", Unused {name= "x"; span= make_span 0 10})]
            () )
 
     let%test "Valid recursion" =

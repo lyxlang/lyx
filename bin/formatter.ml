@@ -1,6 +1,5 @@
 (*
  * SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.com>
- * SPDX-FileCopyrightText: 2025 Łukasz Bartkiewicz <lukasku@proton.me>
  *
  * SPDX-License-Identifier: GPL-3.0-only
  *)
@@ -207,7 +206,7 @@ module Builder = struct
 
   and build_declaration t decl =
     match decl with
-    | Comment str ->
+    | DComment (_, str) ->
         Group
           ( new_id t
           , [ text "`"
@@ -215,21 +214,21 @@ module Builder = struct
             ; Indent [text (String.trim str)]
             ; (if String.contains str '\n' then HardLine else SpaceOrLine)
             ; text "`" ] )
-    | ValueBinding binding ->
+    | DValueBinding (_, binding) ->
         Nodes [text "def"; SpaceOrLine; build_binding t binding]
-    | TypeDefinition {id; body} ->
+    | DTypeDefinition (_, {id; body}) ->
         Nodes
           [ text "def"
           ; SpaceOrLine
-          ; text id.value
+          ; text id
           ; SpaceOrLine
           ; text ":="
           ; Group (new_id t, [SpaceOrLine; Indent [build_typing t body]]) ]
-    | FunctionDefinition {id; parameters; signature; body} ->
+    | DFunctionDefinition (_, {id; parameters; signature; body}) ->
         Nodes
           [ text "def"
           ; SpaceOrLine
-          ; text id.value
+          ; text id
           ; Nodes
               (spaced
                  (separated_nodes SpaceOrLine
@@ -238,17 +237,17 @@ module Builder = struct
           ; SpaceOrLine
           ; text "="
           ; Group (new_id t, [SpaceOrLine; Indent [build_expression t body]]) ]
-    | AdtDefinition {id; polymorphics; variants} ->
+    | DADTDefinition (_, {id; polymorphics; variants}) ->
         Nodes
           [ text "def"
           ; SpaceOrLine
-          ; text id.value
+          ; text id
           ; SpaceOrLine
           ; text ":="
           ; Nodes
               (spaced
                  (separated_nodes SpaceOrLine
-                    (List.map (fun poly -> text poly.value) polymorphics) ) )
+                    (List.map (fun poly -> text poly) polymorphics) ) )
           ; SpaceOrLine
           ; text "{"
           ; Group
@@ -261,7 +260,7 @@ module Builder = struct
 
   and build_binding t binding =
     Fill
-      [ text binding.id.value
+      [ text binding.id
       ; build_signature t binding.signature
       ; SpaceOrLine
       ; text "="
@@ -277,9 +276,9 @@ module Builder = struct
 
   and build_parameter t param =
     match param with
-    | ALid lid ->
-        text lid.value
-    | ATuple params -> (
+    | ALID (_, lid) ->
+        text lid
+    | ATuple (_, params) -> (
       match params with
       | [param] ->
           Nodes [text "("; build_parameter t param; text ",)"]
@@ -291,19 +290,19 @@ module Builder = struct
 
   and build_typing t typing =
     match typing with
-    | TInt ->
+    | TInt _ ->
         text "Int"
-    | TFloat ->
+    | TFloat _ ->
         text "Float"
-    | TString ->
+    | TString _ ->
         text "String"
-    | TBool ->
+    | TBool _ ->
         text "Bool"
-    | TUnit ->
+    | TUnit _ ->
         text "Unit"
-    | TList typing ->
+    | TList (_, typing) ->
         Nodes [text "["; build_typing t typing; text "]"]
-    | TTuple typings -> (
+    | TTuple (_, typings) -> (
       match typings with
       | [typing] ->
           Nodes [text "("; build_typing t typing; text ",)"]
@@ -312,18 +311,18 @@ module Builder = struct
             (separated_nodes
                (Nodes [text ","; SpaceOrLine])
                (List.map (fun ty -> build_typing t ty) typings) ) )
-    | TFunction {l; r} ->
+    | TFunction (_, {l; r}) ->
         Nodes
           [ build_typing t l
           ; SpaceOrLine
           ; text "->"
           ; SpaceOrLine
           ; build_typing t r ]
-    | TPolymorphic lid ->
-        text lid.value
-    | TConstructor {id; typing} ->
+    | TPolymorphic (_, lid) ->
+        text lid
+    | TConstructor (_, {id; typing}) ->
         Nodes
-          [ text id.value
+          [ text id
           ; ( match typing with
             | Some ty ->
                 Nodes [SpaceOrLine; build_typing t ty]
@@ -332,21 +331,27 @@ module Builder = struct
 
   and build_expression t expr =
     match expr with
-    | Int n ->
+    | EInt (_, n) ->
         text (string_of_int n)
-    | Float f ->
+    | EFloat (_, f) ->
         text (float_to_string f)
-    | Bool b ->
+    | EBool (_, b) ->
         boolean_string b
-    | String str ->
+    | EString (_, str) ->
         quoted_string t str
-    | Unit ->
+    | EUnit _ ->
         text "()"
-    | Uid uid ->
-        text uid.value
-    | Lid lid ->
-        text lid.value
-    | Tuple exprs -> (
+    | EConstructor (_, {id; body}) ->
+        Nodes
+          [ text id
+          ; ( match body with
+            | None ->
+                Empty
+            | Some b ->
+                Nodes [SpaceOrLine; build_expression t b] ) ]
+    | ELID (_, lid) ->
+        text lid
+    | ETuple (_, exprs) -> (
       match exprs with
       | [expr] ->
           Nodes [text "("; build_expression t expr; text ",)"]
@@ -355,21 +360,21 @@ module Builder = struct
             (separated_nodes
                (Nodes [text ","; SpaceOrLine])
                (List.map (fun e -> build_expression t e) exprs) ) )
-    | List exprs ->
+    | EList (_, exprs) ->
         delimited_nodes t (text "[") (text "]")
           (separated_nodes
              (Nodes [text ","; SpaceOrLine])
              (List.map (fun e -> build_expression t e) exprs) )
-    | BinaryOperation {l; operator; r} ->
+    | EBinaryOperation (_, {l; operator; r}) ->
         Fill
           [ build_expression t l
           ; SpaceOrLine
           ; build_binary_operator operator
           ; SpaceOrLine
           ; build_expression t r ]
-    | UnaryOperation {operator; body} ->
+    | EUnaryOperation (_, {operator; body}) ->
         Fill [build_unary_operator operator; build_expression t body]
-    | Let {bindings; body} ->
+    | ELet (_, {bindings; body}) ->
         Nodes
           [ text "let"
           ; Group
@@ -383,7 +388,7 @@ module Builder = struct
           ; SpaceOrLine
           ; text "in"
           ; Group (new_id t, [SpaceOrLine; Indent [build_expression t body]]) ]
-    | If {predicate; truthy; falsy} ->
+    | EIf (_, {predicate; truthy; falsy}) ->
         Group
           ( new_id t
           , [ text "if"
@@ -396,7 +401,7 @@ module Builder = struct
             ; text "else"
             ; Group (new_id t, [SpaceOrLine; Indent [build_expression t falsy]])
             ] )
-    | Match {body; cases} ->
+    | EMatch (_, {body; cases}) ->
         Nodes
           [ Fill
               [ text "match"
@@ -411,7 +416,7 @@ module Builder = struct
                      (fun c -> Nodes [Indent [build_case t c]; SpaceOrLine])
                      cases ) )
           ; text "}" ]
-    | Lambda {parameters; body} ->
+    | ELambda (_, {parameters; body}) ->
         Nodes
           [ text "\\"
           ; Nodes
@@ -420,9 +425,9 @@ module Builder = struct
           ; SpaceOrLine
           ; text "->"
           ; Group (new_id t, [SpaceOrLine; Indent [build_expression t body]]) ]
-    | Application {body; argument} ->
+    | EApplication (_, {body; argument}) ->
         Fill [build_expression t body; SpaceOrLine; build_expression t argument]
-    | Expression {body; signature} ->
+    | EExpression (_, {body; signature}) ->
         Nodes
           [ text "("
           ; build_expression t body
@@ -490,17 +495,17 @@ module Builder = struct
 
   and build_pattern t pat =
     match pat with
-    | PInt n ->
+    | PInt (_, n) ->
         text (string_of_int n)
-    | PFloat f ->
+    | PFloat (_, f) ->
         text (float_to_string f)
-    | PString str ->
+    | PString (_, str) ->
         quoted_string t str
-    | PBool b ->
+    | PBool (_, b) ->
         boolean_string b
-    | PLid lid ->
-        text lid.value
-    | PTuple patterns -> (
+    | PLID (_, lid) ->
+        text lid
+    | PTuple (_, patterns) -> (
       match patterns with
       | [pattern] ->
           Nodes [text "("; build_pattern t pattern; text ",)"]
@@ -509,12 +514,12 @@ module Builder = struct
             (separated_nodes
                (Nodes [text ","; SpaceOrLine])
                (List.map (fun p -> build_pattern t p) patterns) ) )
-    | PList patterns ->
+    | PList (_, patterns) ->
         delimited_nodes t (text "[") (text "]")
           (separated_nodes
              (Nodes [text ","; SpaceOrLine])
              (List.map (fun p -> build_pattern t p) patterns) )
-    | PListSpread patterns ->
+    | PListSpread (_, patterns) ->
         let regular_patterns = List.rev (List.tl (List.rev patterns)) in
         let spread_pattern = List.hd (List.rev patterns) in
         delimited_nodes t (text "[") (text "]")
@@ -522,21 +527,21 @@ module Builder = struct
               (Nodes [text ","; SpaceOrLine])
               (List.map (fun p -> build_pattern t p) regular_patterns)
           @ [Nodes [SpaceOrLine; text "..."; build_pattern t spread_pattern]] )
-    | PConstructor {id; pattern} ->
+    | PConstructor (_, {id; pattern}) ->
         Fill
-          [ text id.value
+          [ text id
           ; ( match pattern with
             | Some p ->
                 Fill [SpaceOrLine; build_pattern t p]
             | None ->
                 Empty ) ]
-    | POr {l; r} ->
+    | POr (_, {l; r}) ->
         Fill [build_pattern t l; text ";"; SpaceOrLine; build_pattern t r]
 
   and build_variant t variant =
     Group
       ( new_id t
-      , [ text variant.id.value
+      , [ text variant.id
         ; ( match variant.typing with
           | Some ty ->
               Nodes [SpaceOrLine; text "as"; SpaceOrLine; build_typing t ty]

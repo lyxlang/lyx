@@ -1,5 +1,4 @@
 // SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.com>
-// SPDX-FileCopyrightText: 2025 Łukasz Bartkiewicz <lukasku@proton.me>
 //
 // SPDX-License-Identifier: GPL-3.0-only
 
@@ -67,127 +66,125 @@
 
 %%
 
-let located(x) == ~ = x; { { loc= { start= $startofs(x); fin= $endofs(x) }; value= x } }
-
 let program := ~ = list(declaration); EOF; < >
 
 let declaration :=
-  | ~ = COMMENT; < Comment >
-  | KWDEF; ~ = binding; < ValueBinding >
-  | KWDEF; id = located(UID); COLONEQUAL; body = typing; { TypeDefinition {id; body} }
-  | KWDEF; id = located(LID); parameters = nonempty_list(parameter); signature = signature; EQUAL; body = expression; { FunctionDefinition {id; parameters; signature; body} }
-  | KWDEF; id = located(UID); COLONEQUAL; polymorphics = list(located(LID)); LBRACE; variants = nonempty_list(variant); RBRACE; { AdtDefinition {id; polymorphics; variants} }
+  | c = COMMENT; { DComment ({start= $startofs; fin= $endofs}, c) }
+  | KWDEF; b = binding; { DValueBinding ({start= $startofs; fin= $endofs}, b) }
+  | KWDEF; id = UID; COLONEQUAL; body = typing; { DTypeDefinition ({start= $startofs; fin= $endofs}, {id; body}) }
+  | KWDEF; id = LID; parameters = nonempty_list(parameter); signature = signature; EQUAL; body = expression; { DFunctionDefinition ({start= $startofs; fin= $endofs}, {id; parameters; signature; body}) }
+  | KWDEF; id = UID; COLONEQUAL; polymorphics = list(LID); LBRACE; variants = nonempty_list(variant); RBRACE; { DADTDefinition ({start= $startofs; fin= $endofs}, {id; polymorphics; variants}) }
 
-let binding == id = located(LID); signature = signature; EQUAL; body = expression; { {id; signature; body} }
+let binding == id = LID; signature = signature; EQUAL; body = expression; { {span= {start= $startofs; fin= $endofs}; id; signature; body} }
 
 let signature == option(preceded(COLON, typing))
 
 let parameter :=
-  | ~ = located(LID); < ALid >
-  | LPAREN; p = parameter; COMMA; ps = separated_list(COMMA, parameter); RPAREN; { ATuple (p :: ps) }
+  | id = LID; { ALID ({start= $startofs; fin= $endofs}, id) }
+  | LPAREN; p = parameter; COMMA; ps = separated_list(COMMA, parameter); RPAREN; { ATuple ({start= $startofs; fin= $endofs}, p :: ps) }
 
 let typing_atom :=
-  | KWINT; { TInt }
-  | KWFLOAT; { TFloat }
-  | KWBOOL; { TBool }
-  | KWSTRING; { TString }
-  | KWUNIT; { TUnit }
-  | id = located(UID); typing = option(typing_atom); { TConstructor {id; typing} }
-  | ~ = located(LID); < TPolymorphic >
-  | LPAREN; t = typing; COMMA; ts = separated_list(COMMA, typing); RPAREN; { TTuple (t :: ts) }
-  | LBRACKET; t = typing; RBRACKET; < TList >
+  | KWINT; { TInt {start= $startofs; fin= $endofs} }
+  | KWFLOAT; { TFloat {start= $startofs; fin= $endofs} }
+  | KWBOOL; { TBool {start= $startofs; fin= $endofs} }
+  | KWSTRING; { TString {start= $startofs; fin= $endofs} }
+  | KWUNIT; { TUnit {start= $startofs; fin= $endofs} }
+  | id = UID; typing = option(typing_atom); { TConstructor ({start= $startofs; fin= $endofs}, {id; typing}) }
+  | id = LID; { TPolymorphic ({start= $startofs; fin= $endofs}, id) }
+  | LPAREN; t = typing; COMMA; ts = separated_list(COMMA, typing); RPAREN; { TTuple ({start= $startofs; fin= $endofs}, t :: ts) }
+  | LBRACKET; t = typing; RBRACKET; { TList ({start= $startofs; fin= $endofs}, t) }
 
 let typing :=
   | typing_atom
-  | l = typing; ARROW; r = typing_atom; { TFunction {l; r} }
+  | l = typing; ARROW; r = typing_atom; { TFunction ({start= $startofs; fin= $endofs}, {l; r}) }
 
 let expression_atom :=
-  | ~ = INT; < Int >
-  | ~ = FLOAT; < Float >
-  | ~ = BOOL; < Bool >
-  | ~ = STRING; < String >
-  | UNIT; { Unit }
-  | ~ = located(UID); < Uid >
-  | ~ = located(LID); < Lid >
-  | LPAREN; e = expression; COMMA; es = separated_list(COMMA, expression); RPAREN; { Tuple (e :: es) }
-  | LBRACKET; ~ = separated_list(COMMA, expression); RBRACKET; < List >
-  | LPAREN; body = expression; signature = signature; RPAREN; { Expression {body; signature} }
+  | i = INT; { EInt ({start= $startofs; fin= $endofs}, i) }
+  | f = FLOAT; { EFloat ({start= $startofs; fin= $endofs}, f) }
+  | b = BOOL; { EBool ({start= $startofs; fin= $endofs}, b) }
+  | s = STRING; { EString ({start= $startofs; fin= $endofs}, s) }
+  | UNIT; { EUnit {start= $startofs; fin= $endofs} }
+  | id = LID; { ELID ({start= $startofs; fin= $endofs}, id) }
+  | LPAREN; e = expression; COMMA; es = separated_list(COMMA, expression); RPAREN; { ETuple ({start= $startofs; fin= $endofs}, e :: es) }
+  | LBRACKET; l = separated_list(COMMA, expression); RBRACKET; { EList ({start= $startofs; fin= $endofs}, l) }
+  | LPAREN; body = expression; signature = signature; RPAREN; { EExpression ({start= $startofs; fin= $endofs}, {body; signature}) }
 
 let application :=
   | expression_atom
-  | body = application; argument = expression_atom; { Application {body; argument} }
+  | body = application; argument = expression_atom; { EApplication ({start= $startofs; fin= $endofs}, {body; argument}) }
 
 let expression :=
-  | KWLET; bindings = separated_nonempty_list(SEMICOLON, binding); KWIN; body = expression; { Let {bindings; body} }
-  | KWIF; predicate = expression; KWTHEN; truthy = expression; KWELSE; falsy = expression; { If {predicate; truthy; falsy} }
-  | KWMATCH; body = expression; LBRACE; cases = nonempty_list(case); RBRACE; { Match {body; cases} }
-  | BACKSLASH; parameters = nonempty_list(parameter); ARROW; body = expression; { Lambda {parameters; body} }
+  | KWLET; bindings = separated_nonempty_list(SEMICOLON, binding); KWIN; body = expression; { ELet ({start= $startofs; fin= $endofs}, {bindings; body}) }
+  | KWIF; predicate = expression; KWTHEN; truthy = expression; KWELSE; falsy = expression; { EIf ({start= $startofs; fin= $endofs}, {predicate; truthy; falsy}) }
+  | KWMATCH; body = expression; LBRACE; cases = nonempty_list(case); RBRACE; { EMatch ({start= $startofs; fin= $endofs}, {body; cases}) }
+  | BACKSLASH; parameters = nonempty_list(parameter); ARROW; body = expression; { ELambda ({start= $startofs; fin= $endofs}, {parameters; body}) }
+  | id = UID; body = option(expression_atom); { EConstructor ({start= $startofs; fin= $endofs}, {id; body}) }
   | expression_pipe
 
 let expression_pipe :=
   | expression_or
-  | l = expression_pipe; TRIANGLE; r = expression_or; { BinaryOperation {l; operator= BPipe; r} }
+  | l = expression_pipe; TRIANGLE; r = expression_or; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BPipe; r}) }
 
 let expression_or :=
   | expression_and
-  | l = expression_or; BARBAR; r = expression_and; { BinaryOperation {l; operator= BOr; r} }
+  | l = expression_or; BARBAR; r = expression_and; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BOr; r}) }
 
 let expression_and :=
   | expression_equality
-  | l = expression_and; ANDAND; r = expression_equality; { BinaryOperation {l; operator= BAnd; r} }
+  | l = expression_and; ANDAND; r = expression_equality; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BAnd; r}) }
 
 let expression_equality :=
   | expression_compare
-  | l = expression_equality; EQUALEQUAL; r = expression_compare; { BinaryOperation {l; operator= BEqual; r} }
-  | l = expression_equality; BANGEQUAL; r = expression_compare; { BinaryOperation {l; operator= BNotEqual; r} }
+  | l = expression_equality; EQUALEQUAL; r = expression_compare; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BEqual; r}) }
+  | l = expression_equality; BANGEQUAL; r = expression_compare; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BNotEqual; r}) }
 
 let expression_compare :=
   | expression_concatenate
-  | l = expression_compare; GT; r = expression_concatenate; { BinaryOperation {l; operator= BGreaterThan; r} }
-  | l = expression_compare; GEQ; r = expression_concatenate; { BinaryOperation {l; operator= BGreaterOrEqual; r} }
-  | l = expression_compare; LT; r = expression_concatenate; { BinaryOperation {l; operator= BLessThan; r} }
-  | l = expression_compare; LEQ; r = expression_concatenate; { BinaryOperation {l; operator= BLessOrEqual; r} }
+  | l = expression_compare; GT; r = expression_concatenate; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BGreaterThan; r}) }
+  | l = expression_compare; GEQ; r = expression_concatenate; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BGreaterOrEqual; r}) }
+  | l = expression_compare; LT; r = expression_concatenate; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BLessThan; r}) }
+  | l = expression_compare; LEQ; r = expression_concatenate; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BLessOrEqual; r}) }
 
 let expression_concatenate :=
   | expression_addition
-  | l = expression_concatenate; PLUSPLUS; r = expression_addition; { BinaryOperation {l; operator= BConcatenate; r} }
+  | l = expression_concatenate; PLUSPLUS; r = expression_addition; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BConcatenate; r}) }
 
 let expression_addition :=
   | expression_multiplication
-  | l = expression_addition; PLUS; r = expression_multiplication; { BinaryOperation {l; operator= BAdd; r} }
-  | l = expression_addition; MINUS; r = expression_multiplication; { BinaryOperation {l; operator= BSubstract; r} }
+  | l = expression_addition; PLUS; r = expression_multiplication; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BAdd; r}) }
+  | l = expression_addition; MINUS; r = expression_multiplication; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BSubstract; r}) }
 
 let expression_multiplication :=
   | expression_exponentiation
-  | l = expression_multiplication; STAR; r = expression_exponentiation; { BinaryOperation {l; operator= BMultiply; r} }
-  | l = expression_multiplication; SLASH; r = expression_exponentiation; { BinaryOperation {l; operator= BDivide; r} }
-  | l = expression_multiplication; PERCENT; r = expression_exponentiation; { BinaryOperation {l; operator= BModulo; r} }
+  | l = expression_multiplication; STAR; r = expression_exponentiation; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BMultiply; r}) }
+  | l = expression_multiplication; SLASH; r = expression_exponentiation; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BDivide; r}) }
+  | l = expression_multiplication; PERCENT; r = expression_exponentiation; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BModulo; r}) }
 
 let expression_exponentiation :=
   | expression_unary
-  | l = expression_unary; STARSTAR; r = expression_exponentiation; { BinaryOperation {l; operator= BExponentiate; r} }
+  | l = expression_unary; STARSTAR; r = expression_exponentiation; { EBinaryOperation ({start= $startofs; fin= $endofs}, {l; operator= BExponentiate; r}) }
 
 let expression_unary :=
   | application
-  | PLUS; body = expression_unary; { UnaryOperation {operator= UPlus; body} }
-  | MINUS; body = expression_unary; { UnaryOperation {operator= UMinus; body} }
-  | BANG; body = expression_unary; { UnaryOperation {operator= UNot; body} }
+  | PLUS; body = expression_unary; { EUnaryOperation ({start= $startofs; fin= $endofs}, {operator= UPlus; body}) }
+  | MINUS; body = expression_unary; { EUnaryOperation ({start= $startofs; fin= $endofs}, {operator= UMinus; body}) }
+  | BANG; body = expression_unary; { EUnaryOperation ({start= $startofs; fin= $endofs}, {operator= UNot; body}) }
 
-let variant == id = located(UID); typing = option(preceded(KWAS, typing)); SEMICOLON; { {id; typing} } 
+let variant == id = UID; typing = option(preceded(KWAS, typing)); SEMICOLON; { {span= {start= $startofs; fin= $endofs}; id; typing} } 
 
-let case == pattern = pattern; guard = option(preceded(KWIF, expression)); ARROW; body = expression; SEMICOLON; { {pattern; guard; body} }
+let case == pattern = pattern; guard = option(preceded(KWIF, expression)); ARROW; body = expression; SEMICOLON; { {span= {start= $startofs; fin= $endofs}; pattern; guard; body} }
 
 let pattern_atom :=
-  | ~ = INT; < PInt >
-  | ~ = FLOAT; < PFloat >
-  | ~ = BOOL; < PBool >
-  | ~ = STRING; < PString >
-  | ~ = located(LID); < PLid >
-  | LPAREN; p = pattern_atom; COMMA; ps = separated_list(COMMA, pattern_atom); RPAREN; { PTuple (p :: ps) }
-  | LBRACKET; ~ = separated_list(COMMA, pattern_atom); RBRACKET; < PList >
-  | LBRACKET; ps = separated_nonempty_list(COMMA, pattern_atom); ELLIPSIS; p = located(LID); RBRACKET; { PListSpread (ps @ [PLid p]) }
-  | id = located(UID); pattern = option(pattern_atom); { PConstructor {id; pattern} }
+  | i = INT; { PInt ({start= $startofs; fin= $endofs}, i) }
+  | f = FLOAT; { PFloat ({start= $startofs; fin= $endofs}, f) }
+  | b = BOOL; { PBool ({start= $startofs; fin= $endofs}, b) }
+  | s = STRING; { PString ({start= $startofs; fin= $endofs}, s) }
+  | id = LID; { PLID ({start= $startofs; fin= $endofs}, id) }
+  | LPAREN; p = pattern_atom; COMMA; ps = separated_list(COMMA, pattern_atom); RPAREN; { PTuple ({start= $startofs; fin= $endofs}, p :: ps) }
+  | LBRACKET; l = separated_list(COMMA, pattern_atom); RBRACKET; { PList ({start= $startofs; fin= $endofs}, l) }
+  | LBRACKET; ps = separated_nonempty_list(COMMA, pattern_atom); ELLIPSIS; p = LID; RBRACKET; { PListSpread ({start= $startofs; fin= $endofs}, ps @ [PLID ({start= $startofs; fin= $endofs}, p)]) }
+  | id = UID; pattern = option(pattern_atom); { PConstructor ({start= $startofs; fin= $endofs}, {id; pattern}) }
 
 let pattern :=
   | pattern_atom
-  | l = pattern; SEMICOLON; r = pattern_atom; { POr {l; r} }
+  | l = pattern; SEMICOLON; r = pattern_atom; { POr ({start= $startofs; fin= $endofs}, {l; r}) }

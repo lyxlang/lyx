@@ -1,6 +1,5 @@
 <!--
 SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.com>
-SPDX-FileCopyrightText: 2025 Łukasz Bartkiewicz <lukasku@proton.me>
 
 SPDX-License-Identifier: CC-BY-SA-4.0
 -->
@@ -16,7 +15,6 @@ SPDX-License-Identifier: CC-BY-SA-4.0
     The Lys purely functional programming language.
     <br />
     <a href="https://github.com/lyslang/vscode-lys">VS Code Extension</a> •
-    <a href="docs/BOOK.asciidoc">Book</a> •
     <a href="#usage">Usage</a> •
     <a href="#installation">Installation</a> •
     <a href="#contributing">Contributing</a> •
@@ -36,7 +34,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
   - Seamless currying support
 - Type infered (WIP)
   - Robust
-  - Hindley-Milner type system
+  - Fast
 - VS Code language support
   - Syntax highlighting
   - Formatting

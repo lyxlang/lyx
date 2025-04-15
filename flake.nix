@@ -1,5 +1,4 @@
 # SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.com>
-# SPDX-FileCopyrightText: 2025 Łukasz Bartkiewicz <lukasku@proton.me>
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
@@ -39,7 +38,6 @@
             menhir
             menhirLib
             ppx_deriving
-            ppx_inline_test
             uuseg
             yojson
           ];
@@ -78,12 +76,6 @@
                   }
                 ];
               }
-              {
-                name = "Łukasz Bartkiewicz";
-                email = "lukasku@proton.me";
-                github = "lokasku";
-                githubId = 105018247;
-              }
             ];
             inherit (pkgs.ocaml.meta) platforms;
           };
@@ -100,36 +92,10 @@
               just
               ocamlformat_0_27_0
             ]
-            ++ lib.optionals stdenv.isDarwin (
-              [
-                llvm
-              ]
-              ++ (with darwin.apple_sdk.frameworks; [
-                CoreServices
-                Foundation
-                Security
-                SystemConfiguration
-              ])
-              ++ (with darwin; [
-                libiconv
-                Libsystem
-                cctools
-              ])
-            )
             ++ (with ocamlPackages; [
               ocaml-lsp
               utop
             ]);
-
-          shellHook = pkgs.lib.optionalString pkgs.stdenv.isDarwin (
-            with pkgs.darwin;
-            ''
-              export LIBRARY_PATH=${Libsystem}/lib:$LIBRARY_PATH
-              export CPATH=${Libsystem}/include:$CPATH
-              export SDKROOT=$(xcrun --show-sdk-path)
-              export MACOSX_DEPLOYMENT_TARGET=11.3
-            ''
-          );
         };
       });
 
