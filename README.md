@@ -16,6 +16,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
     The Lys purely functional programming language.
     <br />
     <a href="https://github.com/lyslang/vscode-lys">VS Code Extension</a> •
+    <a href="docs/BOOK.asciidoc">Book</a> •
     <a href="#usage">Usage</a> •
     <a href="#installation">Installation</a> •
     <a href="#contributing">Contributing</a> •
