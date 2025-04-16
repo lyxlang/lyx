@@ -178,7 +178,7 @@ and build_expression expr =
   | EExpression (_, {body; signature= _}) ->
       scoped (fun () -> build_expression body)
   | EInt (_, str) ->
-      add str
+      float_of_string str |> string_of_float |> add
   | EFloat (_, str) ->
       add str
   | EBool (_, b) ->
@@ -233,10 +233,13 @@ and build_expression expr =
       add "with" ;
       add_space () ;
       add_list " " build_case cases
-  | ELambda (_, {parameters; body}) ->
+  | ELambda _ ->
+      ()
+  | EDesugaredLambda (_, {parameter; body}) ->
       add "fun" ;
       add_space () ;
-      List.iter (fun p -> build_parameter p ; add_space ()) parameters ;
+      build_parameter parameter ;
+      add_space () ;
       add "->" ;
       add_space () ;
       build_expression body
@@ -310,7 +313,7 @@ and build_case case =
 and build_pattern pat =
   match pat with
   | PInt (_, str) ->
-      add str
+      float_of_string str |> string_of_float |> add
   | PFloat (_, str) ->
       add str
   | PBool (_, b) ->

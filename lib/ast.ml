@@ -27,7 +27,7 @@ and type_definition = {id: uid; body: typing}
 and function_definition =
   {id: lid; parameters: parameter list; signature: signature; body: expression}
 
-and adt_definition = {id: uid; polymorphics: lid list; variants: variant list}
+and adt_definition = {id: uid; polymorphics: string list; variants: variant list}
 
 and binding = {span: span; id: lid; signature: signature; body: expression}
 
@@ -42,7 +42,7 @@ and typing =
   | TString of span
   | TUnit of span
   | TConstructor of span * typing_constructor
-  | TPolymorphic of span * lid
+  | TPolymorphic of span * string
   | TTuple of span * typing list
   | TList of span * typing
   | TFunction of span * function_typing
@@ -67,6 +67,7 @@ and expression =
   | EIf of span * if_expr
   | EMatch of span * match_expr
   | ELambda of span * lambda_expr
+  | EDesugaredLambda of span * desugared_lambda_expr
   | EApplication of span * application
   | EExpression of span * expression_with_signature
 
@@ -83,6 +84,8 @@ and if_expr = {predicate: expression; truthy: expression; falsy: expression}
 and match_expr = {body: expression; cases: case list}
 
 and lambda_expr = {parameters: parameter list; body: expression}
+
+and desugared_lambda_expr = {parameter: parameter; body: expression}
 
 and application = {body: expression; argument: expression}
 

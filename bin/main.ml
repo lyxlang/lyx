@@ -19,12 +19,13 @@ let parse ?(json = false) buf =
 
 let transpile_file file =
   Sedlexing.Utf8.from_channel (open_in_bin file)
-  |> parse ~json:true |> Transpiler.build_program
+  |> parse ~json:true |> Desugar.desugar_program |> Transpiler.build_program
   |> Printf.fprintf (open_out_bin (file ^ ".ml")) "%s%!"
 
 let transpile_stdin () =
   Sedlexing.Utf8.from_channel stdin
-  |> parse ~json:true |> Transpiler.build_program |> print_string ;
+  |> parse ~json:true |> Desugar.desugar_program |> Transpiler.build_program
+  |> print_string ;
   flush stdout
 
 let format_file file =
@@ -40,11 +41,13 @@ let format_stdin () =
 let parse_file file =
   let buf = Sedlexing.Utf8.from_channel (open_in_bin file) in
   Sedlexing.set_filename buf file ;
-  let ast = parse buf in
+  let ast = parse buf |> Desugar.desugar_program in
   Ast.show_program ast |> print_endline
 
 let parse_stdin () =
-  let ast = Sedlexing.Utf8.from_channel stdin |> parse in
+  let ast =
+    Sedlexing.Utf8.from_channel stdin |> parse |> Desugar.desugar_program
+  in
   Ast.show_program ast |> print_endline
 
 let print_usage () =
