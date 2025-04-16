@@ -152,9 +152,9 @@ let rec tokenizer buf =
   | '`' ->
       comment buf
   | integer ->
-      INT (lexeme buf |> int_of_string)
+      INT (lexeme buf)
   | floating ->
-      FLOAT (lexeme buf |> float_of_string)
+      FLOAT (lexeme buf)
   | "True" ->
       BOOL true
   | "False" ->

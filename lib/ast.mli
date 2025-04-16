@@ -52,8 +52,8 @@ and typing_constructor = {id: uid; typing: typing option}
 and function_typing = {l: typing; r: typing}
 
 and expression =
-  | EInt of span * int
-  | EFloat of span * float
+  | EInt of span * string
+  | EFloat of span * string
   | EBool of span * bool
   | EString of span * string
   | EUnit of span
@@ -114,8 +114,8 @@ and case =
   {span: span; pattern: pattern; guard: expression option; body: expression}
 
 and pattern =
-  | PInt of span * int
-  | PFloat of span * float
+  | PInt of span * string
+  | PFloat of span * string
   | PBool of span * bool
   | PString of span * string
   | PLID of span * lid

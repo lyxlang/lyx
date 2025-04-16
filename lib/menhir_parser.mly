@@ -51,8 +51,8 @@
 %token BANG
 
 %token <string> COMMENT
-%token <int> INT
-%token <float> FLOAT
+%token <string> INT
+%token <string> FLOAT
 %token <bool> BOOL
 %token <string> STRING
 %token <Ast.uid> UID

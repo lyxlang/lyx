@@ -134,15 +134,16 @@ let create_report ?(json = false) ?(hint = "") ?(note = "") severity code msg
   let margin = String.length (string_of_int (fin.pos_lnum + 1)) in
   let file_name = start.pos_fname in
   if json then output_json code msg range
-  else print_header range severity code msg margin file_name ;
-  if file_name <> "" then (
-    let file = open_in_bin file_name in
-    for n = 1 to fin.pos_lnum + 1 do
-      match In_channel.input_line file with
-      | None ->
-          ()
-      | Some line ->
-          print_line hint note range margin n line
-    done ;
-    close_in file ) ;
-  print_footer hint note margin file_name
+  else (
+    print_header range severity code msg margin file_name ;
+    if file_name <> "" then (
+      let file = open_in_bin file_name in
+      for n = 1 to fin.pos_lnum + 1 do
+        match In_channel.input_line file with
+        | None ->
+            ()
+        | Some line ->
+            print_line hint note range margin n line
+      done ;
+      close_in file ) ;
+    print_footer hint note margin file_name )

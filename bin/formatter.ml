@@ -194,10 +194,6 @@ module Builder = struct
 
   let boolean_string b = if b then text "True" else text "False"
 
-  let float_to_string f =
-    let str = string_of_float f in
-    if String.ends_with ~suffix:"." str then str ^ "0" else str
-
   let rec build_program t program =
     Nodes
       ( separated_nodes EmptyLine
@@ -331,10 +327,10 @@ module Builder = struct
 
   and build_expression t expr =
     match expr with
-    | EInt (_, n) ->
-        text (string_of_int n)
-    | EFloat (_, f) ->
-        text (float_to_string f)
+    | EInt (_, str) ->
+        text str
+    | EFloat (_, str) ->
+        text str
     | EBool (_, b) ->
         boolean_string b
     | EString (_, str) ->
@@ -495,10 +491,10 @@ module Builder = struct
 
   and build_pattern t pat =
     match pat with
-    | PInt (_, n) ->
-        text (string_of_int n)
-    | PFloat (_, f) ->
-        text (float_to_string f)
+    | PInt (_, str) ->
+        text str
+    | PFloat (_, str) ->
+        text str
     | PString (_, str) ->
         quoted_string t str
     | PBool (_, b) ->

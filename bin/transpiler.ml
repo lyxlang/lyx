@@ -177,10 +177,10 @@ and build_expression expr =
   match expr with
   | EExpression (_, {body; signature= _}) ->
       scoped (fun () -> build_expression body)
-  | EInt (_, i) ->
-      float_of_int i |> string_of_float |> add
-  | EFloat (_, f) ->
-      add @@ string_of_float f
+  | EInt (_, str) ->
+      add str
+  | EFloat (_, str) ->
+      add str
   | EBool (_, b) ->
       add @@ string_of_bool b
   | EString (_, s) ->
@@ -309,10 +309,10 @@ and build_case case =
 
 and build_pattern pat =
   match pat with
-  | PInt (_, i) ->
-      float_of_int i |> string_of_float |> add
-  | PFloat (_, f) ->
-      add @@ string_of_float f
+  | PInt (_, str) ->
+      add str
+  | PFloat (_, str) ->
+      add str
   | PBool (_, b) ->
       add @@ string_of_bool b
   | PString (_, s) ->
