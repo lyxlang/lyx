@@ -4,105 +4,108 @@
  * SPDX-License-Identifier: GPL-3.0-only
  *)
 
-open Ast
-
 type typed_program = typed_declaration list
 
 and typed_declaration =
-  | TDComment of span * string
-  | TDValueBinding of span * typed_binding
-  | TDTypeDefinition of span * typed_type_definition
-  | TDFunctionDefinition of span * typed_function_definition
-  | TDADTDefinition of span * typed_adt_definition
+  | TDComment of Ast.span * string
+  | TDValueBinding of Ast.span * typed_binding
+  | TDTypeDefinition of Ast.span * typed_type_definition
+  | TDFunctionDefinition of Ast.span * typed_function_definition
+  | TDADTDefinition of Ast.span * typed_adt_definition
 
-and typed_type_definition = {id: uid; typing: typing}
+and typed_type_definition = {id: Ast.uid; typing: Ast.typing}
 
 and typed_function_definition =
-  { id: lid
+  { id: Ast.lid
   ; parameters: typed_parameter list
   ; body: typed_expression
-  ; typing: typing }
+  ; typing: Ast.typing }
 
 and typed_adt_definition =
-  {id: uid; polymorphics: lid list; variants: typed_variant list; typing: typing}
+  { id: Ast.uid
+  ; polymorphics: Ast.lid list
+  ; variants: typed_variant list
+  ; typing: Ast.typing }
 
-and typed_binding = {span: span; id: lid; body: typed_expression; typing: typing}
+and typed_binding =
+  {span: Ast.span; id: Ast.lid; body: typed_expression; typing: Ast.typing}
 
 and typed_parameter =
-  | TALID of span * typing * lid
-  | TATuple of span * typing * typed_parameter list
+  | TALID of Ast.span * Ast.typing * Ast.lid
+  | TATuple of Ast.span * Ast.typing * typed_parameter list
 
 and typed_expression =
-  | TEInt of span * int
-  | TEFloat of span * float
-  | TEBool of span * bool
-  | TEString of span * string
-  | TEUnit of span
-  | TEConstructor of span * typed_constructor
-  | TELID of span * typing * lid
-  | TETuple of span * typing * typed_expression list
-  | TEList of span * typing * typed_expression list
-  | TEBinaryOperation of span * typed_binary_operation
-  | TEUnaryOperation of span * typed_unary_operation
-  | TELet of span * typed_let_expr
-  | TEIf of span * typed_if_expr
-  | TEMatch of span * typed_match_expr
-  | TELambda of span * typed_lambda_expr
-  | TEApplication of span * typed_application
-  | TEExpression of span * typing * typed_expression
+  | TEInt of Ast.span * int
+  | TEFloat of Ast.span * float
+  | TEBool of Ast.span * bool
+  | TEString of Ast.span * string
+  | TEUnit of Ast.span
+  | TEConstructor of Ast.span * typed_constructor
+  | TELID of Ast.span * Ast.typing * Ast.lid
+  | TETuple of Ast.span * Ast.typing * typed_expression list
+  | TEList of Ast.span * Ast.typing * typed_expression list
+  | TEBinaryOperation of Ast.span * typed_binary_operation
+  | TEUnaryOperation of Ast.span * typed_unary_operation
+  | TELet of Ast.span * typed_let_expr
+  | TEIf of Ast.span * typed_if_expr
+  | TEMatch of Ast.span * typed_match_expr
+  | TELambda of Ast.span * typed_lambda_expr
+  | TEApplication of Ast.span * typed_application
+  | TEExpression of Ast.span * Ast.typing * typed_expression
 
-and typed_constructor = {id: uid; body: typed_expression option; typing: typing}
+and typed_constructor =
+  {id: Ast.uid; body: typed_expression option; typing: Ast.typing}
 
 and typed_binary_operation =
   { l: typed_expression
-  ; operator: binary_operator
+  ; operator: Ast.binary_operator
   ; r: typed_expression
-  ; typing: typing }
+  ; typing: Ast.typing }
 
 and typed_unary_operation =
-  {operator: unary_operator; body: typed_expression; typing: typing}
+  {operator: Ast.unary_operator; body: typed_expression; typing: Ast.typing}
 
 and typed_let_expr =
-  {bindings: typed_binding list; body: typed_expression; typing: typing}
+  {bindings: typed_binding list; body: typed_expression; typing: Ast.typing}
 
 and typed_if_expr =
   { predicate: typed_expression
   ; truthy: typed_expression
   ; falsy: typed_expression
-  ; typing: typing }
+  ; typing: Ast.typing }
 
 and typed_match_expr =
-  {body: typed_expression; cases: typed_case list; typing: typing}
+  {body: typed_expression; cases: typed_case list; typing: Ast.typing}
 
 and typed_lambda_expr =
-  {parameters: typed_parameter list; body: typed_expression; typing: typing}
+  {parameters: typed_parameter list; body: typed_expression; typing: Ast.typing}
 
 and typed_application =
-  {body: typed_expression; argument: typed_expression; typing: typing}
+  {body: typed_expression; argument: typed_expression; typing: Ast.typing}
 
-and typed_variant = {span: span; id: uid; typing: typing}
+and typed_variant = {span: Ast.span; id: Ast.uid; typing: Ast.typing}
 
 and typed_case =
-  { span: span
+  { span: Ast.span
   ; pattern: typed_pattern
   ; guard: typed_expression option
   ; body: typed_expression
-  ; typing: typing }
+  ; typing: Ast.typing }
 
 and typed_pattern =
-  | TPInt of span * int
-  | TPFloat of span * float
-  | TPBool of span * bool
-  | TPString of span * string
-  | TPLID of span * typing * lid
-  | TPTuple of span * typing * typed_pattern list
-  | TPList of span * typing * typed_pattern list
-  | TPListSpread of span * typing * typed_pattern list
-  | TPConstructor of span * typed_constructor_pattern
-  | TPOr of span * typed_or_pattern
+  | TPInt of Ast.span * int
+  | TPFloat of Ast.span * float
+  | TPBool of Ast.span * bool
+  | TPString of Ast.span * string
+  | TPLID of Ast.span * Ast.typing * Ast.lid
+  | TPTuple of Ast.span * Ast.typing * typed_pattern list
+  | TPList of Ast.span * Ast.typing * typed_pattern list
+  | TPListSpread of Ast.span * Ast.typing * typed_pattern list
+  | TPConstructor of Ast.span * typed_constructor_pattern
+  | TPOr of Ast.span * typed_or_pattern
 
 and typed_constructor_pattern =
-  {id: uid; pattern: typed_pattern option; typing: typing}
+  {id: Ast.uid; pattern: typed_pattern option; typing: Ast.typing}
 
-and typed_or_pattern = {l: typed_pattern; r: typed_pattern; typing: typing}
+and typed_or_pattern = {l: typed_pattern; r: typed_pattern; typing: Ast.typing}
 [@@deriving show {with_path= false}]
