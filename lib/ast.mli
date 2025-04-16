@@ -4,7 +4,10 @@
  * SPDX-License-Identifier: GPL-3.0-only
  *)
 
-type span = {start: int; fin: int}
+type position = Lexing.position =
+  {pos_fname: string; pos_lnum: int; pos_bol: int; pos_cnum: int}
+
+and span = position * position
 
 and uid = string
 
@@ -125,6 +128,10 @@ and pattern =
 and constructor_pattern = {id: uid; pattern: pattern option}
 
 and or_pattern = {l: pattern; r: pattern}
+
+val pp_position : Format.formatter -> position -> unit
+
+val show_position : position -> string
 
 val pp_span : Format.formatter -> span -> unit
 

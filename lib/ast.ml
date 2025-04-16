@@ -4,7 +4,10 @@
  * SPDX-License-Identifier: GPL-3.0-only
  *)
 
-type span = {start: int; fin: int}
+type position = Lexing.position =
+  {pos_fname: string; pos_lnum: int; pos_bol: int; pos_cnum: int}
+
+and span = position * position
 
 and uid = string
 
