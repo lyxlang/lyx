@@ -64,6 +64,7 @@ and expression =
   | EBinaryOperation of span * binary_operation
   | EUnaryOperation of span * unary_operation
   | ELet of span * let_expr
+  | EDesugaredLet of span * desugared_let_expr
   | EIf of span * if_expr
   | EMatch of span * match_expr
   | ELambda of span * lambda_expr
@@ -78,6 +79,8 @@ and binary_operation = {l: expression; operator: binary_operator; r: expression}
 and unary_operation = {operator: unary_operator; body: expression}
 
 and let_expr = {bindings: binding list; body: expression}
+
+and desugared_let_expr = {binding: binding; body: expression}
 
 and if_expr = {predicate: expression; truthy: expression; falsy: expression}
 
@@ -211,6 +214,10 @@ val show_unary_operation : unary_operation -> string
 val pp_let_expr : Format.formatter -> let_expr -> unit
 
 val show_let_expr : let_expr -> string
+
+val pp_desugared_let_expr : Format.formatter -> desugared_let_expr -> unit
+
+val show_desugared_let_expr : desugared_let_expr -> string
 
 val pp_if_expr : Format.formatter -> if_expr -> unit
 

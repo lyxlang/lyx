@@ -384,6 +384,8 @@ module Builder = struct
           ; SpaceOrLine
           ; text "in"
           ; Group (new_id t, [SpaceOrLine; Indent [build_expression t body]]) ]
+    | EDesugaredLet _ ->
+        failwith "The formatter expects sugared let."
     | EIf (_, {predicate; truthy; falsy}) ->
         Group
           ( new_id t

@@ -64,6 +64,7 @@ and expression =
   | EBinaryOperation of span * binary_operation
   | EUnaryOperation of span * unary_operation
   | ELet of span * let_expr
+  | EDesugaredLet of span * desugared_let_expr
   | EIf of span * if_expr
   | EMatch of span * match_expr
   | ELambda of span * lambda_expr
@@ -78,6 +79,8 @@ and binary_operation = {l: expression; operator: binary_operator; r: expression}
 and unary_operation = {operator: unary_operator; body: expression}
 
 and let_expr = {bindings: binding list; body: expression}
+
+and desugared_let_expr = {binding: binding; body: expression}
 
 and if_expr = {predicate: expression; truthy: expression; falsy: expression}
 

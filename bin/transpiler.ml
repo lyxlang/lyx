@@ -199,9 +199,10 @@ and build_expression expr =
       build_unary_operator operator ;
       add_space () ;
       build_expression body
-  | ELet (_, {bindings; body}) ->
-      List.iter build_binding bindings ;
-      build_expression body
+  | ELet _ ->
+      failwith "Let expressions should be desugared before transpiling."
+  | EDesugaredLet (_, {binding; body}) ->
+      build_binding binding ; build_expression body
   | EIf (_, {predicate; truthy; falsy}) ->
       add "if" ;
       add_space () ;

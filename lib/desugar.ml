@@ -28,7 +28,8 @@ and desugar_expression expr =
   | EString _
   | EUnit _
   | ELID _
-  | EDesugaredLambda _ ->
+  | EDesugaredLambda _
+  | EDesugaredLet _ ->
       expr
   | EConstructor (span, {id; body}) ->
       EConstructor (span, {id; body= Option.map desugar_expression body})
@@ -42,10 +43,7 @@ and desugar_expression expr =
   | EUnaryOperation (span, {operator; body}) ->
       EUnaryOperation (span, {operator; body= desugar_expression body})
   | ELet (span, {bindings; body}) ->
-      ELet
-        ( span
-        , { bindings= List.map desugar_binding bindings
-          ; body= desugar_expression body } )
+      desugar_let span bindings body
   | EIf (span, {predicate; truthy; falsy}) ->
       EIf
         ( span
@@ -70,6 +68,14 @@ and desugar_case case =
   { case with
     guard= Option.map desugar_expression case.guard
   ; body= desugar_expression case.body }
+
+and desugar_let span bindings body =
+  match bindings with
+  | [] ->
+      desugar_expression body
+  | b :: tail ->
+      EDesugaredLet
+        (span, {binding= desugar_binding b; body= desugar_let span tail body})
 
 and curry_lambda span parameters body =
   match parameters with
