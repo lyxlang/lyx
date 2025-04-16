@@ -6,13 +6,6 @@
 
 open Ast
 
-let rec curry_lambda span parameters body =
-  match parameters with
-  | [] ->
-      body
-  | p :: tail ->
-      EDesugaredLambda (span, {parameter= p; body= curry_lambda span tail body})
-
 let rec desugar_program program = List.map desugar_declaration program
 
 and desugar_declaration decl =
@@ -21,18 +14,21 @@ and desugar_declaration decl =
       decl
   | DValueBinding (span, binding) ->
       DValueBinding (span, desugar_binding binding)
-  | DFunctionDefinition (span, func_def) ->
-      DFunctionDefinition (span, desugar_function_definition func_def)
+  | DFunctionDefinition (span, f) ->
+      transform_function_definition span f
 
 and desugar_binding binding =
   {binding with body= desugar_expression binding.body}
 
-and desugar_function_definition (func_def : function_definition) =
-  {func_def with body= desugar_expression func_def.body}
-
 and desugar_expression expr =
   match expr with
-  | EInt _ | EFloat _ | EBool _ | EString _ | EUnit _ | ELID _ ->
+  | EInt _
+  | EFloat _
+  | EBool _
+  | EString _
+  | EUnit _
+  | ELID _
+  | EDesugaredLambda _ ->
       expr
   | EConstructor (span, {id; body}) ->
       EConstructor (span, {id; body= Option.map desugar_expression body})
@@ -61,9 +57,7 @@ and desugar_expression expr =
         ( span
         , {body= desugar_expression body; cases= List.map desugar_case cases} )
   | ELambda (span, {parameters; body}) ->
-      curry_lambda span parameters (desugar_expression body)
-  | EDesugaredLambda (span, {parameter; body}) ->
-      EDesugaredLambda (span, {parameter; body= desugar_expression body})
+      curry_lambda span parameters body
   | EApplication (span, {body; argument}) ->
       EApplication
         ( span
@@ -76,3 +70,16 @@ and desugar_case case =
   { case with
     guard= Option.map desugar_expression case.guard
   ; body= desugar_expression case.body }
+
+and curry_lambda span parameters body =
+  match parameters with
+  | [] ->
+      desugar_expression body
+  | p :: tail ->
+      EDesugaredLambda (span, {parameter= p; body= curry_lambda span tail body})
+
+and transform_function_definition span {id; parameters; signature; body} =
+  let binding =
+    {span; id; signature; body= curry_lambda span parameters body}
+  in
+  DValueBinding (span, binding)

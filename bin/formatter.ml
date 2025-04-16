@@ -422,7 +422,7 @@ module Builder = struct
           ; text "->"
           ; Group (new_id t, [SpaceOrLine; Indent [build_expression t body]]) ]
     | EDesugaredLambda _ ->
-        failwith "Desugared lambda should not be present in the AST"
+        failwith "The formatter expects sugared lambdas."
     | EApplication (_, {body; argument}) ->
         Fill [build_expression t body; SpaceOrLine; build_expression t argument]
     | EExpression (_, {body; signature}) ->

@@ -106,19 +106,8 @@ and build_declaration declaration =
       add "=" ;
       add_space () ;
       build_typing body
-  | DFunctionDefinition (_, {id; parameters; body; _}) ->
-      if id = "_" then add "let"
-      else if !first_bind then (
-        add "let rec" ;
-        first_bind := false )
-      else add "and" ;
-      add_space () ;
-      add @@ encode_lid id ;
-      add_space () ;
-      List.iter (fun p -> build_parameter p ; add_space ()) parameters ;
-      add "=" ;
-      add_space () ;
-      build_expression body
+  | DFunctionDefinition _ ->
+      failwith "Function definitions should be desugared before transpiling."
   | DADTDefinition (_, {id; polymorphics; variants}) ->
       if !first_type then (
         add "type" ;
@@ -234,7 +223,7 @@ and build_expression expr =
       add_space () ;
       add_list " " build_case cases
   | ELambda _ ->
-      ()
+      failwith "Lambdas should be desugared before transpiling."
   | EDesugaredLambda (_, {parameter; body}) ->
       add "fun" ;
       add_space () ;
