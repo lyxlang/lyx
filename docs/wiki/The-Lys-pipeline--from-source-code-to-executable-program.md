@@ -38,7 +38,7 @@ The parser’s job is to ensure that your program is syntactically correct, prov
 
 Even if the code is syntactically sound, it still needs to make sense logically. This is where analysis comes in. Lys performs several kinds of analysis to check the program’s logic and enforce language rules.
 
-But before that, the AST needs to be simplified for type checking to be easier, this is where desugaring comes in. In walks the AST and simplify the sugared syntax: for example, it transform lambdas of multiple parameters to multiple single-parameter lambdas chained together. In doing so, the AST becomes much easier for the coming analysis passes to handle.
+But before that, the AST needs to be simplified for type checking to be easier, this is where desugaring comes in, see [`desugar.ml`](https://github.com/lyslang/lys/blob/main/lib/desugar.ml). It walks the AST and simplify the sugared syntax: for example, it transform lambdas of multiple parameters to multiple single-parameter lambdas chained together. In doing so, the AST becomes much easier for the coming analysis passes to handle.
 
 Other analysis passes are still under development.
 
