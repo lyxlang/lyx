@@ -34,11 +34,13 @@ The resulting AST captures the hierarchical structure of your program. It distin
 
 The parser’s job is to ensure that your program is syntactically correct, providing a reliable intermediate representation for further stages.
 
-## 3. Analysis: adding meaning with semantic, occurrence, and type checking
+## 3. Analysis: adding meaning with semantic analysis and type checking
 
 Even if the code is syntactically sound, it still needs to make sense logically. This is where analysis comes in. Lys performs several kinds of analysis to check the program’s logic and enforce language rules.
 
-Still under development.
+But before that, the AST needs to be simplified for type checking to be easier, this is where desugaring comes in. In walks the AST and simplify the sugared syntax: for example, it transform lambdas of multiple parameters to multiple single-parameter lambdas chained together. In doing so, the AST becomes much easier for the coming analysis passes to handle.
+
+Other analysis passes are still under development.
 
 ## 4. Transpiling: converting the AST to another language
 
@@ -68,7 +70,8 @@ To summarize, here’s how the Lys pipeline transforms your code:
 
 3. Analysis:
 
-   - Still under development.
+   - The AST is desugared to make it easier to work with.
+   - The rest is still under development.
 
 4. Transpiling:
 
