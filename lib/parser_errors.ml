@@ -7,208 +7,208 @@ let message =
   fun s ->
     match s with
     | 202 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Unexpected token after a valid declaration. Expected another definition, a comment, or the end of the file.\n"
     | 196 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid function definition. Expected the function body expression after the equals sign \226\128\152=\226\128\153.\n"
     | 195 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid function definition. Expected an equals sign \226\128\152=\226\128\153 after the type signature.\n"
     | 194 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid function definition. Expected a type signature \226\128\152:\226\128\153 or an equals sign \226\128\152=\226\128\153 after the parameters.\n"
     | 189 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid typed expression. Expected a closing parenthesis \226\128\152)\226\128\153 after the type annotation.\n"
     | 187 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid tuple expression. Expected a closing parenthesis \226\128\152)\226\128\153.\n"
     | 186 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid tuple expression. Expected another expression after the comma \226\128\152,\226\128\153.\n"
     | 185 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid parenthesized expression or tuple. Expected a comma \226\128\152,\226\128\153 followed by another expression, a type annotation \226\128\152:\226\128\153, or a closing parenthesis \226\128\152)\226\128\153.\n"
     | 181 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list literal. Expected another expression after the comma \226\128\152,\226\128\153.\n"
     | 180 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list literal. Expected a comma \226\128\152,\226\128\153 followed by another expression, or a closing square bracket \226\128\152]\226\128\153.\n"
     | 178 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list literal. Expected a closing square bracket \226\128\152]\226\128\153.\n"
     | 173 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid match expression. Expected another case or a closing brace \226\128\152}\226\128\153.\n"
     | 172 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid match case. Expected a semicolon \226\128\152;\226\128\153 after the result expression.\n"
     | 171 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid match case. Expected the result expression after the arrow \226\128\152->\226\128\153.\n"
     | 170 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid match case. Expected an arrow \226\128\152->\226\128\153 after the pattern or guard.\n"
     | 168 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid match case guard. Expected a condition expression after \226\128\152if\226\128\153.\n"
     | 166 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid OR-pattern. Expected another pattern after the semicolon \226\128\152;\226\128\153.\n"
     | 165 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid match case. Expected an arrow \226\128\152->\226\128\153, a guard condition starting with \226\128\152if\226\128\153, or an alternative pattern separated by \226\128\152;\226\128\153.\n"
     | 160 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid tuple pattern. Expected a closing parenthesis \226\128\152)\226\128\153.\n"
     | 158 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid tuple pattern. Expected another pattern after the comma \226\128\152,\226\128\153.\n"
     | 157 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid tuple pattern. Expected a comma \226\128\152,\226\128\153 followed by another pattern, or a closing parenthesis \226\128\152)\226\128\153.\n"
     | 153 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list pattern. Expected another pattern after the comma \226\128\152,\226\128\153.\n"
     | 152 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list pattern. Expected a comma \226\128\152,\226\128\153 followed by another pattern, ellipsis \226\128\152...\226\128\153, or a closing square bracket \226\128\152]\226\128\153.\n"
     | 150 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list spread pattern. Expected a closing square bracket \226\128\152]\226\128\153 after the rest identifier.\n"
     | 149 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list spread pattern. Expected an identifier for the rest of the list after \226\128\152...\226\128\153.\n"
     | 148 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list pattern. Expected ellipsis \226\128\152...\226\128\153 or a closing square bracket \226\128\152]\226\128\153.\n"
     | 144 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list pattern. Expected a pattern, ellipsis \226\128\152...\226\128\153, or a closing square bracket \226\128\152]\226\128\153.\n"
     | 142 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid tuple pattern. Expected a pattern inside the parentheses \226\128\152()\226\128\153.\n"
     | 140 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid constructor pattern. Expected a nested pattern or the end of the pattern part.\n"
     | 139 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid match expression. Expected at least one pattern case inside the braces \226\128\152{}\226\128\153.\n"
     | 138 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid match expression. Expected an opening brace \226\128\152{\226\128\153 after the matched expression.\n"
     | 136 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid let expression. Expected the body expression after \226\128\152in\226\128\153.\n"
     | 133 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid let expression. Expected another binding after the semicolon \226\128\152;\226\128\153.\n"
     | 132 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid let expression. Expected \226\128\152in\226\128\153 or a semicolon \226\128\152;\226\128\153 followed by another binding.\n"
     | 130 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid if expression. Expected the \226\128\152else\226\128\153 branch expression after \226\128\152else\226\128\153.\n"
     | 129 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid if expression. Expected \226\128\152else\226\128\153 after the \226\128\152then\226\128\153 branch expression.\n"
     | 128 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid if expression. Expected the \226\128\152then\226\128\153 branch expression after \226\128\152then\226\128\153.\n"
     | 127 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid if expression. Expected \226\128\152then\226\128\153 after the condition.\n"
     | 122 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid logical AND operation. Expected an expression after the \226\128\152&&\226\128\153 operator.\n"
     | 118 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid inequality comparison. Expected an expression after the \226\128\152!=\226\128\153 operator.\n"
     | 116 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid greater than or equal comparison. Expected an expression after the \226\128\152>=\226\128\153 operator.\n"
     | 114 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid greater than comparison. Expected an expression after the \226\128\152>\226\128\153 operator.\n"
     | 112 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid less than or equal comparison. Expected an expression after the \226\128\152<=\226\128\153 operator.\n"
     | 109 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid less than comparison. Expected an expression after the \226\128\152<\226\128\153 operator.\n"
     | 106 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid subtraction operation. Expected an expression after the \226\128\152-\226\128\153 operator.\n"
     | 104 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid addition operation. Expected an expression after the \226\128\152+\226\128\153 operator.\n"
     | 102 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid concatenation operation. Expected an expression after the \226\128\152++\226\128\153 operator.\n"
     | 100 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid equality comparison. Expected an expression after the \226\128\152==\226\128\153 operator.\n"
     | 96 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid modulo operation. Expected an expression after the \226\128\152%\226\128\153 operator.\n"
     | 94 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid division operation. Expected an expression after the \226\128\152/\226\128\153 operator.\n"
     | 92 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid multiplication operation. Expected an expression after the \226\128\152*\226\128\153 operator.\n"
     | 90 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid logical OR operation. Expected an expression after the \226\128\152||\226\128\153 operator.\n"
     | 88 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid pipe operation. Expected an expression after the \226\128\152|>\226\128\153 operator.\n"
     | 85 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid exponentiation operation. Expected an expression after the \226\128\152**\226\128\153 operator.\n"
     | 83 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid lambda function. Expected the function body expression after the arrow \226\128\152->\226\128\153.\n"
     | 82 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid lambda function. Expected an arrow \226\128\152->\226\128\153 after the parameters.\n"
     | 81 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid lambda function. Expected at least one parameter name after the backslash \226\128\152\\\226\128\153.\n"
     | 79 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid function application. Expected an argument after the function expression.\n"
     | 76 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid unary not operation. Expected a boolean expression after the \226\128\152!\226\128\153.\n"
     | 72 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid if expression. Expected a condition expression after \226\128\152if\226\128\153.\n"
     | 71 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid let binding. Expected an expression after the equals sign \226\128\152=\226\128\153.\n"
     | 70 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid let binding. Expected an equals sign \226\128\152=\226\128\153 after the type signature.\n"
     | 69 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid let binding. Expected a type signature \226\128\152:\226\128\153 or an equals sign \226\128\152=\226\128\153.\n"
     | 68 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid let expression. Expected at least one binding (e.g., \226\128\152x = 1\226\128\153) after \226\128\152let\226\128\153.\n"
     | 67 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid match expression. Expected an expression to match against after \226\128\152match\226\128\153.\n"
     | 66 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list literal. Expected an expression or a closing square bracket \226\128\152]\226\128\153.\n"
     | 64 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid unary minus operation. Expected an expression after the \226\128\152-\226\128\153 sign.\n"
     | 63 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid unary plus operation. Expected an expression after the \226\128\152+\226\128\153 sign.\n"
     | 62 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid expression. Expected an expression inside the parentheses \226\128\152()\226\128\153.\n"
     | 60 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid constructor usage. Expected an argument for the constructor or the end of the expression.\n"
     | 58 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid definition. Expected an expression after the equals sign \226\128\152=\226\128\153.\n"
     | 57 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid value definition. Expected an equals sign \226\128\152=\226\128\153 after the type signature.\n"
     | 55 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid function definition. Expected another parameter, a type signature \226\128\152:\226\128\153, or an equals sign \226\128\152=\226\128\153.\n"
     | 54 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid type signature. Expected an equals sign \226\128\152=\226\128\153 or a function arrow \226\128\152->\226\128\153.\n"
     | 53 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid type signature. Expected a type after the colon \226\128\152:\226\128\153.\n"
     | 49 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid function parameter list. Expected another parameter after the comma \226\128\152,\226\128\153.\n"
     | 48 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid function parameter list. Expected a comma \226\128\152,\226\128\153 followed by another parameter, or a closing parenthesis \226\128\152)\226\128\153.\n"
     | 46 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid function parameter list. Expected another parameter after the comma \226\128\152,\226\128\153.\n"
     | 45 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid function parameter list. Expected a comma \226\128\152,\226\128\153 followed by another parameter, or a closing parenthesis \226\128\152)\226\128\153.\n"
     | 43 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid function parameter list. Expected a parameter name or nested parameters inside \226\128\152()\226\128\153.\n"
     | 42 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid definition. Expected a type signature \226\128\152:\226\128\153, an equals sign \226\128\152=\226\128\153, or function parameters.\n"
     | 38 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid ADT definition. Expected another variant constructor or a closing brace \226\128\152}\226\128\153.\n"
     | 36 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid ADT variant type. Expected a semicolon \226\128\152;\226\128\153 or a function arrow \226\128\152->\226\128\153.\n"
     | 35 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid ADT variant. Expected a type after \226\128\152as\226\128\153.\n"
     | 34 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid ADT variant. Expected \226\128\152as\226\128\153 followed by a type, or a semicolon \226\128\152;\226\128\153.\n"
     | 33 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid ADT definition. Expected at least one variant constructor inside the braces \226\128\152{}\226\128\153.\n"
     | 31 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid type alias. Expected the end of the definition or a function arrow \226\128\152->\226\128\153.\n"
     | 29 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid ADT definition. Expected another type parameter or the start of ADT variants \226\128\152{\226\128\153.\n"
     | 28 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid type definition. Expected another type parameter, the start of ADT variants \226\128\152{\226\128\153, or the end of the type alias.\n"
     | 21 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid tuple type. Expected another type after the comma \226\128\152,\226\128\153.\n"
     | 20 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid tuple type. Expected a comma \226\128\152,\226\128\153 followed by another type, a closing parenthesis \226\128\152)\226\128\153, or a function arrow \226\128\152->\226\128\153.\n"
     | 19 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid tuple type. Expected another type after the comma \226\128\152,\226\128\153.\n"
     | 18 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid tuple type. Expected a comma \226\128\152,\226\128\153 followed by another type, or a closing parenthesis \226\128\152)\226\128\153.\n"
     | 16 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid function type. Expected a return type after the arrow \226\128\152->\226\128\153.\n"
     | 14 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list type. Expected a closing square bracket \226\128\152]\226\128\153 or a function arrow \226\128\152->\226\128\153.\n"
     | 7 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid list type. Expected a type inside the square brackets \226\128\152[]\226\128\153.\n"
     | 5 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid tuple type. Expected a type inside the parentheses \226\128\152()\226\128\153.\n"
     | 4 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid type constructor. Expected a type argument or the end of the type signature.\n"
     | 3 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid type or ADT definition. Expected a type alias, a list of type parameters, or the start of ADT variants \226\128\152{\226\128\153.\n"
     | 2 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid type or ADT definition. Expected \226\128\152:=\226\128\153 after the type name.\n"
     | 1 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Invalid definition. Expected an identifier after \226\128\152def\226\128\153.\n"
     | 0 ->
-        "<YOUR SYNTAX ERROR MESSAGE HERE>\n"
+        "Unexpected token. Expected a definition or a comment.\n"
     | _ ->
         raise Not_found

@@ -8,7 +8,7 @@ program: UNIT
 ##
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Unexpected token. Expected a definition or a comment.
 
 program: KWDEF UNIT
 ##
@@ -23,7 +23,7 @@ program: KWDEF UNIT
 ## KWDEF
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid definition. Expected an identifier after ‘def’.
 
 program: KWDEF UID UNIT
 ##
@@ -36,7 +36,7 @@ program: KWDEF UID UNIT
 ## KWDEF UID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid type or ADT definition. Expected ‘:=’ after the type name.
 
 program: KWDEF UID COLONEQUAL UNIT
 ##
@@ -49,7 +49,7 @@ program: KWDEF UID COLONEQUAL UNIT
 ## KWDEF UID COLONEQUAL
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid type or ADT definition. Expected a type alias, a list of type parameters, or the start of ADT variants ‘{’.
 
 program: KWDEF LID COLON UID UNIT
 ##
@@ -61,7 +61,7 @@ program: KWDEF LID COLON UID UNIT
 ## UID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid type constructor. Expected a type argument or the end of the type signature.
 
 program: KWDEF LID COLON LPAREN UNIT
 ##
@@ -73,7 +73,7 @@ program: KWDEF LID COLON LPAREN UNIT
 ## LPAREN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid tuple type. Expected a type inside the parentheses ‘()’.
 
 program: KWDEF LID COLON LBRACKET UNIT
 ##
@@ -85,7 +85,7 @@ program: KWDEF LID COLON LBRACKET UNIT
 ## LBRACKET
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list type. Expected a type inside the square brackets ‘[]’.
 
 program: KWDEF LID COLON LBRACKET KWBOOL UNIT
 ##
@@ -98,7 +98,7 @@ program: KWDEF LID COLON LBRACKET KWBOOL UNIT
 ## LBRACKET typing
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list type. Expected a closing square bracket ‘]’ or a function arrow ‘->’.
 
 program: KWDEF LID COLON UID ARROW UNIT
 ##
@@ -110,7 +110,7 @@ program: KWDEF LID COLON UID ARROW UNIT
 ## typing ARROW
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid function type. Expected a return type after the arrow ‘->’.
 
 program: KWDEF LID COLON LPAREN KWBOOL UNIT
 ##
@@ -123,7 +123,7 @@ program: KWDEF LID COLON LPAREN KWBOOL UNIT
 ## LPAREN typing
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid tuple type. Expected a comma ‘,’ followed by another type, or a closing parenthesis ‘)’.
 
 program: KWDEF LID COLON LPAREN UID COMMA UNIT
 ##
@@ -135,7 +135,7 @@ program: KWDEF LID COLON LPAREN UID COMMA UNIT
 ## LPAREN typing COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid tuple type. Expected another type after the comma ‘,’.
 
 program: KWDEF LID COLON LPAREN UID COMMA KWBOOL UNIT
 ##
@@ -149,7 +149,7 @@ program: KWDEF LID COLON LPAREN UID COMMA KWBOOL UNIT
 ## typing
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid tuple type. Expected a comma ‘,’ followed by another type, a closing parenthesis ‘)’, or a function arrow ‘->’.
 
 program: KWDEF LID COLON LPAREN UID COMMA UID COMMA UNIT
 ##
@@ -161,7 +161,7 @@ program: KWDEF LID COLON LPAREN UID COMMA UID COMMA UNIT
 ## typing COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid tuple type. Expected another type after the comma ‘,’.
 
 program: KWDEF UID COLONEQUAL LID UNIT
 ##
@@ -174,7 +174,7 @@ program: KWDEF UID COLONEQUAL LID UNIT
 ## LID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid type definition. Expected another type parameter, the start of ADT variants ‘{’, or the end of the type alias.
 
 program: KWDEF UID COLONEQUAL LID LID UNIT
 ##
@@ -186,7 +186,7 @@ program: KWDEF UID COLONEQUAL LID LID UNIT
 ## LID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid ADT definition. Expected another type parameter or the start of ADT variants ‘{’.
 
 program: KWDEF UID COLONEQUAL KWBOOL UNIT
 ##
@@ -199,7 +199,7 @@ program: KWDEF UID COLONEQUAL KWBOOL UNIT
 ## KWDEF UID COLONEQUAL typing
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid type alias. Expected the end of the definition or a function arrow ‘->’.
 
 program: KWDEF UID COLONEQUAL LBRACE UNIT
 ##
@@ -211,7 +211,7 @@ program: KWDEF UID COLONEQUAL LBRACE UNIT
 ## KWDEF UID COLONEQUAL list(LID) LBRACE
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid ADT definition. Expected at least one variant constructor inside the braces ‘{}’.
 
 program: KWDEF UID COLONEQUAL LBRACE UID UNIT
 ##
@@ -224,7 +224,7 @@ program: KWDEF UID COLONEQUAL LBRACE UID UNIT
 ## UID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid ADT variant. Expected ‘as’ followed by a type, or a semicolon ‘;’.
 
 program: KWDEF UID COLONEQUAL LBRACE UID KWAS UNIT
 ##
@@ -236,7 +236,7 @@ program: KWDEF UID COLONEQUAL LBRACE UID KWAS UNIT
 ## KWAS
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid ADT variant. Expected a type after ‘as’.
 
 program: KWDEF UID COLONEQUAL LBRACE UID KWAS KWBOOL UNIT
 ##
@@ -249,7 +249,7 @@ program: KWDEF UID COLONEQUAL LBRACE UID KWAS KWBOOL UNIT
 ## KWAS typing
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid ADT variant type. Expected a semicolon ‘;’ or a function arrow ‘->’.
 
 program: KWDEF UID COLONEQUAL LBRACE UID SEMICOLON UNIT
 ##
@@ -262,7 +262,7 @@ program: KWDEF UID COLONEQUAL LBRACE UID SEMICOLON UNIT
 ## UID option(preceded(KWAS,typing)) SEMICOLON
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid ADT definition. Expected another variant constructor or a closing brace ‘}’.
 
 program: KWDEF LID UNIT
 ##
@@ -275,7 +275,7 @@ program: KWDEF LID UNIT
 ## KWDEF LID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid definition. Expected a type signature ‘:’, an equals sign ‘=’, or function parameters.
 
 program: KWDEF LID LPAREN UNIT
 ##
@@ -287,7 +287,7 @@ program: KWDEF LID LPAREN UNIT
 ## LPAREN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid function parameter list. Expected a parameter name or nested parameters inside ‘()’.
 
 program: KWDEF LID LPAREN LID UNIT
 ##
@@ -299,7 +299,7 @@ program: KWDEF LID LPAREN LID UNIT
 ## LPAREN parameter
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid function parameter list. Expected a comma ‘,’ followed by another parameter, or a closing parenthesis ‘)’.
 
 program: KWDEF LID LPAREN LID COMMA UNIT
 ##
@@ -311,7 +311,7 @@ program: KWDEF LID LPAREN LID COMMA UNIT
 ## LPAREN parameter COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid function parameter list. Expected another parameter after the comma ‘,’.
 
 program: KWDEF LID LPAREN LID COMMA LID UNIT
 ##
@@ -324,7 +324,7 @@ program: KWDEF LID LPAREN LID COMMA LID UNIT
 ## parameter
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid function parameter list. Expected a comma ‘,’ followed by another parameter, or a closing parenthesis ‘)’.
 
 program: KWDEF LID LPAREN LID COMMA LID COMMA UNIT
 ##
@@ -336,7 +336,7 @@ program: KWDEF LID LPAREN LID COMMA LID COMMA UNIT
 ## parameter COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid function parameter list. Expected another parameter after the comma ‘,’.
 
 program: KWDEF LID COLON UNIT
 ##
@@ -348,7 +348,7 @@ program: KWDEF LID COLON UNIT
 ## COLON
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid type signature. Expected a type after the colon ‘:’.
 
 program: KWDEF LID COLON KWBOOL UNIT
 ##
@@ -361,7 +361,7 @@ program: KWDEF LID COLON KWBOOL UNIT
 ## COLON typing
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid type signature. Expected an equals sign ‘=’ or a function arrow ‘->’.
 
 program: KWDEF LID LID UNIT
 ##
@@ -374,7 +374,7 @@ program: KWDEF LID LID UNIT
 ## parameter
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid function definition. Expected another parameter, a type signature ‘:’, or an equals sign ‘=’.
 
 program: KWDEF LID COLON UID RPAREN
 ##
@@ -395,7 +395,7 @@ program: KWDEF LID COLON UID RPAREN
 ## In state 54, spurious reduction of production option(preceded(COLON,typing)) -> COLON typing
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid value definition. Expected an equals sign ‘=’ after the type signature.
 
 program: KWDEF LID EQUAL TRIANGLE
 ##
@@ -407,7 +407,7 @@ program: KWDEF LID EQUAL TRIANGLE
 ## KWDEF LID option(preceded(COLON,typing)) EQUAL
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid definition. Expected an expression after the equals sign ‘=’.
 
 program: KWDEF LID EQUAL UID UID
 ##
@@ -419,7 +419,7 @@ program: KWDEF LID EQUAL UID UID
 ## UID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid constructor usage. Expected an argument for the constructor or the end of the expression.
 
 program: KWDEF LID EQUAL LPAREN TRIANGLE
 ##
@@ -432,7 +432,7 @@ program: KWDEF LID EQUAL LPAREN TRIANGLE
 ## LPAREN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid expression. Expected an expression inside the parentheses ‘()’.
 
 program: KWDEF LID EQUAL PLUS UID
 ##
@@ -444,7 +444,7 @@ program: KWDEF LID EQUAL PLUS UID
 ## PLUS
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid unary plus operation. Expected an expression after the ‘+’ sign.
 
 program: KWDEF LID EQUAL MINUS UID
 ##
@@ -456,7 +456,7 @@ program: KWDEF LID EQUAL MINUS UID
 ## MINUS
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid unary minus operation. Expected an expression after the ‘-’ sign.
 
 program: KWDEF LID EQUAL LBRACKET TRIANGLE
 ##
@@ -468,7 +468,7 @@ program: KWDEF LID EQUAL LBRACKET TRIANGLE
 ## LBRACKET
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list literal. Expected an expression or a closing square bracket ‘]’.
 
 program: KWDEF LID EQUAL KWMATCH TRIANGLE
 ##
@@ -480,7 +480,7 @@ program: KWDEF LID EQUAL KWMATCH TRIANGLE
 ## KWMATCH
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid match expression. Expected an expression to match against after ‘match’.
 
 program: KWDEF LID EQUAL KWLET UNIT
 ##
@@ -492,7 +492,7 @@ program: KWDEF LID EQUAL KWLET UNIT
 ## KWLET
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid let expression. Expected at least one binding (e.g., ‘x = 1’) after ‘let’.
 
 program: KWDEF LID EQUAL KWLET LID UNIT
 ##
@@ -505,7 +505,7 @@ program: KWDEF LID EQUAL KWLET LID UNIT
 ## LID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid let binding. Expected a type signature ‘:’ or an equals sign ‘=’.
 
 program: KWDEF LID EQUAL KWLET LID COLON UID RPAREN
 ##
@@ -527,7 +527,7 @@ program: KWDEF LID EQUAL KWLET LID COLON UID RPAREN
 ## In state 54, spurious reduction of production option(preceded(COLON,typing)) -> COLON typing
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid let binding. Expected an equals sign ‘=’ after the type signature.
 
 program: KWDEF LID EQUAL KWLET LID EQUAL TRIANGLE
 ##
@@ -540,7 +540,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL TRIANGLE
 ## LID option(preceded(COLON,typing)) EQUAL
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid let binding. Expected an expression after the equals sign ‘=’.
 
 program: KWDEF LID EQUAL KWIF TRIANGLE
 ##
@@ -552,7 +552,7 @@ program: KWDEF LID EQUAL KWIF TRIANGLE
 ## KWIF
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid if expression. Expected a condition expression after ‘if’.
 
 program: KWDEF LID EQUAL BANG UID
 ##
@@ -564,7 +564,7 @@ program: KWDEF LID EQUAL BANG UID
 ## BANG
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid unary not operation. Expected a boolean expression after the ‘!’.
 
 program: KWDEF LID EQUAL BOOL UID
 ##
@@ -577,7 +577,7 @@ program: KWDEF LID EQUAL BOOL UID
 ## application
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid function application. Expected an argument after the function expression.
 
 program: KWDEF LID EQUAL BACKSLASH UNIT
 ##
@@ -589,7 +589,7 @@ program: KWDEF LID EQUAL BACKSLASH UNIT
 ## BACKSLASH
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid lambda function. Expected at least one parameter name after the backslash ‘\’.
 
 program: KWDEF LID EQUAL BACKSLASH LID EQUAL
 ##
@@ -607,7 +607,7 @@ program: KWDEF LID EQUAL BACKSLASH LID EQUAL
 ## In state 55, spurious reduction of production nonempty_list(parameter) -> parameter
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid lambda function. Expected an arrow ‘->’ after the parameters.
 
 program: KWDEF LID EQUAL BACKSLASH LID ARROW TRIANGLE
 ##
@@ -619,7 +619,7 @@ program: KWDEF LID EQUAL BACKSLASH LID ARROW TRIANGLE
 ## BACKSLASH nonempty_list(parameter) ARROW
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid lambda function. Expected the function body expression after the arrow ‘->’.
 
 program: KWDEF LID EQUAL BOOL STARSTAR UID
 ##
@@ -631,7 +631,7 @@ program: KWDEF LID EQUAL BOOL STARSTAR UID
 ## expression_unary STARSTAR
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid exponentiation operation. Expected an expression after the ‘**’ operator.
 
 program: KWDEF LID EQUAL BOOL TRIANGLE UID
 ##
@@ -643,7 +643,7 @@ program: KWDEF LID EQUAL BOOL TRIANGLE UID
 ## expression_pipe TRIANGLE
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid pipe operation. Expected an expression after the ‘|>’ operator.
 
 program: KWDEF LID EQUAL BOOL BARBAR UID
 ##
@@ -655,7 +655,7 @@ program: KWDEF LID EQUAL BOOL BARBAR UID
 ## expression_or BARBAR
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid logical OR operation. Expected an expression after the ‘||’ operator.
 
 program: KWDEF LID EQUAL BOOL STAR UID
 ##
@@ -667,7 +667,7 @@ program: KWDEF LID EQUAL BOOL STAR UID
 ## expression_multiplication STAR
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid multiplication operation. Expected an expression after the ‘*’ operator.
 
 program: KWDEF LID EQUAL BOOL SLASH UID
 ##
@@ -679,7 +679,7 @@ program: KWDEF LID EQUAL BOOL SLASH UID
 ## expression_multiplication SLASH
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid division operation. Expected an expression after the ‘/’ operator.
 
 program: KWDEF LID EQUAL BOOL PERCENT UID
 ##
@@ -691,7 +691,7 @@ program: KWDEF LID EQUAL BOOL PERCENT UID
 ## expression_multiplication PERCENT
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid modulo operation. Expected an expression after the ‘%’ operator.
 
 program: KWDEF LID EQUAL BOOL EQUALEQUAL UID
 ##
@@ -703,7 +703,7 @@ program: KWDEF LID EQUAL BOOL EQUALEQUAL UID
 ## expression_equality EQUALEQUAL
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid equality comparison. Expected an expression after the ‘==’ operator.
 
 program: KWDEF LID EQUAL BOOL PLUSPLUS UID
 ##
@@ -715,7 +715,7 @@ program: KWDEF LID EQUAL BOOL PLUSPLUS UID
 ## expression_concatenate PLUSPLUS
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid concatenation operation. Expected an expression after the ‘++’ operator.
 
 program: KWDEF LID EQUAL BOOL PLUS UID
 ##
@@ -727,7 +727,7 @@ program: KWDEF LID EQUAL BOOL PLUS UID
 ## expression_addition PLUS
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid addition operation. Expected an expression after the ‘+’ operator.
 
 program: KWDEF LID EQUAL BOOL MINUS UID
 ##
@@ -739,7 +739,7 @@ program: KWDEF LID EQUAL BOOL MINUS UID
 ## expression_addition MINUS
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid subtraction operation. Expected an expression after the ‘-’ operator.
 
 program: KWDEF LID EQUAL BOOL LT UID
 ##
@@ -751,7 +751,7 @@ program: KWDEF LID EQUAL BOOL LT UID
 ## expression_compare LT
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid less than comparison. Expected an expression after the ‘<’ operator.
 
 program: KWDEF LID EQUAL BOOL LEQ UID
 ##
@@ -763,7 +763,7 @@ program: KWDEF LID EQUAL BOOL LEQ UID
 ## expression_compare LEQ
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid less than or equal comparison. Expected an expression after the ‘<=’ operator.
 
 program: KWDEF LID EQUAL BOOL GT UID
 ##
@@ -775,7 +775,7 @@ program: KWDEF LID EQUAL BOOL GT UID
 ## expression_compare GT
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid greater than comparison. Expected an expression after the ‘>’ operator.
 
 program: KWDEF LID EQUAL BOOL GEQ UID
 ##
@@ -787,7 +787,7 @@ program: KWDEF LID EQUAL BOOL GEQ UID
 ## expression_compare GEQ
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid greater than or equal comparison. Expected an expression after the ‘>=’ operator.
 
 program: KWDEF LID EQUAL BOOL BANGEQUAL UID
 ##
@@ -799,7 +799,7 @@ program: KWDEF LID EQUAL BOOL BANGEQUAL UID
 ## expression_equality BANGEQUAL
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid inequality comparison. Expected an expression after the ‘!=’ operator.
 
 program: KWDEF LID EQUAL BOOL ANDAND UID
 ##
@@ -811,7 +811,7 @@ program: KWDEF LID EQUAL BOOL ANDAND UID
 ## expression_and ANDAND
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid logical AND operation. Expected an expression after the ‘&&’ operator.
 
 program: KWDEF LID EQUAL KWIF UID SEMICOLON
 ##
@@ -830,7 +830,7 @@ program: KWDEF LID EQUAL KWIF UID SEMICOLON
 ## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid if expression. Expected ‘then’ after the condition.
 
 program: KWDEF LID EQUAL KWIF UID KWTHEN TRIANGLE
 ##
@@ -842,7 +842,7 @@ program: KWDEF LID EQUAL KWIF UID KWTHEN TRIANGLE
 ## KWIF expression KWTHEN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid if expression. Expected the ‘then’ branch expression after ‘then’.
 
 program: KWDEF LID EQUAL KWIF UID KWTHEN UID SEMICOLON
 ##
@@ -861,7 +861,7 @@ program: KWDEF LID EQUAL KWIF UID KWTHEN UID SEMICOLON
 ## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid if expression. Expected ‘else’ after the ‘then’ branch expression.
 
 program: KWDEF LID EQUAL KWIF UID KWTHEN UID KWELSE TRIANGLE
 ##
@@ -873,7 +873,7 @@ program: KWDEF LID EQUAL KWIF UID KWTHEN UID KWELSE TRIANGLE
 ## KWIF expression KWTHEN expression KWELSE
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid if expression. Expected the ‘else’ branch expression after ‘else’.
 
 program: KWDEF LID EQUAL KWLET LID EQUAL UID RPAREN
 ##
@@ -893,7 +893,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL UID RPAREN
 ## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid let expression. Expected ‘in’ or a semicolon ‘;’ followed by another binding.
 
 program: KWDEF LID EQUAL KWLET LID EQUAL UID SEMICOLON UNIT
 ##
@@ -905,7 +905,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL UID SEMICOLON UNIT
 ## LID option(preceded(COLON,typing)) EQUAL expression SEMICOLON
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid let expression. Expected another binding after the semicolon ‘;’.
 
 program: KWDEF LID EQUAL KWLET LID EQUAL UID KWIN TRIANGLE
 ##
@@ -917,7 +917,7 @@ program: KWDEF LID EQUAL KWLET LID EQUAL UID KWIN TRIANGLE
 ## KWLET separated_nonempty_list(SEMICOLON,binding) KWIN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid let expression. Expected the body expression after ‘in’.
 
 program: KWDEF LID EQUAL KWMATCH UID SEMICOLON
 ##
@@ -936,7 +936,7 @@ program: KWDEF LID EQUAL KWMATCH UID SEMICOLON
 ## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid match expression. Expected an opening brace ‘{’ after the matched expression.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE UNIT
 ##
@@ -948,7 +948,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE UNIT
 ## KWMATCH expression LBRACE
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid match expression. Expected at least one pattern case inside the braces ‘{}’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE UID UNIT
 ##
@@ -960,7 +960,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE UID UNIT
 ## UID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid constructor pattern. Expected a nested pattern or the end of the pattern part.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN UNIT
 ##
@@ -972,7 +972,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN UNIT
 ## LPAREN
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid tuple pattern. Expected a pattern inside the parentheses ‘()’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UNIT
 ##
@@ -985,7 +985,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UNIT
 ## LBRACKET
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list pattern. Expected a pattern, ellipsis ‘...’, or a closing square bracket ‘]’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID RPAREN
 ##
@@ -1006,7 +1006,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID RPAREN
 ## In state 152, spurious reduction of production separated_nonempty_list(COMMA,pattern_atom) -> pattern_atom
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list pattern. Expected ellipsis ‘...’ or a closing square bracket ‘]’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID ELLIPSIS UNIT
 ##
@@ -1018,7 +1018,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID ELLIPSIS UNIT
 ## LBRACKET separated_nonempty_list(COMMA,pattern_atom) ELLIPSIS
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list spread pattern. Expected an identifier for the rest of the list after ‘...’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID ELLIPSIS LID UNIT
 ##
@@ -1030,7 +1030,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID ELLIPSIS LID UNIT
 ## LBRACKET separated_nonempty_list(COMMA,pattern_atom) ELLIPSIS LID
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list spread pattern. Expected a closing square bracket ‘]’ after the rest identifier.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET BOOL UNIT
 ##
@@ -1043,7 +1043,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET BOOL UNIT
 ## pattern_atom
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list pattern. Expected a comma ‘,’ followed by another pattern, ellipsis ‘...’, or a closing square bracket ‘]’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID COMMA UNIT
 ##
@@ -1055,7 +1055,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE LBRACKET UID COMMA UNIT
 ## pattern_atom COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list pattern. Expected another pattern after the comma ‘,’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN BOOL UNIT
 ##
@@ -1067,7 +1067,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN BOOL UNIT
 ## LPAREN pattern_atom
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid tuple pattern. Expected a comma ‘,’ followed by another pattern, or a closing parenthesis ‘)’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN UID COMMA UNIT
 ##
@@ -1079,7 +1079,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN UID COMMA UNIT
 ## LPAREN pattern_atom COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid tuple pattern. Expected another pattern after the comma ‘,’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN UID COMMA UID RBRACKET
 ##
@@ -1100,7 +1100,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE LPAREN UID COMMA UID RBRACKET
 ## In state 159, spurious reduction of production loption(separated_nonempty_list(COMMA,pattern_atom)) -> separated_nonempty_list(COMMA,pattern_atom)
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid tuple pattern. Expected a closing parenthesis ‘)’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE BOOL UNIT
 ##
@@ -1114,7 +1114,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE BOOL UNIT
 ## pattern
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid match case. Expected an arrow ‘->’, a guard condition starting with ‘if’, or an alternative pattern separated by ‘;’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE UID SEMICOLON UNIT
 ##
@@ -1126,7 +1126,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE UID SEMICOLON UNIT
 ## pattern SEMICOLON
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid OR-pattern. Expected another pattern after the semicolon ‘;’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE UID KWIF TRIANGLE
 ##
@@ -1138,7 +1138,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE UID KWIF TRIANGLE
 ## KWIF
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid match case guard. Expected a condition expression after ‘if’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE UID KWIF UID SEMICOLON
 ##
@@ -1159,7 +1159,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE UID KWIF UID SEMICOLON
 ## In state 169, spurious reduction of production option(preceded(KWIF,expression)) -> KWIF expression
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid match case. Expected an arrow ‘->’ after the pattern or guard.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE UID ARROW TRIANGLE
 ##
@@ -1172,7 +1172,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE UID ARROW TRIANGLE
 ## pattern option(preceded(KWIF,expression)) ARROW
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid match case. Expected the result expression after the arrow ‘->’.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE UID ARROW UID RPAREN
 ##
@@ -1192,7 +1192,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE UID ARROW UID RPAREN
 ## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid match case. Expected a semicolon ‘;’ after the result expression.
 
 program: KWDEF LID EQUAL KWMATCH UID LBRACE UID ARROW UID SEMICOLON UNIT
 ##
@@ -1205,7 +1205,7 @@ program: KWDEF LID EQUAL KWMATCH UID LBRACE UID ARROW UID SEMICOLON UNIT
 ## pattern option(preceded(KWIF,expression)) ARROW expression SEMICOLON
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid match expression. Expected another case or a closing brace ‘}’.
 
 program: KWDEF LID EQUAL LBRACKET UID RPAREN
 ##
@@ -1226,7 +1226,7 @@ program: KWDEF LID EQUAL LBRACKET UID RPAREN
 ## In state 177, spurious reduction of production loption(separated_nonempty_list(COMMA,expression)) -> separated_nonempty_list(COMMA,expression)
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list literal. Expected a closing square bracket ‘]’.
 
 program: KWDEF LID EQUAL LBRACKET UID SEMICOLON
 ##
@@ -1246,7 +1246,7 @@ program: KWDEF LID EQUAL LBRACKET UID SEMICOLON
 ## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list literal. Expected a comma ‘,’ followed by another expression, or a closing square bracket ‘]’.
 
 program: KWDEF LID EQUAL LBRACKET UID COMMA TRIANGLE
 ##
@@ -1258,7 +1258,7 @@ program: KWDEF LID EQUAL LBRACKET UID COMMA TRIANGLE
 ## expression COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid list literal. Expected another expression after the comma ‘,’.
 
 program: KWDEF LID EQUAL LPAREN UID SEMICOLON
 ##
@@ -1278,7 +1278,7 @@ program: KWDEF LID EQUAL LPAREN UID SEMICOLON
 ## In state 191, spurious reduction of production expression -> UID option(expression_atom)
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid parenthesized expression or tuple. Expected a comma ‘,’ followed by another expression, a type annotation ‘:’, or a closing parenthesis ‘)’.
 
 program: KWDEF LID EQUAL LPAREN UID COMMA TRIANGLE
 ##
@@ -1290,7 +1290,7 @@ program: KWDEF LID EQUAL LPAREN UID COMMA TRIANGLE
 ## LPAREN expression COMMA
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid tuple expression. Expected another expression after the comma ‘,’.
 
 program: KWDEF LID EQUAL LPAREN UID COMMA UID RBRACKET
 ##
@@ -1311,7 +1311,7 @@ program: KWDEF LID EQUAL LPAREN UID COMMA UID RBRACKET
 ## In state 177, spurious reduction of production loption(separated_nonempty_list(COMMA,expression)) -> separated_nonempty_list(COMMA,expression)
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid tuple expression. Expected a closing parenthesis ‘)’.
 
 program: KWDEF LID EQUAL LPAREN UID COLON UID EQUAL
 ##
@@ -1332,7 +1332,7 @@ program: KWDEF LID EQUAL LPAREN UID COLON UID EQUAL
 ## In state 54, spurious reduction of production option(preceded(COLON,typing)) -> COLON typing
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid typed expression. Expected a closing parenthesis ‘)’ after the type annotation.
 
 program: KWDEF LID LID ARROW
 ##
@@ -1350,7 +1350,7 @@ program: KWDEF LID LID ARROW
 ## In state 55, spurious reduction of production nonempty_list(parameter) -> parameter
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid function definition. Expected a type signature ‘:’ or an equals sign ‘=’ after the parameters.
 
 program: KWDEF LID LID COLON UID RPAREN
 ##
@@ -1371,7 +1371,7 @@ program: KWDEF LID LID COLON UID RPAREN
 ## In state 54, spurious reduction of production option(preceded(COLON,typing)) -> COLON typing
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid function definition. Expected an equals sign ‘=’ after the type signature.
 
 program: KWDEF LID LID EQUAL TRIANGLE
 ##
@@ -1383,7 +1383,7 @@ program: KWDEF LID LID EQUAL TRIANGLE
 ## KWDEF LID nonempty_list(parameter) option(preceded(COLON,typing)) EQUAL
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Invalid function definition. Expected the function body expression after the equals sign ‘=’.
 
 program: COMMENT UNIT
 ##
@@ -1395,5 +1395,5 @@ program: COMMENT UNIT
 ## declaration
 ##
 
-<YOUR SYNTAX ERROR MESSAGE HERE>
+Unexpected token after a valid declaration. Expected another definition, a comment, or the end of the file.
 
