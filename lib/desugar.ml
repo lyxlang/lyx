@@ -15,10 +15,24 @@ and desugar_declaration decl =
   | DValueBinding (span, binding) ->
       DValueBinding (span, desugar_binding binding)
   | DFunctionDefinition (span, f) ->
-      transform_function_definition span f
+      desugar_function_definition span f
 
 and desugar_binding binding =
   {binding with body= desugar_expression binding.body}
+
+and desugar_function_definition span {id; parameters; signature; body} =
+  let binding =
+    {span; id; signature; body= desugar_lambda span parameters body}
+  in
+  DValueBinding (span, binding)
+
+and desugar_lambda span parameters body =
+  match parameters with
+  | [] ->
+      desugar_expression body
+  | p :: tail ->
+      EDesugaredLambda
+        (span, {parameter= p; body= desugar_lambda span tail body})
 
 and desugar_expression expr =
   match expr with
@@ -55,7 +69,7 @@ and desugar_expression expr =
         ( span
         , {body= desugar_expression body; cases= List.map desugar_case cases} )
   | ELambda (span, {parameters; body}) ->
-      curry_lambda span parameters body
+      desugar_lambda span parameters body
   | EApplication (span, {body; argument}) ->
       EApplication
         ( span
@@ -63,11 +77,6 @@ and desugar_expression expr =
         )
   | EExpression (span, {body; signature}) ->
       EExpression (span, {body= desugar_expression body; signature})
-
-and desugar_case case =
-  { case with
-    guard= Option.map desugar_expression case.guard
-  ; body= desugar_expression case.body }
 
 and desugar_let span bindings body =
   match bindings with
@@ -77,15 +86,7 @@ and desugar_let span bindings body =
       EDesugaredLet
         (span, {binding= desugar_binding b; body= desugar_let span tail body})
 
-and curry_lambda span parameters body =
-  match parameters with
-  | [] ->
-      desugar_expression body
-  | p :: tail ->
-      EDesugaredLambda (span, {parameter= p; body= curry_lambda span tail body})
-
-and transform_function_definition span {id; parameters; signature; body} =
-  let binding =
-    {span; id; signature; body= curry_lambda span parameters body}
-  in
-  DValueBinding (span, binding)
+and desugar_case case =
+  { case with
+    guard= Option.map desugar_expression case.guard
+  ; body= desugar_expression case.body }
