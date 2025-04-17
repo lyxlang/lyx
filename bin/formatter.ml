@@ -88,7 +88,7 @@ module Generator = struct
 
   let rec node_gen t wrap = function
     | Nodes nodes ->
-        List.iter (fun node -> node_gen t wrap node) nodes
+        List.iter (node_gen t wrap) nodes
     | Group (id, nodes) ->
         let width =
           List.fold_left (fun acc node -> acc + width t.wrapped node) 0 nodes
@@ -100,14 +100,10 @@ module Generator = struct
           | w when w = Wrap.Force || t.size + width > limit ->
               t.wrapped <- IntSet.add id t.wrapped ;
               Wrap.Enable
-          | Wrap.Detect ->
-              Wrap.Detect
-          | Wrap.Enable ->
-              Wrap.Detect
-          | Wrap.Force ->
+          | Wrap.Detect | Wrap.Enable | Wrap.Force ->
               Wrap.Detect
         in
-        List.iter (fun node -> node_gen t wrap node) nodes
+        List.iter (node_gen t wrap) nodes
     | Fill nodes ->
         let wrap = ref wrap in
         let rec aux = function
@@ -143,19 +139,19 @@ module Generator = struct
         t.size <- t.size + String.length indent ;
         t.depth <- t.depth + 1 ;
         Buffer.add_string t.buffer indent ;
-        List.iter (fun node -> node_gen t wrap node) nodes ;
+        List.iter (node_gen t wrap) nodes ;
         t.depth <- t.depth - 1
     | Indent nodes ->
-        List.iter (fun node -> node_gen t wrap node) nodes
+        List.iter (node_gen t wrap) nodes
     | IndentNext nodes when wrap = Wrap.Enable ->
         t.pending_indents <- t.pending_indents + 1 ;
         let before = t.pending_indents in
-        List.iter (fun node -> node_gen t wrap node) nodes ;
+        List.iter (node_gen t wrap) nodes ;
         if t.pending_indents = before then
           t.pending_indents <- t.pending_indents - 1
         else t.depth <- t.depth - 1
     | IndentNext nodes ->
-        List.iter (fun node -> node_gen t wrap node) nodes
+        List.iter (node_gen t wrap) nodes
     | Line | Empty ->
         ()
 
@@ -179,37 +175,33 @@ module Builder = struct
   let spaced nodes = if nodes = [] then [] else SpaceOrLine :: nodes
 
   let separated_nodes sep nodes =
-    List.mapi
-      (fun i node ->
-        if i = List.length nodes - 1 then node else Node.Nodes [node; sep] )
-      nodes
+    let last = List.length nodes - 1 in
+    List.mapi (fun i node -> if i = last then node else Nodes [node; sep]) nodes
 
   let delimited_nodes t left right nodes =
     Group (new_id t, [left; Line; Indent nodes; Line; right])
 
-  let escape str = String.split_on_char '"' str |> String.concat "\\\""
+  let escape str = str |> String.split_on_char '"' |> String.concat "\\\""
 
   let quoted_string t str =
     Group (new_id t, [text "\""; text (escape str); text "\""])
 
-  let boolean_string b = if b then text "True" else text "False"
+  let boolean_string b = text (if b then "True" else "False")
 
   let rec build_program t program =
-    Nodes
-      ( separated_nodes EmptyLine
-          (List.map (fun d -> build_declaration t d) program)
-      @ [HardLine] )
+    program
+    |> List.map (build_declaration t)
+    |> separated_nodes EmptyLine
+    |> fun nodes -> Nodes (nodes @ [HardLine])
 
-  and build_declaration t decl =
-    match decl with
+  and build_declaration t = function
     | DComment (_, str) ->
+        let content_node = Indent [text (String.trim str)] in
+        let line_node =
+          if String.contains str '\n' then HardLine else SpaceOrLine
+        in
         Group
-          ( new_id t
-          , [ text "`"
-            ; (if String.contains str '\n' then HardLine else SpaceOrLine)
-            ; Indent [text (String.trim str)]
-            ; (if String.contains str '\n' then HardLine else SpaceOrLine)
-            ; text "`" ] )
+          (new_id t, [text "`"; line_node; content_node; line_node; text "`"])
     | DValueBinding (_, binding) ->
         Nodes [text "def"; SpaceOrLine; build_binding t binding]
     | DTypeDefinition (_, {id; body}) ->
@@ -221,71 +213,68 @@ module Builder = struct
           ; text ":="
           ; Group (new_id t, [SpaceOrLine; Indent [build_typing t body]]) ]
     | DFunctionDefinition (_, {id; parameters; signature; body}) ->
+        let param_nodes =
+          parameters
+          |> List.map (build_parameter t)
+          |> separated_nodes SpaceOrLine
+          |> spaced
+        in
         Nodes
           [ text "def"
           ; SpaceOrLine
           ; text id
-          ; Nodes
-              (spaced
-                 (separated_nodes SpaceOrLine
-                    (List.map (fun a -> build_parameter t a) parameters) ) )
+          ; Nodes param_nodes
           ; build_signature t signature
           ; SpaceOrLine
           ; text "="
           ; Group (new_id t, [SpaceOrLine; Indent [build_expression t body]]) ]
     | DADTDefinition (_, {id; polymorphics; variants}) ->
+        let poly_nodes =
+          polymorphics |> List.map text |> separated_nodes SpaceOrLine |> spaced
+        in
+        let variant_nodes =
+          variants
+          |> List.map (fun v -> Nodes [Indent [build_variant t v]; HardLine])
+          |> spaced
+        in
         Nodes
           [ text "def"
           ; SpaceOrLine
           ; text id
           ; SpaceOrLine
           ; text ":="
-          ; Nodes
-              (spaced
-                 (separated_nodes SpaceOrLine
-                    (List.map (fun poly -> text poly) polymorphics) ) )
+          ; Nodes poly_nodes
           ; SpaceOrLine
           ; text "{"
-          ; Group
-              ( new_id t
-              , spaced
-                  (List.map
-                     (fun v -> Nodes [Indent [build_variant t v]; HardLine])
-                     variants ) )
+          ; Group (new_id t, variant_nodes)
           ; text "}" ]
 
-  and build_binding t binding =
+  and build_binding t {id; signature; body; _} =
     Fill
-      [ text binding.id
-      ; build_signature t binding.signature
+      [ text id
+      ; build_signature t signature
       ; SpaceOrLine
       ; text "="
-      ; Group (new_id t, [SpaceOrLine; Indent [build_expression t binding.body]])
-      ]
+      ; Group (new_id t, [SpaceOrLine; Indent [build_expression t body]]) ]
 
-  and build_signature t signature =
-    match signature with
+  and build_signature t = function
     | None ->
         Empty
     | Some typing ->
         Nodes [SpaceOrLine; text ":"; SpaceOrLine; build_typing t typing]
 
-  and build_parameter t param =
-    match param with
+  and build_parameter t = function
     | ALID (_, lid) ->
         text lid
-    | ATuple (_, params) -> (
-      match params with
-      | [param] ->
-          Nodes [text "("; build_parameter t param; text ",)"]
-      | _ ->
-          delimited_nodes t (text "(") (text ")")
-            (separated_nodes
-               (Nodes [text ","; SpaceOrLine])
-               (List.map (fun p -> build_parameter t p) params) ) )
+    | ATuple (_, [param]) ->
+        Nodes [text "("; build_parameter t param; text ",)"]
+    | ATuple (_, params) ->
+        params
+        |> List.map (build_parameter t)
+        |> separated_nodes (Nodes [text ","; SpaceOrLine])
+        |> delimited_nodes t (text "(") (text ")")
 
-  and build_typing t typing =
-    match typing with
+  and build_typing t = function
     | TInt _ ->
         text "Int"
     | TFloat _ ->
@@ -298,15 +287,13 @@ module Builder = struct
         text "Unit"
     | TList (_, typing) ->
         Nodes [text "["; build_typing t typing; text "]"]
-    | TTuple (_, typings) -> (
-      match typings with
-      | [typing] ->
-          Nodes [text "("; build_typing t typing; text ",)"]
-      | _ ->
-          delimited_nodes t (text "(") (text ")")
-            (separated_nodes
-               (Nodes [text ","; SpaceOrLine])
-               (List.map (fun ty -> build_typing t ty) typings) ) )
+    | TTuple (_, [typing]) ->
+        Nodes [text "("; build_typing t typing; text ",)"]
+    | TTuple (_, typings) ->
+        typings
+        |> List.map (build_typing t)
+        |> separated_nodes (Nodes [text ","; SpaceOrLine])
+        |> delimited_nodes t (text "(") (text ")")
     | TFunction (_, {l; r}) ->
         Nodes
           [ build_typing t l
@@ -319,14 +306,11 @@ module Builder = struct
     | TConstructor (_, {id; typing}) ->
         Nodes
           [ text id
-          ; ( match typing with
-            | Some ty ->
-                Nodes [SpaceOrLine; build_typing t ty]
-            | None ->
-                Empty ) ]
+          ; Option.fold ~none:Empty
+              ~some:(fun ty -> Nodes [SpaceOrLine; build_typing t ty])
+              typing ]
 
-  and build_expression t expr =
-    match expr with
+  and build_expression t = function
     | EInt (_, str) ->
         text str
     | EFloat (_, str) ->
@@ -340,27 +324,23 @@ module Builder = struct
     | EConstructor (_, {id; body}) ->
         Nodes
           [ text id
-          ; ( match body with
-            | None ->
-                Empty
-            | Some b ->
-                Nodes [SpaceOrLine; build_expression t b] ) ]
+          ; Option.fold ~none:Empty
+              ~some:(fun b -> Nodes [SpaceOrLine; build_expression t b])
+              body ]
     | ELID (_, lid) ->
         text lid
-    | ETuple (_, exprs) -> (
-      match exprs with
-      | [expr] ->
-          Nodes [text "("; build_expression t expr; text ",)"]
-      | _ ->
-          delimited_nodes t (text "(") (text ")")
-            (separated_nodes
-               (Nodes [text ","; SpaceOrLine])
-               (List.map (fun e -> build_expression t e) exprs) ) )
+    | ETuple (_, [expr]) ->
+        Nodes [text "("; build_expression t expr; text ",)"]
+    | ETuple (_, exprs) ->
+        exprs
+        |> List.map (build_expression t)
+        |> separated_nodes (Nodes [text ","; SpaceOrLine])
+        |> delimited_nodes t (text "(") (text ")")
     | EList (_, exprs) ->
-        delimited_nodes t (text "[") (text "]")
-          (separated_nodes
-             (Nodes [text ","; SpaceOrLine])
-             (List.map (fun e -> build_expression t e) exprs) )
+        exprs
+        |> List.map (build_expression t)
+        |> separated_nodes (Nodes [text ","; SpaceOrLine])
+        |> delimited_nodes t (text "[") (text "]")
     | EBinaryOperation (_, {l; operator; r}) ->
         Fill
           [ build_expression t l
@@ -371,16 +351,15 @@ module Builder = struct
     | EUnaryOperation (_, {operator; body}) ->
         Fill [build_unary_operator operator; build_expression t body]
     | ELet (_, {bindings; body}) ->
+        let binding_nodes =
+          bindings
+          |> List.map (build_binding t)
+          |> separated_nodes (Nodes [text ";"; SpaceOrLine])
+          |> spaced
+        in
         Nodes
           [ text "let"
-          ; Group
-              ( new_id t
-              , [ IndentNext
-                    (spaced
-                       (separated_nodes
-                          (Nodes [text ";"; SpaceOrLine])
-                          (List.map (fun b -> build_binding t b) bindings) ) )
-                ] )
+          ; Group (new_id t, [IndentNext binding_nodes])
           ; SpaceOrLine
           ; text "in"
           ; Group (new_id t, [SpaceOrLine; Indent [build_expression t body]]) ]
@@ -400,6 +379,11 @@ module Builder = struct
             ; Group (new_id t, [SpaceOrLine; Indent [build_expression t falsy]])
             ] )
     | EMatch (_, {body; cases}) ->
+        let case_nodes =
+          cases
+          |> List.map (fun c -> Nodes [Indent [build_case t c]; SpaceOrLine])
+          |> spaced
+        in
         Nodes
           [ Fill
               [ text "match"
@@ -407,19 +391,17 @@ module Builder = struct
               ; build_expression t body
               ; SpaceOrLine
               ; text "{" ]
-          ; Group
-              ( new_id t
-              , spaced
-                  (List.map
-                     (fun c -> Nodes [Indent [build_case t c]; SpaceOrLine])
-                     cases ) )
+          ; Group (new_id t, case_nodes)
           ; text "}" ]
     | ELambda (_, {parameters; body}) ->
+        let param_nodes =
+          parameters
+          |> List.map (build_parameter t)
+          |> separated_nodes SpaceOrLine
+        in
         Nodes
           [ text "\\"
-          ; Nodes
-              (separated_nodes SpaceOrLine
-                 (List.map (fun p -> build_parameter t p) parameters) )
+          ; Nodes param_nodes
           ; SpaceOrLine
           ; text "->"
           ; Group (new_id t, [SpaceOrLine; Indent [build_expression t body]]) ]
@@ -476,9 +458,8 @@ module Builder = struct
     | UNot ->
         text "!"
 
-  and build_case t case =
-    let build_guard guard =
-      match guard with
+  and build_case t {pattern; guard; body; _} =
+    let build_guard = function
       | Some guard_expr ->
           Fill
             [SpaceOrLine; text "if"; SpaceOrLine; build_expression t guard_expr]
@@ -486,15 +467,14 @@ module Builder = struct
           Empty
     in
     Fill
-      [ build_pattern t case.pattern
-      ; build_guard case.guard
+      [ build_pattern t pattern
+      ; build_guard guard
       ; SpaceOrLine
       ; text "->"
-      ; Group (new_id t, [SpaceOrLine; Indent [build_expression t case.body]])
+      ; Group (new_id t, [SpaceOrLine; Indent [build_expression t body]])
       ; text ";" ]
 
-  and build_pattern t pat =
-    match pat with
+  and build_pattern t = function
     | PInt (_, str) ->
         text str
     | PFloat (_, str) ->
@@ -505,53 +485,51 @@ module Builder = struct
         boolean_string b
     | PLID (_, lid) ->
         text lid
-    | PTuple (_, patterns) -> (
-      match patterns with
-      | [pattern] ->
-          Nodes [text "("; build_pattern t pattern; text ",)"]
-      | _ ->
-          delimited_nodes t (text "(") (text ")")
-            (separated_nodes
-               (Nodes [text ","; SpaceOrLine])
-               (List.map (fun p -> build_pattern t p) patterns) ) )
+    | PTuple (_, [pattern]) ->
+        Nodes [text "("; build_pattern t pattern; text ",)"]
+    | PTuple (_, patterns) ->
+        patterns
+        |> List.map (build_pattern t)
+        |> separated_nodes (Nodes [text ","; SpaceOrLine])
+        |> delimited_nodes t (text "(") (text ")")
     | PList (_, patterns) ->
-        delimited_nodes t (text "[") (text "]")
-          (separated_nodes
-             (Nodes [text ","; SpaceOrLine])
-             (List.map (fun p -> build_pattern t p) patterns) )
+        patterns
+        |> List.map (build_pattern t)
+        |> separated_nodes (Nodes [text ","; SpaceOrLine])
+        |> delimited_nodes t (text "[") (text "]")
     | PListSpread (_, patterns) ->
         let regular_patterns = List.rev (List.tl (List.rev patterns)) in
         let spread_pattern = List.hd (List.rev patterns) in
-        delimited_nodes t (text "[") (text "]")
-          ( separated_nodes
-              (Nodes [text ","; SpaceOrLine])
-              (List.map (fun p -> build_pattern t p) regular_patterns)
-          @ [Nodes [SpaceOrLine; text "..."; build_pattern t spread_pattern]] )
+        let pattern_nodes =
+          regular_patterns
+          |> List.map (build_pattern t)
+          |> separated_nodes (Nodes [text ","; SpaceOrLine])
+        in
+        let spread_node =
+          Nodes [SpaceOrLine; text "..."; build_pattern t spread_pattern]
+        in
+        delimited_nodes t (text "[") (text "]") (pattern_nodes @ [spread_node])
     | PConstructor (_, {id; pattern}) ->
         Fill
           [ text id
-          ; ( match pattern with
-            | Some p ->
-                Fill [SpaceOrLine; build_pattern t p]
-            | None ->
-                Empty ) ]
+          ; Option.fold ~none:Empty
+              ~some:(fun p -> Fill [SpaceOrLine; build_pattern t p])
+              pattern ]
     | POr (_, {l; r}) ->
         Fill [build_pattern t l; text ";"; SpaceOrLine; build_pattern t r]
 
-  and build_variant t variant =
+  and build_variant t {id; typing; _} =
     Group
       ( new_id t
-      , [ text variant.id
-        ; ( match variant.typing with
-          | Some ty ->
-              Nodes [SpaceOrLine; text "as"; SpaceOrLine; build_typing t ty]
-          | None ->
-              Empty )
+      , [ text id
+        ; Option.fold ~none:Empty
+            ~some:(fun ty ->
+              Nodes [SpaceOrLine; text "as"; SpaceOrLine; build_typing t ty] )
+            typing
         ; text ";" ] )
 end
 
 let format program =
-  let build = Builder.create in
-  let node = Builder.build_program build program in
-  let gen = Generator.create in
-  Generator.generate gen node
+  program
+  |> Builder.build_program Builder.create
+  |> Generator.generate Generator.create
