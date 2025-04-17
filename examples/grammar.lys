@@ -29,7 +29,7 @@ def Shape := {
 
 `
   Parametric polymorphism is supported through type parameters.
-  The single lowercase ‘a’ is a type variable that can be any type.
+  The single lowercase “a” is a type variable that can be any type.
 `
 
 def Option := a {
@@ -38,7 +38,7 @@ def Option := a {
 }
 
 `
-  Constants are defined using ‘def’ and starts with a lowercase letter, camelCase is preferred.
+  Constants are defined using “def” and starts with a lowercase letter, camelCase is preferred.
   The type annotation is optional and can be inferred by the compiler.
   Basic types include Float, Int, String, Bool and Unit.
 `
@@ -66,7 +66,7 @@ Lorem ipsum dolor sit amet."
 
 `
   Functions can take multiple parameters using currying.
-  Type signatures are specified with the ‘->’ notation.
+  Type signatures are specified with the “->” notation.
   Tuples can be destructured directly in parameter position.
 `
 
@@ -76,8 +76,8 @@ def distance (x1, y1) (x2, y2) : Point -> Point -> Float =
 
 `
   Pattern matching allows handling different cases based on data structure.
-  Guard expressions can be added with ‘if’ to further refine patterns.
-  The wildcard ‘_’ matches any value.
+  Guard expressions can be added with “if” to further refine patterns.
+  The wildcard “_” matches any value.
 `
 
 def area shape : Shape -> Float =
@@ -95,11 +95,11 @@ def safeDivide x y : Int -> Float -> Option Float =
   if y == 0.0 then None else Some (x / y)
 
 `
-  Local bindings are defined using ‘let … in’ expressions.
-  The underscore ‘_’ as a function name indicates a top-level expression
+  Local bindings are defined using “let … in” expressions.
+  The underscore “_” as a function name indicates a top-level expression
   that will be evaluated at runtime but not exported.
 
-  Standard library functions include ‘map’ for list transformation.
+  Standard library functions include “map” for list transformation.
 `
 
 def _ =
@@ -111,7 +111,7 @@ def _ =
   in map printNumber [distance point1 point2, area circle, area rectangle]
 
 `
-  Lambda (anonymous) functions are defined with backslash syntax ‘\param1 p2 ... pn -> body’.
+  Lambda (anonymous) functions are defined with backslash syntax “\param1 p2 ... pn -> body”.
   List literals are created with square brackets.
 `
 
@@ -119,20 +119,20 @@ def mapped = map (\z -> 2 * 2) [1, 2, 3, 4]
 
 `
   The standard library includes common functional programming utilities
-  like ‘filter’ for selecting elements that satisfy a predicate.
+  like “filter” for selecting elements that satisfy a predicate.
 `
 
 def filtered = filter (\x -> x > 2) [1, 2, 3, 4]
 
 `
-  ‘foldLeft’ accumulates values from left to right with an initial value.
+  “foldLeft” accumulates values from left to right with an initial value.
   The accumulator comes first in the function parameter order.
 `
 
 def foldedLeft = foldLeft (\acc x -> acc + x) 0 [1, 2, 3, 4]
 
 `
-  ‘foldRight’ accumulates values from right to left.
+  “foldRight” accumulates values from right to left.
   Note the parameter order difference compared to foldLeft.
 `
 
@@ -140,7 +140,7 @@ def foldedRight = foldRight (\x acc -> x + acc) [1, 2, 3, 4] 0
 
 `
   Pattern matching on lists supports empty list and head/tail destructuring.
-  The ‘...’ syntax in patterns denotes the tail/rest of the list.
+  The “...” syntax in patterns denotes the tail/rest of the list.
   Recursive functions are naturally expressed through self-reference.
 `
 
@@ -150,7 +150,7 @@ def sum lst = match lst { [] -> 0; [hd ...tl] -> hd + sum tl; }
 
 `
   Recursive functions with termination conditions are a common pattern.
-  No explicit ‘rec’ keyword is needed for recursion.
+  No explicit “rec” keyword is needed for recursion.
 `
 
 def fib n : Int -> Int = if n <= 1 then n else fib (n - 1) + fib (n - 2)
