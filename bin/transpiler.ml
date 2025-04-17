@@ -26,7 +26,7 @@ let add_list sep f lst =
       f x
   | x :: xs ->
       f x ;
-      List.iter (fun y -> add sep ; f y) xs
+      List.iter (add sep ; f) xs
 
 let encode_lid str =
   match str with
@@ -258,8 +258,7 @@ and build_binary_operator op =
       add "<="
   | BConcatenate ->
       print_endline
-        "\027[31mERROR: The transpiler does not yet support the concatenation \
-         operator.\027[0m" ;
+        {|\027[31mERROR: The transpiler does not yet support the concatenation operator.\027[0m|} ;
       add "(* TODO: Waiting on type checker. *)"
   | BAdd ->
       add "+."
