@@ -4,15 +4,15 @@ SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.c
 SPDX-License-Identifier: CC-BY-SA-4.0
 -->
 
-# The Lys pipeline: from source code to executable program
+# The Lyx pipeline: from source code to executable program
 
-In this guide, we’ll walk through the complete pipeline that transforms high-level source code into a runnable program. We’ll cover each stage — from lexing and parsing to analysis and transpiling — explaining their roles and how they interconnect.
+In this guide, we’ll walk through the complete pipeline that transforms high-level source code into a runnable program. We’ll cover each stage — from lexing and parsing to analyxis and transpiling — explaining their roles and how they interconnect.
 
 ## 1. Lexing: transforming text into tokens
 
-The first stage in the pipeline is lexing. Think of this as the language’s “eye” that sees raw text and turns it into meaningful symbols. In Lys, the lexer is written in OCaml using the [sedlex](https://github.com/ocaml-community/sedlex) library.
+The first stage in the pipeline is lexing. Think of this as the language’s “eye” that sees raw text and turns it into meaningful symbols. In Lyx, the lexer is written in OCaml using the [sedlex](https://github.com/ocaml-community/sedlex) library.
 
-The raw source code file, like our [`grammar.lys`](https://github.com/lyslang/lys/blob/main/examples/grammar.lys) example, is fed as input to the lexer.
+The raw source code file, like our [`grammar.lyx`](https://github.com/lyxlang/lyx/blob/main/examples/grammar.lyx) example, is fed as input to the lexer.
 
 The lexer scans the text character by character using regular expressions to identify important elements such as keywords (`def`, `if`, `else`), operators (`+`, `-`, `**`), literals (numbers, strings), and identifiers.
 
@@ -24,9 +24,9 @@ By breaking down the code text into tokens, the lexer provides the raw ingredien
 
 ## 2. Parsing: building the Abstract Syntax Tree
 
-Once lexed, the stream of tokens is fed into the parser. The parser organizes these tokens into a structured format known as an Abstract Syntax Tree (AST). For Lys, the parser specification is written using Menhir, an OCaml parser generator.
+Once lexed, the stream of tokens is fed into the parser. The parser organizes these tokens into a structured format known as an Abstract Syntax Tree (AST). For Lyx, the parser specification is written using Menhir, an OCaml parser generator.
 
-The file [`menhir_parser.mly`](https://github.com/lyslang/lys/blob/main/lib/menhir_parser.mly) defines the grammar. Here, production rules describe how tokens combine to form constructs like declarations, expressions, function parameters, and type annotations.
+The file [`menhir_parser.mly`](https://github.com/lyxlang/lyx/blob/main/lib/menhir_parser.mly) defines the grammar. Here, production rules describe how tokens combine to form constructs like declarations, expressions, function parameters, and type annotations.
 
 Each parsing rule constructs a node in the AST. For example, a function declaration or a pattern match is represented by a corresponding AST node (like `Decl` or `EMatch`).
 
@@ -34,21 +34,21 @@ The resulting AST captures the hierarchical structure of your program. It distin
 
 The parser’s job is to ensure that your program is syntactically correct, providing a reliable intermediate representation for further stages.
 
-## 3. Analysis: adding meaning with semantic analysis and type checking
+## 3. Analyxis: adding meaning with semantic analyxis and type checking
 
-Even if the code is syntactically sound, it still needs to make sense logically. This is where analysis comes in. Lys performs several kinds of analysis to check the program’s logic and enforce language rules.
+Even if the code is syntactically sound, it still needs to make sense logically. This is where analyxis comes in. Lyx performs several kinds of analyxis to check the program’s logic and enforce language rules.
 
-But before that, the AST needs to be simplified for type checking to be easier, this is where desugaring comes in, see [`desugar.ml`](https://github.com/lyslang/lys/blob/main/lib/desugar.ml). It walks the AST and simplify the sugared syntax: for example, it transform lambdas of multiple parameters to multiple single-parameter lambdas chained together. In doing so, the AST becomes much easier for the coming analysis passes to handle.
+But before that, the AST needs to be simplified for type checking to be easier, this is where desugaring comes in, see [`desugar.ml`](https://github.com/lyxlang/lyx/blob/main/lib/desugar.ml). It walks the AST and simplify the sugared syntax: for example, it transform lambdas of multiple parameters to multiple single-parameter lambdas chained together. In doing so, the AST becomes much easier for the coming analyxis passes to handle.
 
-Other analysis passes are still under development.
+Other analyxis passes are still under development.
 
 ## 4. Transpiling: converting the AST to another language
 
-With a fully analyzed and semantically sound AST in place, Lys now needs to transform it into a target language, in our case OCaml. The transpiler does this transformation.
+With a fully analyzed and semantically sound AST in place, Lyx now needs to transform it into a target language, in our case OCaml. The transpiler does this transformation.
 
-The transpiler (see [`transpiler.ml`](https://github.com/lyslang/lys/blob/main/bin/transpiler.ml)) works with the validated AST nodes (produced from the parsing and analysis stages) as input.
+The transpiler (see [`transpiler.ml`](https://github.com/lyxlang/lyx/blob/main/bin/transpiler.ml)) works with the validated AST nodes (produced from the parsing and analyxis stages) as input.
 
-It walks over the AST and outputs equivalent OCaml code. For example, Lys’s `+` and `-` might be transpiled to OCaml’s `+.`, `-.` for floating-point operations.
+It walks over the AST and outputs equivalent OCaml code. For example, Lyx’s `+` and `-` might be transpiled to OCaml’s `+.`, `-.` for floating-point operations.
 
 For features that have no direct OCaml counterpart, the transpiler inserts pre-written OCaml functions to achieve the same functionality.
 
@@ -56,7 +56,7 @@ It outputs a neatly formatted OCaml source file that is then compiled by the OCa
 
 ## Wrapping it all up: the complete pipeline
 
-To summarize, here’s how the Lys pipeline transforms your code:
+To summarize, here’s how the Lyx pipeline transforms your code:
 
 1. Lexing:
 
@@ -68,7 +68,7 @@ To summarize, here’s how the Lys pipeline transforms your code:
    - Uses Menhir-defined grammar to convert tokens into an AST.
    - Constructs a structured representation capturing all language constructs.
 
-3. Analysis:
+3. Analyxis:
 
    - The AST is desugared to make it easier to work with.
    - The rest is still under development.

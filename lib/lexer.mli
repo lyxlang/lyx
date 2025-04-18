@@ -15,7 +15,7 @@ val lexer :
      Sedlexing.lexbuf
   -> unit
   -> Menhir_parser.token * Lexing.position * Lexing.position
-(** Creates a lexer function for tokenizing Lys source code. This lexer converts
+(** Creates a lexer function for tokenizing Lyx source code. This lexer converts
     the input text into a stream of tokens for the parser. It handles keywords,
     operators, literals, identifiers, and comments.
 

@@ -4,23 +4,23 @@ SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.c
 SPDX-License-Identifier: CC-BY-SA-4.0
 -->
 
-# Contributing to Lys
+# Contributing to Lyx
 
-Thank you for your interest in contributing to Lys! We welcome contributions from everyone. This document outlines the process for contributing to the project.
+Thank you for your interest in contributing to Lyx! We welcome contributions from everyone. This document outlines the process for contributing to the project.
 
 ## Setting up the development environment
 
-To contribute to Lys, you’ll need to set up an OCaml development environment. If you are using [nix-direnv](https://github.com/nix-community/nix-direnv), you can skip this section.
+To contribute to Lyx, you’ll need to set up an OCaml development environment. If you are using [nix-direnv](https://github.com/nix-community/nix-direnv), you can skip this section.
 
 Follow these steps:
 
 1. [Install](https://ocaml.org/docs/installing-ocaml) [OCaml](https://ocaml.org/) version 5.0.0 or later along side [opam](https://opam.ocaml.org/) (which is the preferred install method).
 
-2. Clone the Lys repository:
+2. Clone the Lyx repository:
 
    ```sh
-   git clone https://github.com/lyslang/lys.git
-   cd lys
+   git clone https://github.com/lyxlang/lyx.git
+   cd lyx
    ```
 
 3. Install project dependencies:
@@ -62,7 +62,7 @@ If you’re adding new features or making significant changes, please update the
 
 ## Testing
 
-Before submitting your changes, ensure the executable still runs as expected. It’s a good idea to add tests if you’re introducing new features or fixing a bug, helping to ensure the stability of Lys in the future.
+Before submitting your changes, ensure the executable still runs as expected. It’s a good idea to add tests if you’re introducing new features or fixing a bug, helping to ensure the stability of Lyx in the future.
 
 ## Licensing and REUSE compliance
 
@@ -76,15 +76,15 @@ If you’re unsure about which license to use or how to add it, please ask for g
 
 If you need help or have questions, you can:
 
-- Open an issue in the [GitHub repository](https://github.com/lyslang/lys/issues).
+- Open an issue in the [GitHub repository](https://github.com/lyxlang/lyx/issues).
 - Leave comments on existing issues or pull requests.
 - Reach out to the maintainers directly.
 
 ## Additional resources
 
-- [Lys wiki](https://github.com/lyslang/lys/wiki)
-- [VS Code extension](https://github.com/lyslang/vscode-lys)
+- [Lyx wiki](https://github.com/lyxlang/lyx/wiki)
+- [VS Code extension](https://github.com/lyxlang/vscode-lyx)
 - [OCaml documentation](https://ocaml.org/docs/)
 - [Dune documentation](https://dune.readthedocs.io/)
 
-We appreciate your contributions and are excited to see what you bring to Lys. Thank you for contributing!
+We appreciate your contributions and are excited to see what you bring to Lyx. Thank you for contributing!

@@ -2,12 +2,12 @@
 
 (using menhir 3.0)
 
-(name lys)
+(name lyx)
 
 (generate_opam_files)
 
 (source
- (github lyslang/lys))
+ (github lyxlang/lyx))
 
 (maintainers "Aljebriq <143266740+aljebriq@users.noreply.github.com>")
 
@@ -16,10 +16,10 @@
 (license GPL-3.0-only)
 
 (package
- (name lys)
- (synopsis "The Lys purely functional programming language")
+ (name lyx)
+ (synopsis "The Lyx purely functional programming language")
  (description
-  "Lys is a purely functional language with an elegant and practical syntax.")
+  "Lyx is a purely functional language with an elegant and practical syntax.")
  (depends
   (ocaml
    (>= 5))

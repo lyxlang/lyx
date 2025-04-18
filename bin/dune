@@ -4,5 +4,5 @@
 
 (executable
  (name main)
- (public_name lys)
- (libraries lys uuseg))
+ (public_name lyx)
+ (libraries lyx uuseg))

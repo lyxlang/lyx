@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-only
  *)
 
-open Lys
+open Lyx
 
 let parse ?(json = false) buf =
   try Parser.parse buf with
@@ -59,17 +59,17 @@ let print_usage () =
 ╭──────────────────────┬───────────────────────────────────────────────────╮
 │ Command              │ Description                                       │
 ├──────────────────────┼───────────────────────────────────────────────────┤
-│ lys                  │ Parse standard input and display the AST.         │
+│ lyx                  │ Parse standard input and display the AST.         │
 ├──────────────────────┼───────────────────────────────────────────────────┤
-│ lys <file>           │ Parse a file and display the AST.                 │
+│ lyx <file>           │ Parse a file and display the AST.                 │
 ├──────────────────────┼───────────────────────────────────────────────────┤
-│ lys fmt              │ Format standard input and output it.              │
+│ lyx fmt              │ Format standard input and output it.              │
 ├──────────────────────┼───────────────────────────────────────────────────┤
-│ lys fmt <file>       │ Format a file and overwrite it.                   │
+│ lyx fmt <file>       │ Format a file and overwrite it.                   │
 ├──────────────────────┼───────────────────────────────────────────────────┤
-│ lys transpile        │ Transpile standard input and output it.           │
+│ lyx transpile        │ Transpile standard input and output it.           │
 ├──────────────────────┼───────────────────────────────────────────────────┤
-│ lys transpile <file> │ Transpile a file and write its OCaml counterpart. │
+│ lyx transpile <file> │ Transpile a file and write its OCaml counterpart. │
 ╰──────────────────────┴───────────────────────────────────────────────────╯|} ;
   exit 1
 

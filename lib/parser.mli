@@ -14,7 +14,7 @@
 exception Syntax_error of int * string * Lexing.position * Lexing.position
 
 val parse : Sedlexing.lexbuf -> Ast.program
-(** Parses a Lys source file into an AST representation. Uses incremental
+(** Parses a Lyx source file into an AST representation. Uses incremental
     parsing with Menhir and handles error reporting.
 
     @param lexbuf The lexing buffer containing the source code to parse.

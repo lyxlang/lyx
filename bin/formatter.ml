@@ -161,7 +161,7 @@ module Generator = struct
 end
 
 module Builder = struct
-  open Lys.Ast
+  open Lyx.Ast
   open Node
 
   type t = {mutable id: int}

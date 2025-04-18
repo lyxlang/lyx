@@ -6,14 +6,14 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 
 # Installation on NixOS
 
-Add the Lys input and inherit `inputs` in your `flake.nix` configuration for your system and for [Home Manager](https://nix-community.github.io/home-manager/) if you have it:
+Add the Lyx input and inherit `inputs` in your `flake.nix` configuration for your system and for [Home Manager](https://nix-community.github.io/home-manager/) if you have it:
 
 ```nix
 {
   inputs = {
     …
-    lys = {
-      url = "github:lyslang/lys";
+    lyx = {
+      url = "github:lyxlang/lyx";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -43,7 +43,7 @@ Add the Lys input and inherit `inputs` in your `flake.nix` configuration for you
 }
 ```
 
-You can then install Lys as a system package:
+You can then install Lyx as a system package:
 
 ```nix
 { …, pkgs, inputs, ... }:
@@ -51,7 +51,7 @@ You can then install Lys as a system package:
 {
   environment.systemPackages = with pkgs; [
     …
-    inputs.lys.packages.${system}.lys
+    inputs.lyx.packages.${system}.lyx
   ];
 }
 ```
@@ -64,7 +64,7 @@ Or as a user package with [Home Manager](https://nix-community.github.io/home-ma
 {
   home.packages = with pkgs; [
     …
-    inputs.lys.packages.${system}.lys
+    inputs.lyx.packages.${system}.lyx
   ];
 }
 ```

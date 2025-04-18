@@ -40,17 +40,17 @@ jobs:
             display-name: Ubuntu
             ocaml-version: 5.3.0
             ocaml-compiler: ocaml-variants.5.3.0+options,ocaml-option-flambda
-            artifact: lys-x86_64-linux
+            artifact: lyx-x86_64-linux
           - os: macos-latest
             display-name: macOS
             ocaml-version: 5.3.0
             ocaml-compiler: ocaml-variants.5.3.0+options,ocaml-option-flambda
-            artifact: lys-arm64-darwin
+            artifact: lyx-arm64-darwin
           - os: windows-latest
             display-name: Windows
             ocaml-version: 5.3.0
             ocaml-compiler: ocaml-variants.5.3.0+options,ocaml-option-flambda
-            artifact: lys-x86_64-windows
+            artifact: lyx-x86_64-windows
 
     runs-on: ${{ matrix.os }}
     name: Build with OCaml ${{ matrix.ocaml-version }} on ${{ matrix.display-name }}

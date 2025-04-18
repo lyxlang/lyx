@@ -11,14 +11,14 @@ You will need to have [OCaml](https://ocaml.org/) version 5.0.0 or later [instal
 You will then be able to run the following commands:
 
 ```sh
-git clone https://github.com/lyslang/lys.git
-cd lys
+git clone https://github.com/lyxlang/lyx.git
+cd lyx
 opam install --deps-only .
-dune exec lys -- …
+dune exec lyx -- …
 ```
 
 You can also just use [Nix](https://nixos.org/) without the above requirements:
 
 ```sh
-nix run github:lyslang/lys …
+nix run github:lyxlang/lyx …
 ```

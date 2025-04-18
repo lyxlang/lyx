@@ -6,15 +6,12 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 
 <div align="center">
   <br />
-  <picture>
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/lyslang/.github/main/media/brand-dark.png">
-    <img src="https://raw.githubusercontent.com/lyslang/.github/main/media/brand-light.png" alt="Lys" width="400">
-  </picture>
+  <img src="https://raw.githubusercontent.com/lyxlang/.github/main/media/brand.png" alt="Lyx" width="400">
   <p align="center">
     <br />
-    The Lys purely functional programming language.
+    The Lyx purely functional programming language.
     <br />
-    <a href="https://github.com/lyslang/vscode-lys">VS Code Extension</a> •
+    <a href="https://github.com/lyxlang/vscode-lyx">VS Code Extension</a> •
     <a href="#usage">Usage</a> •
     <a href="#installation">Installation</a> •
     <a href="#contributing">Contributing</a> •
@@ -43,7 +40,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 
 #### Summation
 
-```lys
+```lyx
 def sum lst =
   match lst {
     [] -> 0;
@@ -53,31 +50,31 @@ def sum lst =
 
 #### Fibonacci
 
-```lys
+```lyx
 def fib n : Int -> Int =
   if n <= 1 then n else fib (n - 1) + fib (n - 2)
 ```
 
 #### Grammar
 
-For a detailed presentation of the Lys syntax and features, please have a look at [our sample grammar file](https://github.com/lyslang/lys/blob/main/examples/grammar.lys).
+For a detailed presentation of the Lyx syntax and features, please have a look at [our sample grammar file](https://github.com/lyxlang/lyx/blob/main/examples/grammar.lyx).
 
 ## Usage
 
-You can skip installation when [running from source](https://github.com/lyslang/lys/wiki/Running-from-source).
+You can skip installation when [running from source](https://github.com/lyxlang/lyx/wiki/Running-from-source).
 
-The expected file extension of the Lys programming language is `.lys`.
+The expected file extension of the Lyx programming language is `.lyx`.
 
 Following [docopt](http://docopt.org/) conventions:
 
 | Command                | Description                                       |
 | :--------------------- | :------------------------------------------------ |
-| `lys`                  | Parse standard input and display the AST.         |
-| `lys <file>`           | Parse a file and display the AST.                 |
-| `lys fmt`              | Format standard input and output it.              |
-| `lys fmt <file>`       | Format a file and overwrite it.                   |
-| `lys transpile`        | Transpile standard input and output it.           |
-| `lys transpile <file>` | Transpile a file and write its OCaml counterpart. |
+| `lyx`                  | Parse standard input and display the AST.         |
+| `lyx <file>`           | Parse a file and display the AST.                 |
+| `lyx fmt`              | Format standard input and output it.              |
+| `lyx fmt <file>`       | Format a file and overwrite it.                   |
+| `lyx transpile`        | Transpile standard input and output it.           |
+| `lyx transpile <file>` | Transpile a file and write its OCaml counterpart. |
 
 You can run transpiled files using:
 
@@ -87,19 +84,19 @@ ocaml <file.ml>
 
 ## Installation
 
-If you are using [NixOS](https://nixos.org/), please follow [these steps](https://github.com/lyslang/lys/wiki/Installation-on-NixOS).
+If you are using [NixOS](https://nixos.org/), please follow [these steps](https://github.com/lyxlang/lyx/wiki/Installation-on-NixOS).
 
-Or, download [the latest executable](https://github.com/lyslang/lys/releases/latest) for your system and [add it to your PATH](https://github.com/lyslang/lys/wiki/Adding-Lys-to-the-PATH).
+Or, download [the latest executable](https://github.com/lyxlang/lyx/releases/latest) for your system and [add it to your PATH](https://github.com/lyxlang/lyx/wiki/Adding-Lyx-to-the-PATH).
 
 On Unix-like operating systems, you will then need to run the following command:
 
 ```sh
-chmod +x /path/to/lys/executable
+chmod +x /path/to/lyx/executable
 ```
 
 ## Contributing
 
-We welcome contributions to Lys! If you’re interested in helping improve the language, fix bugs, or add new features, please check out our [contributing guide](https://github.com/lyslang/lys/blob/main/docs/CONTRIBUTING.md) for detailed information on how to get started, set up your development environment, and submit your contributions.
+We welcome contributions to Lyx! If you’re interested in helping improve the language, fix bugs, or add new features, please check out our [contributing guide](https://github.com/lyxlang/lyx/blob/main/docs/CONTRIBUTING.md) for detailed information on how to get started, set up your development environment, and submit your contributions.
 
 Key areas where you can contribute include:
 

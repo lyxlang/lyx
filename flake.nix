@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 
 {
-  description = "The Lys purely functional programming language";
+  description = "The Lyx purely functional programming language";
 
   inputs = {
     nixpkgs.url = "github:nix-ocaml/nix-overlays";
@@ -26,9 +26,9 @@
     in
     rec {
       packages = forAllSystems (pkgs: rec {
-        default = lys;
-        lys = pkgs.ocamlPackages.buildDunePackage rec {
-          pname = "lys";
+        default = lyx;
+        lyx = pkgs.ocamlPackages.buildDunePackage rec {
+          pname = "lyx";
           version = "0.0.0";
           src = self;
           strictDeps = false;
@@ -57,8 +57,8 @@
             runHook postInstall
           '';
           meta = {
-            description = "The Lys purely functional programming language";
-            homepage = "https://github.com/lyslang/lys";
+            description = "The Lyx purely functional programming language";
+            homepage = "https://github.com/lyxlang/lyx";
             license = with pkgs.lib.licenses; [
               gpl3Only
               cc-by-sa-40
