@@ -21,10 +21,8 @@ and desugar_binding binding =
   {binding with body= desugar_expression binding.body}
 
 and desugar_function_definition span {id; parameters; signature; body} =
-  let binding =
-    {span; id; signature; body= desugar_lambda span parameters body}
-  in
-  DValueBinding (span, binding)
+  DValueBinding
+    (span, {span; id; signature; body= desugar_lambda span parameters body})
 
 and desugar_lambda span parameters body =
   match parameters with
