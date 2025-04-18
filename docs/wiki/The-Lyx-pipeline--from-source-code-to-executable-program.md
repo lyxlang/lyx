@@ -6,7 +6,7 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 
 # The Lyx pipeline: from source code to executable program
 
-In this guide, we’ll walk through the complete pipeline that transforms high-level source code into a runnable program. We’ll cover each stage — from lexing and parsing to analyxis and transpiling — explaining their roles and how they interconnect.
+In this guide, we’ll walk through the complete pipeline that transforms high-level source code into a runnable program. We’ll cover each stage — from lexing and parsing to analysis and transpiling — explaining their roles and how they interconnect.
 
 ## 1. Lexing: transforming text into tokens
 
@@ -34,19 +34,19 @@ The resulting AST captures the hierarchical structure of your program. It distin
 
 The parser’s job is to ensure that your program is syntactically correct, providing a reliable intermediate representation for further stages.
 
-## 3. Analyxis: adding meaning with semantic analyxis and type checking
+## 3. Semantic analysis: adding meaning with usage analysis and type checking
 
-Even if the code is syntactically sound, it still needs to make sense logically. This is where analyxis comes in. Lyx performs several kinds of analyxis to check the program’s logic and enforce language rules.
+Even if the code is syntactically sound, it still needs to make sense logically. This is where analysis comes in. Lyx performs several kinds of analysis to check the program’s logic and enforce language rules.
 
-But before that, the AST needs to be simplified for type checking to be easier, this is where desugaring comes in, see [`desugar.ml`](https://github.com/lyxlang/lyx/blob/main/lib/desugar.ml). It walks the AST and simplify the sugared syntax: for example, it transform lambdas of multiple parameters to multiple single-parameter lambdas chained together. In doing so, the AST becomes much easier for the coming analyxis passes to handle.
+The AST first needs to be simplified, this is where desugaring comes in, see [`desugar.ml`](https://github.com/lyxlang/lyx/blob/main/lib/desugar.ml). It walks the AST and simplify the sugared syntax: for example, it transform lambdas of multiple parameters to multiple single-parameter lambdas chained together. In doing so, the AST becomes much easier for the coming analysis passes to handle.
 
-Other analyxis passes are still under development.
+Next up comes usage analysis, see [`usage_analysis.ml`](https://github.com/lyxlang/lyx/blob/main/lib/usage_analysis.ml). It again walks the AST, and for now only flags undefined identifiers as errors.
 
 ## 4. Transpiling: converting the AST to another language
 
 With a fully analyzed and semantically sound AST in place, Lyx now needs to transform it into a target language, in our case OCaml. The transpiler does this transformation.
 
-The transpiler (see [`transpiler.ml`](https://github.com/lyxlang/lyx/blob/main/bin/transpiler.ml)) works with the validated AST nodes (produced from the parsing and analyxis stages) as input.
+The transpiler (see [`transpiler.ml`](https://github.com/lyxlang/lyx/blob/main/bin/transpiler.ml)) works with the validated AST nodes (produced from the parsing and analysis stages) as input.
 
 It walks over the AST and outputs equivalent OCaml code. For example, Lyx’s `+` and `-` might be transpiled to OCaml’s `+.`, `-.` for floating-point operations.
 
@@ -68,10 +68,10 @@ To summarize, here’s how the Lyx pipeline transforms your code:
    - Uses Menhir-defined grammar to convert tokens into an AST.
    - Constructs a structured representation capturing all language constructs.
 
-3. Analyxis:
+3. Analysis:
 
    - The AST is desugared to make it easier to work with.
-   - The rest is still under development.
+   - Undefined identifiers are flagged as errors using usage analysis.
 
 4. Transpiling:
 
