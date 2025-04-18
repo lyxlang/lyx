@@ -18,7 +18,7 @@ let parse ?(json = false) buf =
       exit code
 
 let analyze ?(json = false) program =
-  try Usage_analysis.analyze_program program
+  try Usage_analysis.analyze_program program ~json
   with Usage_analysis.Output.Analysis_error errors ->
     List.iter
       (fun e ->

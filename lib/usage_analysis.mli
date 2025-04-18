@@ -16,4 +16,4 @@ module Output : sig
   val span_of_error : error -> Ast.span
 end
 
-val analyze_program : Ast.declaration list -> Ast.declaration list
+val analyze_program : ?json:bool -> Ast.declaration list -> Ast.declaration list

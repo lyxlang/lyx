@@ -53,11 +53,18 @@ end
 module Output = struct
   type error = Undefined of {name: string; span: span}
 
+  type[@warning "-37"] warning = Unused of {name: string; span: span}
+
+  type t = {mutable errors: error list; mutable warnings: warning list}
+
   exception Analysis_error of error list
 
-  let errors : error list ref = ref []
+  let output = {errors= []; warnings= []}
 
-  let add_error error = errors := !errors @ [error]
+  let add_error error = output.errors <- output.errors @ [error]
+
+  let[@warning "-32"] add_warning warning =
+    output.warnings <- output.warnings @ [warning]
 
   let code_of_error = function Undefined _ -> 1001
 
@@ -67,12 +74,29 @@ module Output = struct
 
   let span_of_error = function Undefined {span; _} -> span
 
-  let raise_errors () = if !errors <> [] then raise (Analysis_error !errors)
+  let code_of_warning = function Unused _ -> 1001
+
+  let string_of_warning = function
+    | Unused {name; _} ->
+        Printf.sprintf "Unused identifier: \u{201C}%s\u{201D}." name
+
+  let span_of_warning = function Unused {span; _} -> span
+
+  let raise_errors () =
+    if output.errors <> [] then raise (Analysis_error output.errors)
+
+  let report_warnings json =
+    List.iter
+      (fun w ->
+        Reporter.create_report Reporter.Warning (code_of_warning w)
+          (string_of_warning w) (span_of_warning w) ~json )
+      output.warnings
 end
 
-let rec analyze_program program =
+let rec analyze_program ?(json = false) program =
   List.iter (analyze_declaration Env.root) program ;
   Output.raise_errors () ;
+  Output.report_warnings json ;
   program
 
 and analyze_declaration env = function
