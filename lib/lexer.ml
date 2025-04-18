@@ -40,7 +40,7 @@ let string buf =
   aux buf
 
 let comment buf =
-  let buffer = Buffer.create 160 in
+  let buffer = Buffer.create 64 in
   let rec aux buf =
     match%sedlex buf with
     | Compl '`' ->

@@ -63,7 +63,7 @@ module Generator = struct
     ; mutable pending_indents: int }
 
   let create =
-    { buffer= Buffer.create 1024
+    { buffer= Buffer.create 4096
     ; depth= 0
     ; size= 0
     ; wrapped= IntSet.empty

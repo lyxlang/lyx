@@ -10,7 +10,7 @@ let first_type = ref true
 
 let first_bind = ref true
 
-let buffer = Buffer.create 1024
+let buffer = Buffer.create 4096
 
 let add s = Buffer.add_string buffer s
 
