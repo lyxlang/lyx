@@ -18,8 +18,7 @@ let add_space () = Buffer.add_char buffer ' '
 
 let add_newline () = Buffer.add_char buffer '\n'
 
-let add_list sep f lst =
-  match lst with
+let add_list sep f = function
   | [] ->
       ()
   | [x] ->
@@ -28,8 +27,7 @@ let add_list sep f lst =
       f x ;
       List.iter (add sep ; f) xs
 
-let encode_lid str =
-  match str with
+let encode_lid = function
   | "sqrt" ->
       "Float.sqrt"
   | "\u{03C0}" ->
@@ -46,22 +44,20 @@ let encode_lid str =
       "print_endline"
   | "printNumber" ->
       {|(Format.printf "%f@.")|}
-  | _ ->
-      "l" ^ string_of_int (String.hash str)
+  | lid ->
+      "l" ^ string_of_int (String.hash lid)
 
 let encode_uid str = "U" ^ string_of_int (String.hash str)
 
 let scoped content = add "(" ; content () ; add ")"
 
-let is_type_decl decl =
-  match decl with
+let is_type_decl = function
   | DComment _ | DValueBinding _ | DFunctionDefinition _ ->
       false
   | DTypeDefinition _ | DADTDefinition _ ->
       true
 
-let is_entry_point decl =
-  match decl with
+let is_entry_point = function
   | DValueBinding (_, {id; _}) ->
       id = "_"
   | DComment _ | DFunctionDefinition _ | DTypeDefinition _ | DADTDefinition _ ->
@@ -79,8 +75,7 @@ let rec build_program decls =
   List.iter (fun d -> build_declaration d ; add_newline ()) ordered ;
   Buffer.contents buffer
 
-and build_declaration declaration =
-  match declaration with
+and build_declaration = function
   | DComment _ ->
       ()
   | DValueBinding (_, {id; body; _}) ->
@@ -126,15 +121,13 @@ and build_declaration declaration =
       add_space () ;
       add_list " " build_variant variants
 
-and build_parameter parameter =
-  match parameter with
+and build_parameter = function
   | ALID (_, str) ->
       add @@ encode_lid str
   | ATuple (_, tuple_param) ->
       scoped (fun () -> add_list "," build_parameter tuple_param)
 
-and build_typing typing =
-  match typing with
+and build_typing = function
   | TInt _ ->
       add "float"
   | TFloat _ ->
@@ -154,16 +147,11 @@ and build_typing typing =
   | TPolymorphic (_, p) ->
       add "'" ;
       add @@ encode_lid p
-  | TConstructor (_, {id; typing}) -> (
+  | TConstructor (_, {id; typing}) ->
       add @@ encode_lid id ;
-      match typing with
-      | Some t ->
-          add_space () ; add "of" ; add_space () ; build_typing t
-      | None ->
-          () )
+      Option.iter (add_space () ; add "of" ; add_space () ; build_typing) typing
 
-and build_expression expr =
-  match expr with
+and build_expression = function
   | EExpression (_, {body; signature= _}) ->
       scoped (fun () -> build_expression body)
   | EInt (_, str) ->
@@ -178,9 +166,9 @@ and build_expression expr =
       add "\""
   | EUnit _ ->
       add "()"
-  | EConstructor (_, {id; body}) -> (
+  | EConstructor (_, {id; body}) ->
       add @@ encode_uid id ;
-      match body with None -> () | Some b -> add_space () ; build_expression b )
+      Option.iter (add_space () ; build_expression) body
   | ELID (_, id) ->
       add @@ encode_lid id
   | ETuple (_, exprs) ->
@@ -189,10 +177,10 @@ and build_expression expr =
       add "[" ;
       add_list ";" build_expression exprs ;
       add "]"
-  | EBinaryOperation (_, {l; operator; r}) ->
+  | EBinaryOperation (span, {l; operator; r}) ->
       build_expression l ;
       add_space () ;
-      build_binary_operator operator ;
+      build_binary_operator span operator ;
       add_space () ;
       build_expression r
   | EUnaryOperation (_, {operator; body}) ->
@@ -224,7 +212,7 @@ and build_expression expr =
       add_space () ;
       add_list " " build_case cases
   | ELambda _ ->
-      failwith "Lambdas should be desugared before transpiling."
+      failwith "Lambda expressions should be desugared before transpiling."
   | EDesugaredLambda (_, {parameter; body}) ->
       add "fun" ;
       add_space () ;
@@ -236,8 +224,7 @@ and build_expression expr =
   | EApplication (_, {body; argument}) ->
       build_expression body ; add_space () ; build_expression argument
 
-and build_binary_operator op =
-  match op with
+and build_binary_operator span = function
   | BPipe ->
       add "|>"
   | BOr ->
@@ -257,9 +244,9 @@ and build_binary_operator op =
   | BLessOrEqual ->
       add "<="
   | BConcatenate ->
-      print_endline
-        {|\027[31mERROR: The transpiler does not yet support the concatenation operator.\027[0m|} ;
-      add "(* TODO: Waiting on type checker. *)"
+      Lyx.Reporter.create_report Lyx.Reporter.Error 1000
+        "The transpiler does not yet support the concatenation operator." span ;
+      add "(* ++ *)"
   | BAdd ->
       add "+."
   | BSubstract ->
@@ -273,34 +260,39 @@ and build_binary_operator op =
   | BExponentiate ->
       add "**"
 
-and build_unary_operator op =
-  match op with UPlus -> add "+." | UMinus -> add "-." | UNot -> add "not"
+and build_unary_operator = function
+  | UPlus ->
+      add "+."
+  | UMinus ->
+      add "-."
+  | UNot ->
+      add "not"
 
-and build_binding binding =
+and build_binding {id; body; _} =
   add "let" ;
   add_space () ;
-  add @@ encode_lid binding.id ;
+  add @@ encode_lid id ;
   add_space () ;
   add "=" ;
   add_space () ;
-  build_expression binding.body ;
+  build_expression body ;
   add_space () ;
   add "in" ;
   add_space ()
 
-and build_case case =
+and build_case {pattern; guard; body; _} =
   add "|" ;
   add_space () ;
-  build_pattern case.pattern ;
-  ( match case.guard with
-  | Some guard ->
-      add_space () ; add "when" ; add_space () ; build_expression guard
-  | None ->
-      () ) ;
-  add_space () ; add "->" ; add_space () ; build_expression case.body
+  build_pattern pattern ;
+  Option.iter
+    (add_space () ; add "when" ; add_space () ; build_expression)
+    guard ;
+  add_space () ;
+  add "->" ;
+  add_space () ;
+  build_expression body
 
-and build_pattern pat =
-  match pat with
+and build_pattern = function
   | PInt (_, str) ->
       float_of_string str |> string_of_float |> add
   | PFloat (_, str) ->
@@ -321,18 +313,14 @@ and build_pattern pat =
       add "]"
   | PListSpread (_, pats) ->
       add_list "::" build_pattern pats
-  | PConstructor (_, {id; pattern}) -> (
+  | PConstructor (_, {id; pattern}) ->
       add @@ encode_uid id ;
-      match pattern with Some p -> add_space () ; build_pattern p | None -> () )
+      Option.iter (add_space () ; build_pattern) pattern
   | POr (_, {l; r}) ->
       build_pattern l ; add_space () ; add "|" ; add_space () ; build_pattern r
 
-and build_variant variant =
+and build_variant {id; typing; _} =
   add "|" ;
   add_space () ;
-  add @@ encode_uid variant.id ;
-  match variant.typing with
-  | Some t ->
-      add_space () ; add "of" ; add_space () ; build_typing t
-  | None ->
-      ()
+  add @@ encode_uid id ;
+  Option.iter (add_space () ; add "of" ; add_space () ; build_typing) typing
