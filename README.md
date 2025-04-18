@@ -11,7 +11,6 @@ SPDX-License-Identifier: CC-BY-SA-4.0
     <img src="https://raw.githubusercontent.com/lyxlang/.github/main/media/brand-light.png" alt="Lyx" width="400">
   </picture>
   <p align="center">
-    <br />
     The Lyx purely functional programming language.
     <br />
     <a href="https://github.com/lyxlang/vscode-lyx">VS Code Extension</a> •
