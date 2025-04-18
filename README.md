@@ -32,9 +32,6 @@ SPDX-License-Identifier: CC-BY-SA-4.0
   - Concise
   - Elegant
   - Seamless currying support
-- Type infered (WIP)
-  - Robust
-  - Fast
 - VS Code language support
   - Syntax highlighting
   - Formatting
