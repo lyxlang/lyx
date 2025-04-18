@@ -1,1 +1,5 @@
-https://github.com/lokasku/misc/tree/main/descartes
+SPDX-FileCopyrightText: 2025 Łukasz Bartkiewicz <lukasku@proton.me>
+
+SPDX-License-Identifier: GPL-3.0-only
+
+https://github.com/lokasku/misc/tree/6c2469603799bb126575383e4bb4c25760b401a5/descartes

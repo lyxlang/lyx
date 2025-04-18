@@ -5,5 +5,4 @@
 (executable
  (name main)
  (public_name lys)
- (libraries lys uuseg)
- (modes native))
+ (libraries lys uuseg))
