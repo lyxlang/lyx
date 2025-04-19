@@ -7,9 +7,8 @@
 (** Exception raised when a lexing error is encountered during tokenization.
     Contains the positions where the error occurred in the source text.
 
-    @param start The position where the lexical error begins.
-    @param fin The position where the lexical error ends. *)
-exception Lexing_error of Lexing.position * Lexing.position
+    @param span The start and end position of the lexical error. *)
+exception Lexing_error of (Lexing.position * Lexing.position)
 
 val lexer :
      Sedlexing.lexbuf

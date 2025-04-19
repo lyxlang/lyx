@@ -6,6 +6,77 @@
 
 open Ast
 
+module Output = struct
+  type error =
+    | Undefined of {name: string; span: span}
+    | Reserved of {name: string; span: span}
+    | Duplicate of {name: string; span: span}
+
+  type[@warning "-37"] warning = Unused of {name: string; span: span}
+
+  type t = {mutable errors: error list; mutable warnings: warning list}
+
+  exception Analysis_error of Reporter.report list
+
+  let output = {errors= []; warnings= []}
+
+  let add_error error = output.errors <- output.errors @ [error]
+
+  let[@warning "-32"] add_warning warning =
+    output.warnings <- output.warnings @ [warning]
+
+  let code_of_error = function
+    | Undefined _ ->
+        1001
+    | Reserved _ ->
+        1002
+    | Duplicate _ ->
+        1003
+
+  let string_of_error = function
+    | Undefined {name; _} ->
+        Printf.sprintf "Undefined identifier: \u{201C}%s\u{201D}." name
+    | Reserved {name; _} ->
+        Printf.sprintf "Reserved identifier: \u{201C}%s\u{201D}." name
+    | Duplicate {name; _} ->
+        Printf.sprintf "Duplicate identifier: \u{201C}%s\u{201D}." name
+
+  let span_of_error = function
+    | Undefined {span; _} ->
+        span
+    | Reserved {span; _} ->
+        span
+    | Duplicate {span; _} ->
+        span
+
+  let code_of_warning = function Unused _ -> 1001
+
+  let string_of_warning = function
+    | Unused {name; _} ->
+        Printf.sprintf "Unused identifier: \u{201C}%s\u{201D}." name
+
+  let span_of_warning = function Unused {span; _} -> span
+
+  let raise_errors () =
+    if output.errors <> [] then
+      raise
+        (Analysis_error
+           (List.map
+              (fun error ->
+                Reporter.create_report Reporter.Error (code_of_error error)
+                  (string_of_error error) (span_of_error error) )
+              output.errors ) )
+
+  let report_warnings json =
+    Reporter.print_reports ~json
+      (List.map
+         (fun warning ->
+           Reporter.create_report Reporter.Warning (code_of_warning warning)
+             (string_of_warning warning)
+             (span_of_warning warning) )
+         output.warnings )
+end
+
 module Env = struct
   type t =
     { values: (string, span) Hashtbl.t
@@ -17,19 +88,45 @@ module Env = struct
     ; types= Hashtbl.copy types
     ; variants= Hashtbl.copy variants }
 
-  let add_value env = Hashtbl.replace env.values
+  let std_types = ["Int"; "Float"; "String"; "Bool"; "Unit"]
 
-  let add_type env = Hashtbl.replace env.types
+  let std_lib =
+    [ "sqrt"
+    ; "\u{03C0}"
+    ; "map"
+    ; "filter"
+    ; "foldLeft"
+    ; "foldRight"
+    ; "printString"
+    ; "printNumber" ]
 
-  let add_variant (env : t) = Hashtbl.replace env.variants
+  let values env = env.values
 
   let value_exists env = Hashtbl.mem env.values
 
   let type_exists env name =
-    Hashtbl.mem env.types name
-    || List.mem name ["Int"; "Float"; "String"; "Bool"; "Unit"]
+    Hashtbl.mem env.types name || List.mem name std_types
 
   let variant_exists (env : t) = Hashtbl.mem env.variants
+
+  let add_value env name span =
+    if (not (String.starts_with ~prefix:"_" name)) && value_exists env name then
+      Output.add_error (Output.Duplicate {name; span}) ;
+    if List.mem name std_lib then Output.add_error (Output.Reserved {name; span})
+    else Hashtbl.replace env.values name span
+
+  let add_type env name span =
+    if type_exists env name then Output.add_error (Output.Duplicate {name; span}) ;
+    if List.mem name std_types then
+      Output.add_error (Output.Reserved {name; span})
+    else Hashtbl.replace env.types name span
+
+  let add_variant env name span =
+    if variant_exists env name then
+      Output.add_error (Output.Duplicate {name; span}) ;
+    if List.mem name std_types then
+      Output.add_error (Output.Reserved {name; span})
+    else Hashtbl.replace env.variants name span
 
   let root =
     let env =
@@ -38,89 +135,53 @@ module Env = struct
       ; variants= Hashtbl.create 100 }
     in
     List.iter
-      (fun name -> add_value env name (Lexing.dummy_pos, Lexing.dummy_pos))
-      [ "sqrt"
-      ; "\u{03C0}"
-      ; "map"
-      ; "filter"
-      ; "foldLeft"
-      ; "foldRight"
-      ; "printString"
-      ; "printNumber" ] ;
+      (fun name ->
+        Hashtbl.replace env.values name (Lexing.dummy_pos, Lexing.dummy_pos) )
+      std_lib ;
     env
 end
 
-module Output = struct
-  type error = Undefined of {name: string; span: span}
-
-  type[@warning "-37"] warning = Unused of {name: string; span: span}
-
-  type t = {mutable errors: error list; mutable warnings: warning list}
-
-  exception Analysis_error of error list
-
-  let output = {errors= []; warnings= []}
-
-  let add_error error = output.errors <- output.errors @ [error]
-
-  let[@warning "-32"] add_warning warning =
-    output.warnings <- output.warnings @ [warning]
-
-  let code_of_error = function Undefined _ -> 1001
-
-  let string_of_error = function
-    | Undefined {name; _} ->
-        Printf.sprintf "Undefined identifier: \u{201C}%s\u{201D}." name
-
-  let span_of_error = function Undefined {span; _} -> span
-
-  let code_of_warning = function Unused _ -> 1001
-
-  let string_of_warning = function
-    | Unused {name; _} ->
-        Printf.sprintf "Unused identifier: \u{201C}%s\u{201D}." name
-
-  let span_of_warning = function Unused {span; _} -> span
-
-  let raise_errors () =
-    if output.errors <> [] then raise (Analysis_error output.errors)
-
-  let report_warnings json =
-    List.iter
-      (fun w ->
-        Reporter.create_report Reporter.Warning (code_of_warning w)
-          (string_of_warning w) (span_of_warning w) ~json )
-      output.warnings
-end
-
 let rec analyze_program ?(json = false) program =
+  List.iter (hoist_declaration Env.root) program ;
   List.iter (analyze_declaration Env.root) program ;
   Output.raise_errors () ;
   Output.report_warnings json ;
   program
 
-and analyze_declaration env = function
+and hoist_declaration env = function
   | DComment _ ->
       ()
-  | DValueBinding (span, {id; signature; body; _}) ->
-      Env.add_value env id span ;
-      Option.iter (analyze_typing env) signature ;
-      analyze_expression env body
-  | DTypeDefinition (span, {id; body}) ->
-      Env.add_type env id span ; analyze_typing env body
-  | DADTDefinition (span, {id; polymorphics; variants}) ->
+  | DValueBinding (span, {id; _}) ->
+      Env.add_value env id span
+  | DTypeDefinition (span, {id; _}) ->
+      Env.add_type env id span
+  | DADTDefinition (span, {id; variants; _}) ->
       Env.add_type env id span ;
-      let adt_env = Env.scope env in
-      List.iter (fun p -> Env.add_type adt_env p span) polymorphics ;
       List.iter
-        (fun ({span; id; typing} : variant) ->
-          Env.add_variant env id span ;
-          Option.iter (analyze_typing adt_env ~inADT:true) typing )
+        (fun ({span; id; _} : variant) -> Env.add_variant env id span)
         variants
   | DFunctionDefinition _ ->
       failwith "Function definitions should be desugared before analysis."
 
-and analyze_typing ?(inADT = false) env = function
+and analyze_declaration env = function
+  | DComment _ ->
+      ()
+  | DValueBinding (_, {signature; body; _}) ->
+      Option.iter (analyze_typing env) signature ;
+      analyze_expression env body
+  | DTypeDefinition (_, {body; _}) ->
+      analyze_typing env body
+  | DADTDefinition (span, {polymorphics; variants; _}) ->
+      let adt_env = Env.scope env in
+      List.iter (fun p -> Env.add_type adt_env p span) polymorphics ;
+      List.iter
+        (fun ({typing; _} : variant) ->
+          Option.iter (analyze_typing adt_env ~in_adt:true) typing )
+        variants
+  | DFunctionDefinition _ ->
+      failwith "Function definitions should be desugared before analysis."
+
+and analyze_typing ?(in_adt = false) env = function
   | TInt _ | TFloat _ | TBool _ | TString _ | TUnit _ ->
       ()
   | TConstructor (span, {id; typing}) ->
@@ -128,7 +189,7 @@ and analyze_typing ?(inADT = false) env = function
         Output.add_error (Output.Undefined {name= id; span}) ;
       Option.iter (analyze_typing env) typing
   | TPolymorphic (span, id) ->
-      if inADT && not (Env.type_exists env id) then
+      if in_adt && not (Env.type_exists env id) then
         Output.add_error (Output.Undefined {name= id; span})
   | TTuple (_, typings) ->
       List.iter (analyze_typing env) typings
@@ -200,7 +261,10 @@ and analyze_pattern env = function
         Output.add_error (Output.Undefined {name= id; span}) ;
       Option.iter (analyze_pattern env) pattern
   | POr (_, {l; r}) ->
-      analyze_pattern env l ; analyze_pattern env r
+      let left_env = Env.scope env in
+      analyze_pattern left_env l ;
+      analyze_pattern env r ;
+      Hashtbl.iter (Hashtbl.replace (Env.values env)) (Env.values left_env)
 
 and analyze_parameter env = function
   | ALID (span, id) ->

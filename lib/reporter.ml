@@ -43,16 +43,29 @@ let rec space n = if n <= 0 then "" else " " ^ space (n - 1)
 
 let column pos = pos.pos_cnum - pos.pos_bol
 
-let output_json code msg range =
-  let start, fin = range in
-  Yojson.Safe.to_channel stderr
-    (`Assoc
-       [ ("code", `Int code)
-       ; ("msg", `String msg)
-       ; ("startLine", `Int (start.pos_lnum - 1))
-       ; ("startCol", `Int (start.pos_cnum - start.pos_bol))
-       ; ("endLine", `Int (fin.pos_lnum - 1))
-       ; ("endCol", `Int (fin.pos_cnum - fin.pos_bol)) ] ) ;
+type report =
+  { severity: severity
+  ; code: int
+  ; msg: string
+  ; range: position * position
+  ; hint: string
+  ; note: string }
+
+let print_json_reports reports =
+  let json_reports =
+    List.map
+      (fun {severity; code; msg; range; _} ->
+        let start, fin = range in
+        `Assoc
+          [ ("code", `String (string_of_severity severity ^ string_of_int code))
+          ; ("msg", `String msg)
+          ; ("startLine", `Int (start.pos_lnum - 1))
+          ; ("startCol", `Int (column start))
+          ; ("endLine", `Int (fin.pos_lnum - 1))
+          ; ("endCol", `Int (column fin)) ] )
+      reports
+  in
+  Yojson.Safe.to_channel stderr (`List json_reports) ;
   flush stderr
 
 let print_header range severity code msg margin file_name =
@@ -125,25 +138,27 @@ let print_footer hint note margin file_name =
       (space (if file_name = "" then 0 else margin))
       (black up)
 
-let create_report ?(json = false) ?(hint = "") ?(note = "") severity code msg
-    range =
+let print_report {severity; code; msg; range; hint; note} =
+  let msg = String.trim msg in
   let hint = String.trim hint in
   let note = String.trim note in
-  let msg = String.trim msg in
   let start, fin = range in
   let margin = String.length (string_of_int (fin.pos_lnum + 1)) in
   let file_name = start.pos_fname in
-  if json then output_json code msg range
-  else (
-    print_header range severity code msg margin file_name ;
-    if file_name <> "" then (
-      let file = open_in_bin file_name in
-      for n = 1 to fin.pos_lnum + 1 do
-        match In_channel.input_line file with
-        | None ->
-            ()
-        | Some line ->
-            print_line hint note range margin n line
-      done ;
-      close_in file ) ;
-    print_footer hint note margin file_name )
+  print_header range severity code msg margin file_name ;
+  if file_name <> "" then (
+    let file = open_in_bin file_name in
+    for n = 1 to fin.pos_lnum + 1 do
+      Option.iter
+        (print_line hint note range margin n)
+        (In_channel.input_line file)
+    done ;
+    close_in file ) ;
+  print_footer hint note margin file_name
+
+let create_report ?(hint = "") ?(note = "") severity code msg range =
+  {severity; code; msg; range; hint; note}
+
+let print_reports ?(json = false) reports =
+  if json then print_json_reports reports
+  else List.iter (fun report -> print_report report) reports

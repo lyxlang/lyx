@@ -7,20 +7,23 @@
 (** Defines the severity levels for diagnostic messages. *)
 type severity = Info | Warning | Error
 
+type report =
+  { severity: severity
+  ; code: int
+  ; msg: string
+  ; range: Lexing.position * Lexing.position
+  ; hint: string
+  ; note: string }
+
 val create_report :
-     ?json:bool
-  -> ?hint:string
+     ?hint:string
   -> ?note:string
   -> severity
   -> int
   -> string
   -> Lexing.position * Lexing.position
-  -> unit
-(** Creates and displays a formatted diagnostic report for compiler messages.
-
-    @param json
-      When set to [true], outputs the report in JSON format to stderr instead of
-      using the default human-readable format. Defaults to [false].
+  -> report
+(** Creates a single report.
 
     @param hint
       An optional string containing a suggestion to help fix the issue. Will be
@@ -41,4 +44,15 @@ val create_report :
     @param range
       A tuple containing the start and end positions of the code that triggered
       the diagnostic. These positions are used to highlight the relevant code in
-      the source file of path provided in the start [Lexing.position]. *)
+      the source file of path provided in the start [Lexing.position].
+
+    @return A [Reporter.report]. *)
+
+val print_reports : ?json:bool -> report list -> unit
+(** Displays formatted diagnostic reports as compiler messages.
+
+    @param json
+      When set to [true], outputs the report in JSON format to stderr instead of
+      using the default human-readable format. Defaults to [false].
+
+    @param reports A list of reports. *)

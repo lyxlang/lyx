@@ -9,9 +9,9 @@
 
     @param int The error code that identifies the specific syntax error.
     @param string The human-readable description of the syntax error.
-    @param start The start position where the syntax error was detected.
-    @param fin The end position where the syntax error was detected. *)
-exception Syntax_error of int * string * Lexing.position * Lexing.position
+    @param span The start and end position where the syntax error was detected.
+*)
+exception Syntax_error of int * string * (Lexing.position * Lexing.position)
 
 val parse : Sedlexing.lexbuf -> Ast.program
 (** Parses a Lyx source file into an AST representation. Uses incremental

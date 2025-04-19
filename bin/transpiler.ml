@@ -244,8 +244,11 @@ and build_binary_operator span = function
   | BLessOrEqual ->
       add "<="
   | BConcatenate ->
-      Lyx.Reporter.create_report Lyx.Reporter.Error 1000
-        "The transpiler does not yet support the concatenation operator." span ;
+      let report =
+        Lyx.Reporter.create_report Lyx.Reporter.Error 1000
+          "The transpiler does not yet support the concatenation operator." span
+      in
+      Lyx.Reporter.print_reports [report] ;
       add "(* ++ *)"
   | BAdd ->
       add "+."

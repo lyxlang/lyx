@@ -8,31 +8,27 @@ open Lyx
 
 let parse ?(json = false) buf =
   try Parser.parse buf with
-  | Lexer.Lexing_error (start, fin) ->
+  | Lexer.Lexing_error span ->
       let code = 1 and msg = "Unexpected character." in
-      Reporter.create_report Reporter.Error code msg (start, fin) ~json ;
+      let report = Reporter.create_report Reporter.Error code msg span in
+      Reporter.print_reports ~json [report] ;
       exit code
-  | Parser.Syntax_error (code, msg, start, fin) ->
+  | Parser.Syntax_error (code, msg, span) ->
       let code = code + 2 in
-      Reporter.create_report Reporter.Error code msg (start, fin) ~json ;
+      let report = Reporter.create_report Reporter.Error code msg span in
+      Reporter.print_reports ~json [report] ;
       exit code
 
 let analyze ?(json = false) program =
-  try Usage_analysis.analyze_program program ~json
-  with Usage_analysis.Output.Analysis_error errors ->
-    List.iter
-      (fun e ->
-        Reporter.create_report Reporter.Error
-          (Usage_analysis.Output.code_of_error e)
-          (Usage_analysis.Output.string_of_error e)
-          (Usage_analysis.Output.span_of_error e)
-          ~json )
-      errors ;
-    exit 1000
+  try Usage_analysis.analyze_program ~json program
+  with Usage_analysis.Output.Analysis_error reports ->
+    Reporter.print_reports ~json reports ;
+    exit (if json then 0 else 1000)
 
 let transpile_file file =
-  Sedlexing.Utf8.from_channel (open_in_bin file)
-  |> parse |> Desugar.desugar_program |> analyze |> Transpiler.build_program
+  let buf = Sedlexing.Utf8.from_channel (open_in_bin file) in
+  Sedlexing.set_filename buf file ;
+  buf |> parse |> Desugar.desugar_program |> analyze |> Transpiler.build_program
   |> Printf.fprintf (open_out_bin (file ^ ".ml")) "%s%!"
 
 let transpile_stdin () =
@@ -43,26 +39,29 @@ let transpile_stdin () =
 
 let format_file file =
   Sedlexing.Utf8.from_channel (open_in_bin file)
-  |> parse ~json:true |> Formatter.format
+  |> parse |> Formatter.format
   |> Printf.fprintf (open_out_bin file) "%s%!"
 
 let format_stdin () =
-  Sedlexing.Utf8.from_channel stdin
-  |> parse ~json:true |> Formatter.format |> print_string ;
+  Sedlexing.Utf8.from_channel stdin |> parse |> Formatter.format |> print_string ;
   flush stdout
+
+let fmt_debug () =
+  let ast = Sedlexing.Utf8.from_channel stdin |> parse ~json:true in
+  ast |> Formatter.format |> print_string ;
+  flush stdout ;
+  ast |> Desugar.desugar_program |> analyze ~json:true |> ignore
 
 let parse_file file =
   let buf = Sedlexing.Utf8.from_channel (open_in_bin file) in
   Sedlexing.set_filename buf file ;
-  let ast = parse buf |> Desugar.desugar_program |> analyze in
-  Ast.show_program ast |> print_endline
+  buf |> parse |> Desugar.desugar_program |> analyze |> Ast.show_program
+  |> print_endline
 
 let parse_stdin () =
-  let ast =
-    Sedlexing.Utf8.from_channel stdin
-    |> parse |> Desugar.desugar_program |> analyze
-  in
-  Ast.show_program ast |> print_endline
+  Sedlexing.Utf8.from_channel stdin
+  |> parse |> Desugar.desugar_program |> analyze |> Ast.show_program
+  |> print_endline
 
 let print_usage () =
   print_endline
@@ -97,6 +96,8 @@ let () =
       format_file file
   | [|_; "fmt"|] ->
       format_stdin ()
+  | [|_; "fmt-debug"|] ->
+      fmt_debug ()
   | [|_; file|] ->
       parse_file file
   | [|_|] ->

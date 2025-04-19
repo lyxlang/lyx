@@ -7,7 +7,7 @@
 open Sedlexing.Utf8
 open Menhir_parser
 
-exception Lexing_error of Lexing.position * Lexing.position
+exception Lexing_error of (Lexing.position * Lexing.position)
 
 let digit = [%sedlex.regexp? '0' .. '9']
 
@@ -166,7 +166,6 @@ let rec tokenizer buf =
   | lid ->
       LID (lexeme buf)
   | _ ->
-      let start, fin = Sedlexing.lexing_positions buf in
-      raise @@ Lexing_error (start, fin)
+      raise @@ Lexing_error (Sedlexing.lexing_positions buf)
 
 let lexer buf = Sedlexing.with_tokenizer tokenizer buf

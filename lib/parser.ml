@@ -7,7 +7,7 @@
 open MenhirLib.General
 open Menhir_parser.MenhirInterpreter
 
-exception Syntax_error of int * string * Lexing.position * Lexing.position
+exception Syntax_error of int * string * (Lexing.position * Lexing.position)
 
 let state checkpoint =
   match Lazy.force (stack checkpoint) with
@@ -21,8 +21,7 @@ let handle_syntax_error buf checkpoint =
   let msg =
     try Parser_errors.message code with Not_found -> "Unknown syntax error."
   in
-  let start, fin = Sedlexing.lexing_positions buf in
-  raise @@ Syntax_error (code, msg, start, fin)
+  raise @@ Syntax_error (code, msg, Sedlexing.lexing_positions buf)
 
 let rec loop next_token buf (checkpoint : Ast.program checkpoint) =
   match checkpoint with
