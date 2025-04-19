@@ -57,7 +57,7 @@ let print_json_reports reports =
       (fun {severity; code; msg; range; _} ->
         let start, fin = range in
         `Assoc
-          [ ("code", `String (string_of_severity severity ^ string_of_int code))
+          [ ("code", `String (string_of_severity severity ^ sprintf "%04d" code))
           ; ("msg", `String msg)
           ; ("startLine", `Int (start.pos_lnum - 1))
           ; ("startCol", `Int (column start))
