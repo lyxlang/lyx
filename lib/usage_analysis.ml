@@ -110,23 +110,24 @@ module Env = struct
   let variant_exists (env : t) = Hashtbl.mem env.variants
 
   let add_value env name span =
-    if (not (String.starts_with ~prefix:"_" name)) && value_exists env name then
-      Output.add_error (Output.Duplicate {name; span}) ;
     if List.mem name std_lib then Output.add_error (Output.Reserved {name; span})
-    else Hashtbl.replace env.values name span
+    else if (not (String.starts_with ~prefix:"_" name)) && value_exists env name
+    then Output.add_error (Output.Duplicate {name; span}) ;
+    Hashtbl.replace env.values name span
 
   let add_type env name span =
-    if type_exists env name then Output.add_error (Output.Duplicate {name; span}) ;
     if List.mem name std_types then
       Output.add_error (Output.Reserved {name; span})
-    else Hashtbl.replace env.types name span
+    else if type_exists env name || variant_exists env name then
+      Output.add_error (Output.Duplicate {name; span}) ;
+    Hashtbl.replace env.types name span
 
   let add_variant env name span =
-    if variant_exists env name then
-      Output.add_error (Output.Duplicate {name; span}) ;
     if List.mem name std_types then
       Output.add_error (Output.Reserved {name; span})
-    else Hashtbl.replace env.variants name span
+    else if variant_exists env name || type_exists env name then
+      Output.add_error (Output.Duplicate {name; span}) ;
+    Hashtbl.replace env.variants name span
 
   let root =
     let env =
@@ -169,34 +170,37 @@ and analyze_declaration env = function
   | DValueBinding (_, {signature; body; _}) ->
       Option.iter (analyze_typing env) signature ;
       analyze_expression env body
-  | DTypeDefinition (_, {body; _}) ->
-      analyze_typing env body
-  | DADTDefinition (span, {polymorphics; variants; _}) ->
+  | DTypeDefinition (_, {id; body}) ->
+      analyze_typing ~parent_id:id env body
+  | DADTDefinition (span, {id; polymorphics; variants}) ->
       let adt_env = Env.scope env in
       List.iter (fun p -> Env.add_type adt_env p span) polymorphics ;
       List.iter
         (fun ({typing; _} : variant) ->
-          Option.iter (analyze_typing adt_env ~in_adt:true) typing )
+          Option.iter (analyze_typing ~in_adt:true ~parent_id:id adt_env) typing )
         variants
   | DFunctionDefinition _ ->
       failwith "Function definitions should be desugared before analysis."
 
-and analyze_typing ?(in_adt = false) env = function
+and analyze_typing ?(in_adt = false) ?(parent_id = "") env = function
   | TInt _ | TFloat _ | TBool _ | TString _ | TUnit _ ->
       ()
   | TConstructor (span, {id; typing}) ->
-      if not (Env.type_exists env id || Env.variant_exists env id) then
-        Output.add_error (Output.Undefined {name= id; span}) ;
-      Option.iter (analyze_typing env) typing
+      if
+        id = parent_id
+        || not (Env.type_exists env id || Env.variant_exists env id)
+      then Output.add_error (Output.Undefined {name= id; span}) ;
+      Option.iter (analyze_typing ~in_adt ~parent_id env) typing
   | TPolymorphic (span, id) ->
       if in_adt && not (Env.type_exists env id) then
         Output.add_error (Output.Undefined {name= id; span})
   | TTuple (_, typings) ->
-      List.iter (analyze_typing env) typings
+      List.iter (analyze_typing ~in_adt ~parent_id env) typings
   | TList (_, typing) ->
-      analyze_typing env typing
+      analyze_typing ~in_adt ~parent_id env typing
   | TFunction (_, {l; r}) ->
-      analyze_typing env l ; analyze_typing env r
+      analyze_typing ~in_adt ~parent_id env l ;
+      analyze_typing ~in_adt ~parent_id env r
 
 and analyze_expression env = function
   | EInt _ | EFloat _ | EBool _ | EString _ | EUnit _ ->
