@@ -108,7 +108,15 @@ module Env = struct
     ; "foldLeft"
     ; "foldRight"
     ; "printString"
-    ; "printNumber" ]
+    ; "printNumber"
+    ; "clearScreen"
+    ; "iter"
+    ; "join"
+    ; "range"
+    ; "sleep"
+    ; "nth"
+    ; "zip"
+    ; "random" ]
 
   let values env = env.values
 

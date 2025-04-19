@@ -1,0 +1,114 @@
+`
+  SPDX-FileCopyrightText: 2025 Aljebriq <143266740+aljebriq@users.noreply.github.com>
+
+  SPDX-License-Identifier: CC0-1.0
+`
+
+`
+  This is a simple implementation of Conway’s Game of Life in Lyx.
+
+  You can run the code with the following command:
+  $ lyx transpile conway.lyx
+  $ ocaml unix.cma -I +unix conway.lyx.ml
+`
+
+def living = "██"
+
+def dead = "░░"
+
+def initializeRandomGrid width height density =
+  let
+    createCell = \_ -> if random < density then living else dead;
+    createRow = \_ -> map (\_ -> createCell ()) (range width)
+  in map (\_ -> createRow ()) (range height)
+
+def initializeGlider width height =
+  let
+    emptyGrid = map (\_ -> map (\_ -> dead) (range width)) (range height);
+    gliderPattern = [(-1, 0), (0, 1), (1, -1), (1, 0), (1, 1)]
+  in setPattern emptyGrid gliderPattern width height
+
+def initializeBlinker width height =
+  let
+    emptyGrid = map (\_ -> map (\_ -> dead) (range width)) (range height);
+    blinkerPattern = [(-1, 0), (0, 0), (1, 0)]
+  in setPattern emptyGrid blinkerPattern width height
+
+def setPattern grid pattern width height =
+  let
+    midRow = height / 2 - 1;
+    midCol = width / 2 - 1;
+    setCell =
+      \g
+      (r, c)
+      ->
+        let
+          actualRow = midRow + r;
+          actualCol = midCol + c;
+          updatedRow =
+            map (\(idx, cell)
+            -> if idx == actualCol then living else cell)
+            (zip (range width) (nth g actualRow))
+        in
+          map
+          (\(idx, rowData)
+          -> if idx == actualRow then updatedRow else rowData)
+          (zip (range height) g)
+  in foldLeft setCell grid pattern
+
+def countLivingNeighbors grid row col width height =
+  let
+    directions =
+      [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)];
+    wrapCoord =
+      \coord
+      size
+      -> if coord < 0 then size - 1 else if coord >= size then 0 else coord;
+    checkNeighbor =
+      \(dr, dc)
+      ->
+        let
+          r = wrapCoord (row + dr) height;
+          c = wrapCoord (col + dc) width;
+          cell = nth (nth grid r) c
+        in if cell == living then 1 else 0
+  in foldLeft (\acc dir -> acc + checkNeighbor dir) 0 directions
+
+def getNextCellState grid row col width height =
+  let
+    currentCell = nth (nth grid row) col;
+    livingNeighbors = countLivingNeighbors grid row col width height
+  in
+    if currentCell == living
+    then if livingNeighbors == 2 || livingNeighbors == 3 then living else dead
+    else if livingNeighbors == 3 then living else dead
+
+def nextGeneration grid width height =
+  let
+    processRow =
+      \r
+      -> map (\c -> getNextCellState grid r c width height) (range width)
+  in map (\r -> processRow r) (range height)
+
+def displayGrid grid = iter (\row -> join "" row |> printString) grid
+
+def playGame grid width height =
+  let
+    _ = clearScreen;
+    _ = displayGrid grid;
+    _ = sleep 0.1;
+    nextGrid = nextGeneration grid width height
+  in playGame nextGrid width height
+
+def runGameOfLife width height patternType =
+  let
+    grid =
+      if patternType == 0
+      then initializeRandomGrid width height 0.3
+      else
+        if patternType == 1
+        then initializeGlider width height
+        else initializeBlinker width height
+  in playGame grid width height
+
+def _ = runGameOfLife 30 30 0

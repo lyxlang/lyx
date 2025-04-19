@@ -61,6 +61,8 @@ def fib n : Int -> Int =
 
 For a detailed presentation of the Lyx syntax and features, please have a look at [our sample grammar file](https://github.com/lyxlang/lyx/blob/main/examples/grammar.lyx).
 
+You can also take a look at a more fleshed out program like [our implementation of Conway’s Game of Life](https://github.com/lyxlang/lyx/blob/main/examples/conway.lyx).
+
 ## Usage
 
 You can skip installation when [running from source](https://github.com/lyxlang/lyx/wiki/Running-from-source).

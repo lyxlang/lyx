@@ -25,9 +25,11 @@ let add_list sep f = function
       f x
   | x :: xs ->
       f x ;
-      List.iter (add sep ; f) xs
+      List.iter (fun x -> add sep ; f x) xs
 
 let encode_lid = function
+  | "_" ->
+      "_"
   | "sqrt" ->
       "Float.sqrt"
   | "\u{03C0}" ->
@@ -44,6 +46,22 @@ let encode_lid = function
       "print_endline"
   | "printNumber" ->
       {|(Format.printf "%f@.")|}
+  | "clearScreen" ->
+      {|(ignore (Sys.command "clear"))|}
+  | "iter" ->
+      "List.iter"
+  | "join" ->
+      "String.concat"
+  | "range" ->
+      "(fun n -> List.init (int_of_float n) (fun i -> float_of_int i))"
+  | "sleep" ->
+      "Unix.sleepf"
+  | "nth" ->
+      "(fun lst n -> List.nth lst (int_of_float n))"
+  | "zip" ->
+      "List.combine"
+  | "random" ->
+      "(Random.float 1.0)"
   | lid ->
       "l" ^ string_of_int (String.hash lid)
 
@@ -149,7 +167,9 @@ and build_typing = function
       add @@ encode_lid p
   | TConstructor (_, {id; typing}) ->
       add @@ encode_lid id ;
-      Option.iter (add_space () ; add "of" ; add_space () ; build_typing) typing
+      Option.iter
+        (fun t -> add_space () ; add "of" ; add_space () ; build_typing t)
+        typing
 
 and build_expression = function
   | EExpression (_, {body; signature= _}) ->
@@ -168,7 +188,7 @@ and build_expression = function
       add "()"
   | EConstructor (_, {id; body}) ->
       add @@ encode_uid id ;
-      Option.iter (add_space () ; build_expression) body
+      Option.iter (fun e -> add_space () ; build_expression e) body
   | ELID (_, id) ->
       add @@ encode_lid id
   | ETuple (_, exprs) ->
@@ -288,7 +308,7 @@ and build_case {pattern; guard; body; _} =
   add_space () ;
   build_pattern pattern ;
   Option.iter
-    (add_space () ; add "when" ; add_space () ; build_expression)
+    (fun e -> add_space () ; add "when" ; add_space () ; build_expression e)
     guard ;
   add_space () ;
   add "->" ;
@@ -318,7 +338,7 @@ and build_pattern = function
       add_list "::" build_pattern pats
   | PConstructor (_, {id; pattern}) ->
       add @@ encode_uid id ;
-      Option.iter (add_space () ; build_pattern) pattern
+      Option.iter (fun p -> add_space () ; build_pattern p) pattern
   | POr (_, {l; r}) ->
       build_pattern l ; add_space () ; add "|" ; add_space () ; build_pattern r
 
@@ -326,4 +346,6 @@ and build_variant {id; typing; _} =
   add "|" ;
   add_space () ;
   add @@ encode_uid id ;
-  Option.iter (add_space () ; add "of" ; add_space () ; build_typing) typing
+  Option.iter
+    (fun t -> add_space () ; add "of" ; add_space () ; build_typing t)
+    typing
