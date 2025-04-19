@@ -206,13 +206,7 @@ and analyze_typing ?(in_adt = false) ?(parent_id = "") env = function
         id = parent_id
         || not (Env.type_exists env id || Env.loose_variant_exists env id)
       then Output.add_error (Output.Undefined {name= id; span}) ;
-      if
-        Env.loose_variant_exists env id
-        && not (Env.variant_exists env (id, Option.is_some typing))
-      then
-        Output.add_error
-          (Output.DefinitionMismatch {name= id; arg= Option.is_some typing; span}
-          ) ;
+      check_for_definition_mismatch env id (Option.is_some typing) span ;
       Option.iter (analyze_typing ~in_adt ~parent_id env) typing
   | TPolymorphic (span, id) ->
       if in_adt && not (Env.type_exists env id) then
@@ -231,12 +225,7 @@ and analyze_expression env = function
   | EConstructor (span, {id; body}) ->
       if not (Env.type_exists env id || Env.loose_variant_exists env id) then
         Output.add_error (Output.Undefined {name= id; span}) ;
-      if
-        Env.loose_variant_exists env id
-        && not (Env.variant_exists env (id, Option.is_some body))
-      then
-        Output.add_error
-          (Output.DefinitionMismatch {name= id; arg= Option.is_some body; span}) ;
+      check_for_definition_mismatch env id (Option.is_some body) span ;
       Option.iter (analyze_expression env) body
   | ELID (span, id) ->
       if not (Env.value_exists env id) then
@@ -292,13 +281,7 @@ and analyze_pattern env = function
   | PConstructor (span, {id; pattern}) ->
       if not (Env.type_exists env id || Env.loose_variant_exists env id) then
         Output.add_error (Output.Undefined {name= id; span}) ;
-      if
-        Env.loose_variant_exists env id
-        && not (Env.variant_exists env (id, Option.is_some pattern))
-      then
-        Output.add_error
-          (Output.DefinitionMismatch
-             {name= id; arg= Option.is_some pattern; span} ) ;
+      check_for_definition_mismatch env id (Option.is_some pattern) span ;
       Option.iter (analyze_pattern env) pattern
   | POr (_, {l; r}) ->
       let left_env = Env.scope env in
@@ -311,3 +294,7 @@ and analyze_parameter env = function
       Env.add_value env id span
   | ATuple (_, parameters) ->
       List.iter (analyze_parameter env) parameters
+
+and check_for_definition_mismatch env id arg span =
+  if Env.loose_variant_exists env id && not (Env.variant_exists env (id, arg))
+  then Output.add_error (Output.DefinitionMismatch {name= id; arg; span})
