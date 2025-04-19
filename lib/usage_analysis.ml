@@ -69,21 +69,20 @@ module Output = struct
   let raise_errors () =
     if output.errors <> [] then
       raise
-        (Analysis_error
+      @@ Analysis_error
            (List.map
               (fun error ->
                 Reporter.create_report Reporter.Error (code_of_error error)
                   (string_of_error error) (span_of_error error) )
-              output.errors ) )
+              output.errors )
 
   let report_warnings json =
-    Reporter.print_reports ~json
-      (List.map
-         (fun warning ->
+    output.warnings
+    |> List.map (fun warning ->
            Reporter.create_report Reporter.Warning (code_of_warning warning)
              (string_of_warning warning)
              (span_of_warning warning) )
-         output.warnings )
+    |> Reporter.print_reports ~json
 end
 
 module Env = struct
