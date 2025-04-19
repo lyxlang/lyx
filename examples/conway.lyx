@@ -39,20 +39,16 @@ def setPattern grid pattern width height =
     midRow = height / 2 - 1;
     midCol = width / 2 - 1;
     setCell =
-      \g
-      (r, c)
-      ->
+      \g (r, c) ->
         let
           actualRow = midRow + r;
           actualCol = midCol + c;
           updatedRow =
-            map (\(idx, cell)
-            -> if idx == actualCol then living else cell)
+            map (\(idx, cell) -> if idx == actualCol then living else cell)
             (zip (range width) (nth g actualRow))
         in
           map
-          (\(idx, rowData)
-          -> if idx == actualRow then updatedRow else rowData)
+          (\(idx, rowData) -> if idx == actualRow then updatedRow else rowData)
           (zip (range height) g)
   in foldLeft setCell grid pattern
 
@@ -61,12 +57,10 @@ def countLivingNeighbors grid row col width height =
     directions =
       [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)];
     wrapCoord =
-      \coord
-      size
-      -> if coord < 0 then size - 1 else if coord >= size then 0 else coord;
+      \coord size ->
+        if coord < 0 then size - 1 else if coord >= size then 0 else coord;
     checkNeighbor =
-      \(dr, dc)
-      ->
+      \(dr, dc) ->
         let
           r = wrapCoord (row + dr) height;
           c = wrapCoord (col + dc) width;
@@ -86,8 +80,7 @@ def getNextCellState grid row col width height =
 def nextGeneration grid width height =
   let
     processRow =
-      \r
-      -> map (\c -> getNextCellState grid r c width height) (range width)
+      \r -> map (\c -> getNextCellState grid r c width height) (range width)
   in map (\r -> processRow r) (range height)
 
 def displayGrid grid = iter (\row -> join "" row |> printString) grid

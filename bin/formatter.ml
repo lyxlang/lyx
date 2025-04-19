@@ -267,11 +267,11 @@ module Builder = struct
     | ALID (_, lid) ->
         text lid
     | ATuple (_, [param]) ->
-        Nodes [text "("; build_parameter t param; text ",)"]
+        Fill [text "("; build_parameter t param; text ",)"]
     | ATuple (_, params) ->
         params
         |> List.map (build_parameter t)
-        |> separated_nodes (Nodes [text ","; SpaceOrLine])
+        |> separated_nodes (Fill [text ","; SpaceOrLine])
         |> delimited_nodes t (text "(") (text ")")
 
   and build_typing t = function
@@ -397,11 +397,11 @@ module Builder = struct
         let param_nodes =
           parameters
           |> List.map (build_parameter t)
-          |> separated_nodes SpaceOrLine
+          |> separated_nodes (Nodes [text " "])
         in
-        Nodes
+        Fill
           [ text "\\"
-          ; Nodes param_nodes
+          ; Fill param_nodes
           ; SpaceOrLine
           ; text "->"
           ; Group (new_id t, [SpaceOrLine; Indent [build_expression t body]]) ]
