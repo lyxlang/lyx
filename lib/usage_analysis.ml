@@ -11,6 +11,7 @@ module Output = struct
     | Undefined of {name: string; span: span}
     | Reserved of {name: string; span: span}
     | Duplicate of {name: string; span: span}
+    | DefinitionMismatch of {name: string; arg: bool; span: span}
 
   type[@warning "-37"] warning = Unused of {name: string; span: span}
 
@@ -32,6 +33,8 @@ module Output = struct
         1002
     | Duplicate _ ->
         1003
+    | DefinitionMismatch _ ->
+        1004
 
   let string_of_error = function
     | Undefined {name; _} ->
@@ -40,6 +43,10 @@ module Output = struct
         Printf.sprintf "Reserved identifier: \u{201C}%s\u{201D}." name
     | Duplicate {name; _} ->
         Printf.sprintf "Duplicate identifier: \u{201C}%s\u{201D}." name
+    | DefinitionMismatch {name; arg; _} ->
+        ( if arg then "Unexpected variant constructor"
+          else "Expected a variant constructor" )
+        ^ Printf.sprintf " for \u{201C}%s\u{201D}." name
 
   let span_of_error = function
     | Undefined {span; _} ->
@@ -47,6 +54,8 @@ module Output = struct
     | Reserved {span; _} ->
         span
     | Duplicate {span; _} ->
+        span
+    | DefinitionMismatch {span; _} ->
         span
 
   let code_of_warning = function Unused _ -> 1001
@@ -78,10 +87,12 @@ module Output = struct
 end
 
 module Env = struct
+  type variant_definition = uid * bool
+
   type t =
     { values: (string, span) Hashtbl.t
     ; types: (string, span) Hashtbl.t
-    ; variants: (uid, span) Hashtbl.t }
+    ; variants: (variant_definition, span) Hashtbl.t }
 
   let scope {values; types; variants} =
     { values= Hashtbl.copy values
@@ -109,6 +120,10 @@ module Env = struct
 
   let variant_exists (env : t) = Hashtbl.mem env.variants
 
+  let loose_variant_exists (env : t) name =
+    Hashtbl.mem env.variants (name, true)
+    || Hashtbl.mem env.variants (name, false)
+
   let add_value env name span =
     if List.mem name std_lib then Output.add_error (Output.Reserved {name; span})
     else if (not (String.starts_with ~prefix:"_" name)) && value_exists env name
@@ -118,16 +133,16 @@ module Env = struct
   let add_type env name span =
     if List.mem name std_types then
       Output.add_error (Output.Reserved {name; span})
-    else if type_exists env name || variant_exists env name then
+    else if type_exists env name || loose_variant_exists env name then
       Output.add_error (Output.Duplicate {name; span}) ;
     Hashtbl.replace env.types name span
 
-  let add_variant env name span =
+  let add_variant env (name, arg) span =
     if List.mem name std_types then
       Output.add_error (Output.Reserved {name; span})
-    else if variant_exists env name || type_exists env name then
+    else if loose_variant_exists env name || type_exists env name then
       Output.add_error (Output.Duplicate {name; span}) ;
-    Hashtbl.replace env.variants name span
+    Hashtbl.replace env.variants (name, arg) span
 
   let root =
     let env =
@@ -159,7 +174,8 @@ and hoist_declaration env = function
   | DADTDefinition (span, {id; variants; _}) ->
       Env.add_type env id span ;
       List.iter
-        (fun ({span; id; _} : variant) -> Env.add_variant env id span)
+        (fun ({span; id; typing} : variant) ->
+          Env.add_variant env (id, Option.is_some typing) span )
         variants
   | DFunctionDefinition _ ->
       failwith "Function definitions should be desugared before analysis."
@@ -188,8 +204,15 @@ and analyze_typing ?(in_adt = false) ?(parent_id = "") env = function
   | TConstructor (span, {id; typing}) ->
       if
         id = parent_id
-        || not (Env.type_exists env id || Env.variant_exists env id)
+        || not (Env.type_exists env id || Env.loose_variant_exists env id)
       then Output.add_error (Output.Undefined {name= id; span}) ;
+      if
+        Env.loose_variant_exists env id
+        && not (Env.variant_exists env (id, Option.is_some typing))
+      then
+        Output.add_error
+          (Output.DefinitionMismatch {name= id; arg= Option.is_some typing; span}
+          ) ;
       Option.iter (analyze_typing ~in_adt ~parent_id env) typing
   | TPolymorphic (span, id) ->
       if in_adt && not (Env.type_exists env id) then
@@ -206,8 +229,14 @@ and analyze_expression env = function
   | EInt _ | EFloat _ | EBool _ | EString _ | EUnit _ ->
       ()
   | EConstructor (span, {id; body}) ->
-      if not (Env.type_exists env id || Env.variant_exists env id) then
+      if not (Env.type_exists env id || Env.loose_variant_exists env id) then
         Output.add_error (Output.Undefined {name= id; span}) ;
+      if
+        Env.loose_variant_exists env id
+        && not (Env.variant_exists env (id, Option.is_some body))
+      then
+        Output.add_error
+          (Output.DefinitionMismatch {name= id; arg= Option.is_some body; span}) ;
       Option.iter (analyze_expression env) body
   | ELID (span, id) ->
       if not (Env.value_exists env id) then
@@ -261,8 +290,15 @@ and analyze_pattern env = function
   | PTuple (_, patterns) | PList (_, patterns) | PListSpread (_, patterns) ->
       List.iter (analyze_pattern env) patterns
   | PConstructor (span, {id; pattern}) ->
-      if not (Env.type_exists env id || Env.variant_exists env id) then
+      if not (Env.type_exists env id || Env.loose_variant_exists env id) then
         Output.add_error (Output.Undefined {name= id; span}) ;
+      if
+        Env.loose_variant_exists env id
+        && not (Env.variant_exists env (id, Option.is_some pattern))
+      then
+        Output.add_error
+          (Output.DefinitionMismatch
+             {name= id; arg= Option.is_some pattern; span} ) ;
       Option.iter (analyze_pattern env) pattern
   | POr (_, {l; r}) ->
       let left_env = Env.scope env in
